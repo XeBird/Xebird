@@ -1,0 +1,2 @@
+rootProject.name='Xebird'
+include ':app'
