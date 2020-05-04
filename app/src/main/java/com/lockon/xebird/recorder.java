@@ -8,6 +8,5 @@ public class recorder {
     public void deleteRecord(){}
     public void searchRecord(){}
 
-    public static void main (String args[]) {}
 
 }
