@@ -16,4 +16,5 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="start_content">なにをするんですが？</string>
     <string name="search_hint">何を探しているんだの？</string>
+    <string name="search">搜索</string>
 </resources>

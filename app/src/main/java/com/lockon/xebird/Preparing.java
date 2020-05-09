@@ -20,7 +20,7 @@ public class Preparing extends AppCompatActivity {
                 Intent intent=new Intent(Preparing.this, MainActivity.class);
                 startActivity(intent);
             }
-        },5000);
+        },1000);
 
 
     }
