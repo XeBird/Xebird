@@ -78,6 +78,7 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 1) {
             for (int i = 0; i < permissions.length; i++) {
+                //TODO：显示申请成功与否，后续会删除
                 if (grantResults[i] == PERMISSION_GRANTED) {//选择了“始终允许”
                     Toast.makeText(this.getActivity(), "" + "权限" + permissions[i] + "申请成功", Toast.LENGTH_SHORT).show();
                 }

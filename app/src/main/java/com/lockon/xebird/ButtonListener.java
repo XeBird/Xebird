@@ -23,13 +23,15 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import static android.os.Environment.DIRECTORY_ALARMS;
+
 
 public class ButtonListener implements View.OnClickListener {
     private final String TAG = "ButtonLis";
     private dbHelper dbH;
     private Handler han;
     private View view;
-    private final static String path2Img = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator+"Xebird";
+    private final static String path2Img = Environment.getExternalStoragePublicDirectory(DIRECTORY_ALARMS).getParentFile().getAbsolutePath() + File.separator+"Xebird";
 
     ButtonListener(View v, dbHelper dbH, Handler handler) {
         this.dbH = dbH;
@@ -41,7 +43,9 @@ public class ButtonListener implements View.OnClickListener {
     public void onClick(View v) {
         File path = new File(path2Img);
         if (!path.exists()) {
-            Log.i(TAG, "ButtonListener: create file path " + path.mkdirs());
+            Log.i(TAG, "ButtonListener: create file path in "+path2Img+" " + path.mkdirs());
+        }else{
+            Log.i(TAG, "ButtonListener: file path in "+path2Img+" has exists");
         }
         EditText edittext = view.findViewById(R.id.textview_edit);
         Editable EditableText = edittext.getText();
@@ -49,10 +53,10 @@ public class ButtonListener implements View.OnClickListener {
         Log.i(TAG, "onClick: get edittext " + input);
         TextView text=view.findViewById(R.id.textview_first);
         text.setText(dbH.getData(input));
+        //TODO:之后通过getName_LA方法来实现从输入到保存文件的隔离
         String NameLA = dbH.getName_LA(input).replace(" ","_");
         Log.i(TAG, "onClick: get name in LA called " + NameLA);
-        //TODO：本地保存文件名称问题，及路径存储问题（目前是在手机存储而非外部。
-        File localImg = new File(path2Img + File.separator + NameLA);
+        File localImg = new File(path2Img + File.separator + NameLA+".jpg");
         if (!localImg.exists()) {
             Log.i(TAG, "onClick: local file dont exist");
             new Thread(new saveImgToLocal(NameLA, "Map", 1, view, han, localImg)).start();

@@ -1,4 +1,4 @@
-package com.lockon.xebird;
+package com.lockon.xebird.db;
 
 public class recorder {
     String recordFile="Bird_record";
