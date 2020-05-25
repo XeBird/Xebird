@@ -21,9 +21,6 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.room.Room;
-
-import com.lockon.xebird.db.MyDataBase;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -34,6 +31,7 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
 
     static final int SETBITMAP=0;
     static final int SETNULLTEXT=1;
+    static final int SETTEXT=2;
     @SuppressLint("HandlerLeak")
     private Handler handler= new Handler() {
 
@@ -47,11 +45,16 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
                     break;
                 case SETNULLTEXT:
                     displaytext.setText(R.string.null_input);
+                    break;
+                case SETTEXT:
+                    displaytext.setText((CharSequence) msg.obj);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + msg.what);
             }
         }
     };
     private TextView displaytext;
-    private MyDataBase db;
 
 
     @Override
@@ -75,19 +78,12 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
             }
         });
 
-        if(getContext()==null){
-            Log.i(TAG, "onViewCreated: ");
-        }else {
-            db= Room.databaseBuilder(getContext(),
-                    MyDataBase.class, "Bird").build();
-        }
-
         imgView=view.findViewById(R.id.main_img);
         displaytext = view.findViewById(R.id.textview_first);
         Log.i(TAG, "onViewCreated: imgview create success");
 
         imgView.setImageResource(R.drawable.default_pic);//设置初始图片
-        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view,db,handler));
+        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view,handler));
 
         requestPermissions(new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,

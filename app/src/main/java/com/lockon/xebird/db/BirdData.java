@@ -3,12 +3,11 @@ package com.lockon.xebird.db;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity(tableName = "MainDATA",indices = {@Index("NAME_CN"),@Index("NAME_EN"),@Index("NAME_LA"),@Index("NAME_P"),@Index("NAME_POP")})
+@Entity(tableName = "MainDATA")
 public class BirdData {
     @PrimaryKey
     @ColumnInfo(name = "ID")
@@ -29,13 +28,13 @@ public class BirdData {
     private String orderCN;
     @ColumnInfo(name = "ORDER_EN")
     private String orderEN;
-    @ColumnInfo(name = "FAMILY_CN")
+    @ColumnInfo(name = "FAMILLY_CN")
     private String famliyCN;
-    @ColumnInfo(name = "FAMILY_EN")
+    @ColumnInfo(name = "FAMILLY_EN")
     private String familyEN;
-    @ColumnInfo(name = "SUBFAMILY_CN")
+    @ColumnInfo(name = "SUBFAMILLY_CN")
     private String subfamilyCN;
-    @ColumnInfo(name = "SUBFAMILY_EN")
+    @ColumnInfo(name = "SUBFAMILLY_EN")
     private String subfamilyEN;
     @ColumnInfo(name = "TRIBE_CN")
     private String tribeCN;
@@ -53,8 +52,8 @@ public class BirdData {
     private String habitInfo;
     @ColumnInfo(name = "EXP_INFO")
     private String expInfo;
-    @ColumnInfo(name = "RECODER")
-    private String recoder;
+    @ColumnInfo(name = "RECORDER")
+    private String recorder;
     public BirdData(){}
     @Ignore
     private BirdData(int id){
@@ -156,8 +155,8 @@ public class BirdData {
         return expInfo;
     }
 
-    public String getRecoder() {
-        return recoder;
+    public String getRecorder() {
+        return recorder;
     }
 
     public void setUid(int uid) {
@@ -244,7 +243,7 @@ public class BirdData {
         this.expInfo = expInfo;
     }
 
-    public void setRecoder(String recoder) {
-        this.recoder = recoder;
+    public void setRecorder(String recorder) {
+        this.recorder = recorder;
     }
 }
