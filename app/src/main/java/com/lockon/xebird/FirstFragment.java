@@ -21,6 +21,9 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.room.Room;
+
+import com.lockon.xebird.db.MyDataBase;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -28,22 +31,28 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
     private EditText edittext;
     private final String TAG="FirstFragment";
     private ImageView imgView ;
-    @SuppressLint("HandlerLeak")
-    private Handler handler=new Handler(){
 
+    static final int SETBITMAP=0;
+    static final int SETNULLTEXT=1;
+    @SuppressLint("HandlerLeak")
+    private Handler handler= new Handler() {
+
+        @SuppressLint("HandlerLeak")
         @Override
-        public void handleMessage(Message msg){
-            if (msg.what == 0) {
-                Bitmap bitmap = (Bitmap) msg.obj;
-                imgView.setImageBitmap(bitmap);
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SETBITMAP:
+                    Bitmap bitmap = (Bitmap) msg.obj;
+                    imgView.setImageBitmap(bitmap);
+                    break;
+                case SETNULLTEXT:
+                    displaytext.setText(R.string.null_input);
             }
         }
     };
-
-    private dbHelper dbH;
     private TextView displaytext;
-    private EditText edittext;
-    private final String tag="FirstFragment";
+    private MyDataBase db;
+
 
     @Override
     public View onCreateView(
@@ -65,13 +74,21 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
+
+        if(getContext()==null){
+            Log.i(TAG, "onViewCreated: ");
+        }else {
+            db= Room.databaseBuilder(getContext(),
+                    MyDataBase.class, "Bird").build();
+        }
+
         imgView=view.findViewById(R.id.main_img);
+        displaytext = view.findViewById(R.id.textview_first);
         Log.i(TAG, "onViewCreated: imgview create success");
-        dbHelper dbH=new dbHelper(getActivity());
-        TextView displaytext = view.findViewById(R.id.textview_first);
-        displaytext.setText(dbH.getData("石鸡"));
-        imgView.setImageResource(R.drawable.default_pic);
-        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view,dbH,handler));
+
+        imgView.setImageResource(R.drawable.default_pic);//设置初始图片
+        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view,db,handler));
+
         requestPermissions(new String[]{
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
