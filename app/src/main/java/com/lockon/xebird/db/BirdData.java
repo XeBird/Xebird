@@ -3,9 +3,12 @@ package com.lockon.xebird.db;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "MainDATA")
+import org.jetbrains.annotations.NotNull;
+
+@Entity(tableName = "MainDATA",indices = {@Index("NAME_CN"),@Index("NAME_EN"),@Index("NAME_LA"),@Index("NAME_P"),@Index("NAME_POP")})
 public class BirdData {
     @PrimaryKey
     @ColumnInfo(name = "ID")
@@ -52,12 +55,23 @@ public class BirdData {
     private String expInfo;
     @ColumnInfo(name = "RECODER")
     private String recoder;
-    private BirdData(){}
+    public BirdData(){}
     @Ignore
     private BirdData(int id){
         this.uid=id;
     }
 
+    @NotNull
+    @Override
+    public String toString(){
+        return nameCN + " " + nameLA + "\n" +
+                orderCN + " " + famliyCN + " " + genusCN + "\n" +
+                mainInfo + "\n" +
+                rangeInfo + "\n" +
+                habitInfo;
+    }
+
+    //以下全是getter和setter
     public int getUid() {
         return uid;
     }

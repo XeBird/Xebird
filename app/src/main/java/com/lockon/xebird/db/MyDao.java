@@ -10,11 +10,15 @@ public interface MyDao {
     @Query("SELECT * FROM MainDATA")
     List<BirdData> getAll();
 
-    //根据条件查询，方法参数和注解的sql语句参数一一对应
+    //根据ID查询所有MainDATAIds中的数据
     @Query("SELECT * FROM MainDATA WHERE ID IN (:MainDATAIds)")
     List<BirdData> loadAllByIds(int[] MainDATAIds);
 
     //同上
     @Query("SELECT * FROM MainDATA WHERE ID = :uid")
     BirdData findByUid(int uid);
+
+    //根据中文名字查询
+    @Query("SELECT * FROM MainDATA WHERE NAME_CN = :nameCN")
+    BirdData findByNameCN(String nameCN);
 }

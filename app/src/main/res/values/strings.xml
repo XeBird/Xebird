@@ -18,4 +18,6 @@
     <string name="search">搜索</string>
     <string name="picture_to_display">picture to display</string>
     <string name="start_picture">start picture</string>
+    <string name="null_searchede">何一つも探しない</string>
+    <string name="null_input">何も入れない</string>
 </resources>
