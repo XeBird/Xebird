@@ -1,26 +1,61 @@
 package com.lockon.xebird;
 
-import android.database.Cursor;
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-public class FirstFragment extends Fragment {
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
-    private dbHelper dbH;
-    private TextView displaytext;
+public class FirstFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
     private EditText edittext;
-    private final String tag="FirstFragment";
+    private final String TAG="FirstFragment";
+    private ImageView imgView ;
+
+    static final int SETBITMAP=0;
+    static final int SETNULLTEXT=1;
+    static final int SETTEXT=2;
+    @SuppressLint("HandlerLeak")
+    private Handler handler= new Handler() {
+
+        @SuppressLint("HandlerLeak")
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case SETBITMAP:
+                    Bitmap bitmap = (Bitmap) msg.obj;
+                    imgView.setImageBitmap(bitmap);
+                    break;
+                case SETNULLTEXT:
+                    displaytext.setText(R.string.null_input);
+                    break;
+                case SETTEXT:
+                    displaytext.setText((CharSequence) msg.obj);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value: " + msg.what);
+            }
+        }
+    };
+    private TextView displaytext;
+
 
     @Override
     public View onCreateView(
@@ -42,30 +77,32 @@ public class FirstFragment extends Fragment {
                         .navigate(R.id.action_FirstFragment_to_SecondFragment);
             }
         });
-        dbH=new dbHelper(getActivity());
-        edittext=view.findViewById(R.id.textview_edit);
-        displaytext=view.findViewById(R.id.textview_first);
-        displaytext.setText(getData("石鸡"));
-        view.findViewById(R.id.button_search).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String Name= String.valueOf(edittext.getText());
-                Log.d(tag, "onClick: "+Name+" was gotten!");
-                displaytext.setText(getData(Name));
+
+        imgView=view.findViewById(R.id.main_img);
+        displaytext = view.findViewById(R.id.textview_first);
+        Log.i(TAG, "onViewCreated: imgview create success");
+
+        imgView.setImageResource(R.drawable.default_pic);//设置初始图片
+        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view,handler));
+
+        requestPermissions(new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.INTERNET
+        },1);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == 1) {
+            for (int i = 0; i < permissions.length; i++) {
+                //TODO：显示申请成功与否，后续会删除
+                if (grantResults[i] == PERMISSION_GRANTED) {//选择了“始终允许”
+                    Toast.makeText(this.getActivity(), "" + "权限" + permissions[i] + "申请成功", Toast.LENGTH_SHORT).show();
+                }
             }
-        });
-    }
-
-    private String getData(String Name) {
-        Cursor cursor=dbH.findByName(Name,"MainDATA");
-        String visiText="";
-        if(cursor!=null&&cursor.moveToFirst()){
-            visiText=cursor.getString(cursor.getColumnIndex("NAME_CN"))
-            +"\t"+cursor.getString(cursor.getColumnIndex("NAME_EN"))
-            +"\n"+cursor.getString(cursor.getColumnIndex("NAME_LA"))
-            +"\n"+cursor.getString(cursor.getColumnIndex("MAIN_INFO"));
+        }else{
+            Log.i(TAG, "onRequestPermissionsResult: rejectede");
         }
-        return visiText;
     }
-
 }

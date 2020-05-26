@@ -12,8 +12,7 @@
     <string name="trysomething">trysomething</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="default_search">石鸡</string>
     <string name="start_content">なにをするんですが？</string>
     <string name="search_hint">何を探しているんだの？</string>
     <string name="search">搜索</string>
@@ -23,4 +22,6 @@
     <string name="explore_birds">Explore birds</string>
     <string name="start_a_checklist">Start a checklist</string>
     <string name="all_records">All Records</string>
+    <string name="picture_to_display">picture to display</string>
+    <string name="start_picture">start picture</string>
 </resources>
