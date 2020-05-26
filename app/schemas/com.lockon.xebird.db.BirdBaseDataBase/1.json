@@ -1,0 +1,160 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "43936d17bc6e1650c49b7fbf44b0dd05",
+    "entities": [
+      {
+        "tableName": "MainDATA",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ID` INTEGER NOT NULL, `NAME_CN` TEXT, `NAME_EN` TEXT, `NAME_LA` TEXT, `NAME_P` TEXT, `NAME_POP` TEXT, `MAIN_INFO` TEXT, `ORDER_CN` TEXT, `ORDER_EN` TEXT, `FAMILLY_CN` TEXT, `FAMILLY_EN` TEXT, `SUBFAMILLY_CN` TEXT, `SUBFAMILLY_EN` TEXT, `TRIBE_CN` TEXT, `TRIBE_EN` TEXT, `GENUS_CN` TEXT, `TWEET_INFO` TEXT, `RANGE_INFO` TEXT, `STATE_INFO` TEXT, `HABIT_INFO` TEXT, `EXP_INFO` TEXT, `RECORDER` TEXT, PRIMARY KEY(`ID`))",
+        "fields": [
+          {
+            "fieldPath": "uid",
+            "columnName": "ID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameCN",
+            "columnName": "NAME_CN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nameEN",
+            "columnName": "NAME_EN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nameLA",
+            "columnName": "NAME_LA",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nameP",
+            "columnName": "NAME_P",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "namePop",
+            "columnName": "NAME_POP",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "mainInfo",
+            "columnName": "MAIN_INFO",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "orderCN",
+            "columnName": "ORDER_CN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "orderEN",
+            "columnName": "ORDER_EN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "famliyCN",
+            "columnName": "FAMILLY_CN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "familyEN",
+            "columnName": "FAMILLY_EN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "subfamilyCN",
+            "columnName": "SUBFAMILLY_CN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "subfamilyEN",
+            "columnName": "SUBFAMILLY_EN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tribeCN",
+            "columnName": "TRIBE_CN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tribeEN",
+            "columnName": "TRIBE_EN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "genusCN",
+            "columnName": "GENUS_CN",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "tewwtInfo",
+            "columnName": "TWEET_INFO",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rangeInfo",
+            "columnName": "RANGE_INFO",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stateInfo",
+            "columnName": "STATE_INFO",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "habitInfo",
+            "columnName": "HABIT_INFO",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "expInfo",
+            "columnName": "EXP_INFO",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "recoder",
+            "columnName": "RECORDER",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "ID"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '43936d17bc6e1650c49b7fbf44b0dd05')"
+    ]
+  }
+}
