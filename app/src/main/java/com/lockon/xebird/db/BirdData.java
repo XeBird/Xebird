@@ -5,6 +5,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import org.jetbrains.annotations.NotNull;
+
 @Entity(tableName = "MainDATA")
 public class BirdData {
     @PrimaryKey
@@ -26,13 +28,13 @@ public class BirdData {
     private String orderCN;
     @ColumnInfo(name = "ORDER_EN")
     private String orderEN;
-    @ColumnInfo(name = "FAMILY_CN")
+    @ColumnInfo(name = "FAMILLY_CN")
     private String famliyCN;
-    @ColumnInfo(name = "FAMILY_EN")
+    @ColumnInfo(name = "FAMILLY_EN")
     private String familyEN;
-    @ColumnInfo(name = "SUBFAMILY_CN")
+    @ColumnInfo(name = "SUBFAMILLY_CN")
     private String subfamilyCN;
-    @ColumnInfo(name = "SUBFAMILY_EN")
+    @ColumnInfo(name = "SUBFAMILLY_EN")
     private String subfamilyEN;
     @ColumnInfo(name = "TRIBE_CN")
     private String tribeCN;
@@ -50,14 +52,25 @@ public class BirdData {
     private String habitInfo;
     @ColumnInfo(name = "EXP_INFO")
     private String expInfo;
-    @ColumnInfo(name = "RECODER")
-    private String recoder;
-    private BirdData(){}
+    @ColumnInfo(name = "RECORDER")
+    private String recorder;
+    public BirdData(){}
     @Ignore
     private BirdData(int id){
         this.uid=id;
     }
 
+    @NotNull
+    @Override
+    public String toString(){
+        return nameCN + " " + nameLA + "\n" +
+                orderCN + " " + famliyCN + " " + genusCN + "\n" +
+                mainInfo + "\n" +
+                rangeInfo + "\n" +
+                habitInfo;
+    }
+
+    //以下全是getter和setter
     public int getUid() {
         return uid;
     }
@@ -142,8 +155,8 @@ public class BirdData {
         return expInfo;
     }
 
-    public String getRecoder() {
-        return recoder;
+    public String getRecorder() {
+        return recorder;
     }
 
     public void setUid(int uid) {
@@ -230,7 +243,7 @@ public class BirdData {
         this.expInfo = expInfo;
     }
 
-    public void setRecoder(String recoder) {
-        this.recoder = recoder;
+    public void setRecorder(String recorder) {
+        this.recorder = recorder;
     }
 }
