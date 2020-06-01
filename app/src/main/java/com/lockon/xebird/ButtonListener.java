@@ -1,7 +1,6 @@
 package com.lockon.xebird;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Environment;
@@ -31,7 +30,7 @@ public class ButtonListener implements View.OnClickListener {
     private Context context;
     private final File path2Img;
 
-    ButtonListener(Activity a, View v, Handler handler, Context context) {
+    ButtonListener(View v, Handler handler, Context context) {
         this.han = handler;
         this.view = v;
         this.context = context;

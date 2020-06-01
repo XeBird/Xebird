@@ -1,7 +1,6 @@
 package com.lockon.xebird;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,20 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.lockon.xebird.db.BirdBaseDataBase;
 import com.lockon.xebird.db.BirdData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FirstFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -38,7 +38,6 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SETNULLTEXT:
-                    mAdapter.changeList(null);
                     break;
                 case SETLIST:
                     List<BirdData> bs = (List<BirdData>) msg.obj;
@@ -52,7 +51,9 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
             }
         }
     };
+    private RecyclerView recyclerView;
     private ItemAdapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
 
     @Override
@@ -70,13 +71,13 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
         EditText edittext = view.findViewById(R.id.textview_edit);
         edittext.setText(History.initInstance(getContext()).getLatestInput());
 
-        View v = getLayoutInflater().inflate(R.layout.fragment_first, null);
-        ListView listView = v.findViewById(R.id.list_view);
-        BirdBaseDataBase bd = BirdBaseDataBase.getInstance(getContext());
-        mAdapter = new ItemAdapter(getContext(), bd.myDao().findByNameCN("鹌鹑"));
-        listView.setAdapter(mAdapter);
+        recyclerView = view.findViewById(R.id.recycle_view);
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter = new ItemAdapter(new ArrayList<BirdData>());
+        recyclerView.setAdapter(mAdapter);
 
-        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(getActivity(), view, handler, getContext()));
+        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view, handler, getContext()));
     }
 
     @Override
@@ -85,76 +86,68 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
         super.onDetach();
     }
 
-    class ItemAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
-        private List<BirdData> list;
-        private LayoutInflater mInflater;
+    class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+        public List<BirdData> mList;
 
-        ItemAdapter(Context context, List<BirdData> list) {
-            super();
-            this.list = list;
-            this.mInflater = LayoutInflater.from(context);
+        public ItemAdapter(List<BirdData> mList) {
+            this.mList = mList;
         }
 
-        void changeList(List<BirdData> list) {
-            list.clear();
-            this.list.addAll(list);
-            this.notifyDataSetChanged();
+        public void changeList(List<BirdData> l) {
+            mList = l;
+            notifyDataSetChanged();
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ex, parent, false);
+            return new ViewHolder(v);
         }
 
         @Override
-        public int getCount() {
-            return Integer.MAX_VALUE;
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            BirdData b = mList.get(position);
+            holder.itemView.setOnClickListener(new ItemListener(b));
+            holder.name.setText(b.getSimpleName());
+            holder.genus.setText(b.getGenusCN());
+            holder.order.setText(b.getOrderAndFamily());
         }
 
         @Override
-        public BirdData getItem(int position) {
-            return list.get(position);
+        public int getItemCount() {
+            return mList.size();
         }
 
-        @Override
-        public long getItemId(int position) {
-            return position;
+        class ViewHolder extends RecyclerView.ViewHolder {
+
+            public TextView name;
+            public TextView genus;
+            public TextView order;
+
+            public ViewHolder(View item) {
+                super(item);
+                this.name = item.findViewById(R.id.textView_name);
+                this.genus = item.findViewById(R.id.genus);
+                this.order = item.findViewById(R.id.family_order);
+            }
         }
 
-        @SuppressLint("InflateParams")
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
+        class ItemListener implements View.OnClickListener {
+            private BirdData birdData;
 
-            if (convertView == null) {
-
-                holder = new ViewHolder();
-                convertView = mInflater.inflate(R.layout.item_ex, null);
-                holder.name = (TextView) convertView.findViewById(R.id.textView_name);
-                holder.genus = (TextView) convertView.findViewById(R.id.genus);
-                holder.order = (TextView) convertView.findViewById(R.id.family_order);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
+            public ItemListener(BirdData birdData) {
+                this.birdData = birdData;
             }
 
-            BirdData curr = list.get(position);
-            holder.name.setText(curr.getSimpleName());
-            holder.genus.setText(curr.getGenusCN());
-            holder.order.setText(curr.getOrderAndFamily());
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
 
-            return convertView;
-        }
-
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            BirdData clicked = getItem(position);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("click", clicked);
-            NavHostFragment.findNavController(FirstFragment.this)
-                    .navigate(R.id.action_FirstFragment_to_SecondFragment, bundle);
-        }
-
-        final class ViewHolder {
-            private TextView name;
-            private TextView genus;
-            private TextView order;
+                bundle.putSerializable("click", birdData);
+                Log.i(TAG, "onClick: click on " + birdData.getNameCN());
+                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_SecondFragment, bundle);
+            }
         }
     }
 
