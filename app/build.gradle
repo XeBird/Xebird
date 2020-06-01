@@ -61,5 +61,5 @@ dependencies {
     //noinspection GradleDependency
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-    implementation 'android.arch.persistence.room:testing:1.1.1'
+    implementation 'androidx.room:room-testing:2.2.5'
 }

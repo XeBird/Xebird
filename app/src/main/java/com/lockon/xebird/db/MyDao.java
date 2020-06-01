@@ -19,6 +19,24 @@ public interface MyDao {
     BirdData findByUid(int uid);
 
     //根据中文名字查询
-    @Query("SELECT * FROM MainDATA WHERE NAME_CN = :nameCN")
-    BirdData findByNameCN(String nameCN);
+    @Query("SELECT * FROM MainDATA WHERE NAME_CN like '%' || :nameCN || '%'")
+    List<BirdData> findByNameCN(String nameCN);
+
+    //拼音
+    @Query("SELECT * FROM MainDATA WHERE NAME_P like '%' || :nameP || '%'")
+    List<BirdData> findByNameP(String nameP);
+
+    //俗名
+    @Query("SELECT * FROM MainDATA WHERE NAME_POP like '%' || :namePop || '%'")
+    List<BirdData> findByNamePop(String namePop);
+
+    //英文
+    @Query("SELECT * FROM MainDATA WHERE NAME_EN like '%' || :nameEN || '%'")
+    List<BirdData> findByNameEN(String nameEN);
+
+    //拉丁
+    @Query("SELECT * FROM MainDATA WHERE NAME_LA like '%' || :nameLA || '%'")
+    List<BirdData> findByNameLA(String nameLA);
+
+
 }

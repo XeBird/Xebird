@@ -1,9 +1,6 @@
 package com.lockon.xebird;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,49 +9,51 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import com.lockon.xebird.db.BirdBaseDataBase;
+import com.lockon.xebird.db.BirdData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FirstFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
-    private EditText edittext;
     private final String TAG="FirstFragment";
-    private ImageView imgView ;
 
     static final int SETBITMAP=0;
-    static final int SETNULLTEXT=1;
-    static final int SETTEXT=2;
+    static final int SETNULLTEXT = 1;
+    static final int SETLIST = 2;
     @SuppressLint("HandlerLeak")
-    private Handler handler= new Handler() {
+    private final Handler handler = new Handler() {
 
-        @SuppressLint("HandlerLeak")
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case SETBITMAP:
-                    Bitmap bitmap = (Bitmap) msg.obj;
-                    imgView.setImageBitmap(bitmap);
-                    break;
                 case SETNULLTEXT:
-                    displaytext.setText(R.string.null_input);
                     break;
-                case SETTEXT:
-                    displaytext.setText((CharSequence) msg.obj);
+                case SETLIST:
+                    List<BirdData> bs = (List<BirdData>) msg.obj;
+                    for (BirdData b : bs) {
+                        Log.i(TAG, "handleMessage: data a ru " + b.getNameCN());
+                    }
+                    mAdapter.changeList(bs);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + msg.what);
             }
         }
     };
-    private TextView displaytext;
+    private RecyclerView recyclerView;
+    private ItemAdapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
 
     @Override
@@ -66,43 +65,90 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
         return inflater.inflate(R.layout.fragment_first, container, false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O_MR1)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
-            }
-        });
+        EditText edittext = view.findViewById(R.id.textview_edit);
+        edittext.setText(History.initInstance(getContext()).getLatestInput());
 
-        imgView=view.findViewById(R.id.main_img);
-        displaytext = view.findViewById(R.id.textview_first);
-        Log.i(TAG, "onViewCreated: imgview create success");
+        recyclerView = view.findViewById(R.id.recycle_view);
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        mAdapter = new ItemAdapter(new ArrayList<BirdData>());
+        recyclerView.setAdapter(mAdapter);
 
-        imgView.setImageResource(R.drawable.default_pic);//设置初始图片
-        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view,handler));
-
-        requestPermissions(new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.INTERNET
-        },1);
+        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view, handler, getContext()));
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 1) {
-            for (int i = 0; i < permissions.length; i++) {
-                //TODO：显示申请成功与否，后续会删除
-                if (grantResults[i] == PERMISSION_GRANTED) {//选择了“始终允许”
-                    Toast.makeText(this.getActivity(), "" + "权限" + permissions[i] + "申请成功", Toast.LENGTH_SHORT).show();
-                }
+    public void onDetach() {
+        BirdBaseDataBase.getInstance(this.getContext()).close();
+        super.onDetach();
+    }
+
+    class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
+        public List<BirdData> mList;
+
+        public ItemAdapter(List<BirdData> mList) {
+            this.mList = mList;
+        }
+
+        public void changeList(List<BirdData> l) {
+            mList = l;
+            notifyDataSetChanged();
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ex, parent, false);
+            return new ViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            BirdData b = mList.get(position);
+            holder.itemView.setOnClickListener(new ItemListener(b));
+            holder.name.setText(b.getSimpleName());
+            holder.genus.setText(b.getGenusCN());
+            holder.order.setText(b.getOrderAndFamily());
+        }
+
+        @Override
+        public int getItemCount() {
+            return mList.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+
+            public TextView name;
+            public TextView genus;
+            public TextView order;
+
+            public ViewHolder(View item) {
+                super(item);
+                this.name = item.findViewById(R.id.textView_name);
+                this.genus = item.findViewById(R.id.genus);
+                this.order = item.findViewById(R.id.family_order);
             }
-        }else{
-            Log.i(TAG, "onRequestPermissionsResult: rejectede");
+        }
+
+        class ItemListener implements View.OnClickListener {
+            private BirdData birdData;
+
+            public ItemListener(BirdData birdData) {
+                this.birdData = birdData;
+            }
+
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+
+                bundle.putSerializable("click", birdData);
+                Log.i(TAG, "onClick: click on " + birdData.getNameCN());
+                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_SecondFragment, bundle);
+            }
         }
     }
+
 }

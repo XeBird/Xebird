@@ -1,8 +1,8 @@
 package com.lockon.xebird;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -11,162 +11,69 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import com.lockon.xebird.db.BirdBaseDataBase;
 import com.lockon.xebird.db.BirdData;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
+import java.util.List;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import static com.lockon.xebird.FirstFragment.SETBITMAP;
+import static com.lockon.xebird.FirstFragment.SETLIST;
 import static com.lockon.xebird.FirstFragment.SETNULLTEXT;
-import static com.lockon.xebird.FirstFragment.SETTEXT;
 
 
 public class ButtonListener implements View.OnClickListener {
     private final String TAG = "ButtonLis";
     private Handler han;
     private View view;
-    private final String path2Img =Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator+"Xebird";
+    private Context context;
+    private final File path2Img;
 
-    ButtonListener(View v, Handler handler) {
+    ButtonListener(View v, Handler handler, Context context) {
         this.han = handler;
         this.view = v;
+        this.context = context;
+        this.path2Img = ContextCompat.getExternalFilesDirs(context, Environment.DIRECTORY_PICTURES)[0];
     }
 
     @Override
     public void onClick(View v) {
-        File path = new File(path2Img);
         Log.i(TAG, "ButtonListener: file will be save in "+path2Img);
         EditText edit=view.findViewById(R.id.textview_edit);
         Editable input=edit.getText();
         if(input==null){
             han.sendEmptyMessage(SETNULLTEXT);
             Log.i(TAG, "onClick: input nothing");
-        }else{
+        }else {
             Log.i(TAG, "onClick: get edittext " + input);
-            BirdBaseDataBase db=BirdBaseDataBase.getInstance(view.getContext());
-            BirdData whatGet = db.myDao().findByNameCN(input.toString());
-            if(whatGet==null){
+            BirdBaseDataBase db = BirdBaseDataBase.getInstance(view.getContext());
+            List<BirdData> whatGet = db.myDao().findByNameCN(input.toString());
+
+            if (whatGet.size() == 0) {
                 han.sendEmptyMessage(SETNULLTEXT);
                 Log.i(TAG, "onClic: nothing get");
-            }else {
+            } else {
                 Message msgWithString = Message.obtain(han);
-                msgWithString.what = SETTEXT;
-                msgWithString.obj = whatGet.toString();
+                msgWithString.what = SETLIST;
+                msgWithString.obj = whatGet;
                 msgWithString.sendToTarget();
-                Log.i(TAG, "onClick: send detail info to FirstFragment");
-                new Thread(new saveImgToLocal("Map", 1, whatGet, han,path2Img)).start();
+                Log.i(TAG, "onClick: send name info to FirstFragment");
+
             }
         }
 
+        History.initInstance(context).put(input);
     }
 
-    static class saveImgToLocal implements Runnable {
-
-        private final String Host = "https://xebird.proto.cf/";
-        private final String Path;
-        private final String DMP;
-        private final int index;
-        private final BirdData input;
-        private final String TAG = "WebRequest";
-        private final Handler handler;
-        private final String path2Img;
-
-        saveImgToLocal(String path, int index, BirdData input, Handler han, String path2Img) {
-            String DMP1;
-            Path = path;
-            switch (Path) {
-                case "Descriptive_graph":
-                    DMP1 = "-D-";
-                    break;
-                case "Map":
-                    DMP1 = "-M-";
-                    break;
-                case "Photo":
-                    DMP1 = "-P-";
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + Path);
-            }
-            DMP = DMP1;
-            this.index = index;
-            this.handler = han;
-            this.input=input;
-            this.path2Img=path2Img;
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        public void run() {
-            
-            String NameLA = input.getNameLA().replace(" ","_");
-            Log.i(TAG, "onClick: get name in LA called " + NameLA);
-            File localImg = new File(path2Img + File.separator + NameLA + DMP + index+ ".jpg");
-            if (!localImg.exists()) {
-                Log.i(TAG, "onClick: local file dont exist");
-                String totalWeb = Host + Path + "/" + NameLA + DMP + index + ".jpg";
-                Log.i(TAG, "getImgFromWeb: download from " + totalWeb);
-                Bitmap bitmap = null;
-                try {
-                    //网络请求
-                    URL url = new URL(totalWeb);
-                    HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-                    conn.setConnectTimeout(6000);//设置超时
-                    conn.setDoInput(true);
-                    conn.setUseCaches(false);//不缓存
-                    Log.i(TAG, "getImgFromWeb: download begin");
-                    conn.connect();
-                    InputStream is = conn.getInputStream();//获得图片的数据流
-                    bitmap = BitmapFactory.decodeStream(is);//读取图像数据
-                    is.close();
-                    Log.i(TAG, "getImgFromWeb: download end");
-                    Log.i(TAG, "getImgFromWeb: save pic to local file " + localImg.toString());
-                    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(localImg));
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bos);
-                    bos.flush();
-                    bos.close();
-                    Log.i(TAG, "getImgFromWeb: save pic to local file success");
-                } catch (IOException e) {
-                    if (bitmap == null) {
-                        Log.i(TAG, "getImgFromWeb: get pic from web failed");
-                    } else {
-                        Log.i(TAG, "getImgFromWeb: save pic to local file failed");
-                    }
-                    e.printStackTrace();
-                }
-                Message msg = Message.obtain(handler);
-                msg.what = SETBITMAP;
-                msg.obj = bitmap;
-                Log.i(TAG, "getImgFromWeb: send message");
-                msg.sendToTarget();
-            }else {
-                Message msg=Message.obtain(handler);
-                msg.what=SETBITMAP;
-                msg.obj=BitmapFactory.decodeFile(localImg.getPath());
-                Log.i(TAG, "getImgFromWeb: send message from local");
-                msg.sendToTarget();
-            }
-        }
-
-        /* Checks if external storage is available for read and write */
-        public boolean isExternalStorageWritable() {
-            String state = Environment.getExternalStorageState();
-            return Environment.MEDIA_MOUNTED.equals(state);
-        }
-
-        /* Checks if external storage is available to at least read */
-        public boolean isExternalStorageReadable() {
-            String state = Environment.getExternalStorageState();
-            return Environment.MEDIA_MOUNTED.equals(state) ||
-                    Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
-        }
+    public boolean checkPression() {
+        int hasReadPression = ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+        int hasWritePression = ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int hasInterPression = ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.INTERNET);
+        boolean res = hasInterPression == PackageManager.PERMISSION_GRANTED && hasReadPression == PackageManager.PERMISSION_GRANTED && hasWritePression == PackageManager.PERMISSION_GRANTED;
+        Log.i(TAG, "checkPression: Pression is " + res);
+        return res;
     }
+
 }
+

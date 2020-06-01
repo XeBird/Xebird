@@ -7,8 +7,10 @@ import androidx.room.PrimaryKey;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+
 @Entity(tableName = "MainDATA")
-public class BirdData {
+public class BirdData implements Serializable {
     @PrimaryKey
     @ColumnInfo(name = "ID")
     private int uid;
@@ -62,12 +64,29 @@ public class BirdData {
 
     @NotNull
     @Override
-    public String toString(){
+    public String toString() {
+        if (nameCN == null) {
+            return " ";
+        }
         return nameCN + " " + nameLA + "\n" +
                 orderCN + " " + famliyCN + " " + genusCN + "\n" +
                 mainInfo + "\n" +
                 rangeInfo + "\n" +
                 habitInfo;
+    }
+
+    public String getSimpleName() {
+        if (nameCN == null) {
+            return " ";
+        }
+        return nameCN + "\n" + nameLA;
+    }
+
+    public String getOrderAndFamily() {
+        if (nameCN == null) {
+            return " ";
+        }
+        return orderCN + "\t" + famliyCN;
     }
 
     //以下全是getter和setter
