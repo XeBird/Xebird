@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/textView_name"
+        android:layout_height="match_parent"
+        android:textSize="20sp"
+        android:layout_weight="0.4"
+        android:textAlignment="center"
+        android:layout_width="0sp" />
+
+    <LinearLayout
+        android:layout_weight="0.6"
+        android:weightSum="1"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/genus"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            tools:ignore="NestedWeights" />
+
+        <TextView
+            android:id="@+id/family_order"
+            android:layout_width="match_parent"
+            android:layout_height="0sp"
+            android:layout_weight="0.4" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

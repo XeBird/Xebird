@@ -1,9 +1,7 @@
 package com.lockon.xebird;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.os.Build;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,50 +9,50 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+import com.lockon.xebird.db.BirdBaseDataBase;
+import com.lockon.xebird.db.BirdData;
+
+import java.util.List;
 
 public class FirstFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
-    private EditText edittext;
     private final String TAG="FirstFragment";
-    private ImageView imgView ;
 
     static final int SETBITMAP=0;
-    static final int SETNULLTEXT=1;
-    static final int SETTEXT=2;
+    static final int SETNULLTEXT = 1;
+    static final int SETLIST = 2;
     @SuppressLint("HandlerLeak")
-    private Handler handler= new Handler() {
+    private final Handler handler = new Handler() {
 
-        @SuppressLint("HandlerLeak")
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case SETBITMAP:
-                    Bitmap bitmap = (Bitmap) msg.obj;
-                    imgView.setImageBitmap(bitmap);
-                    break;
                 case SETNULLTEXT:
-                    displaytext.setText(R.string.null_input);
+                    mAdapter.changeList(null);
                     break;
-                case SETTEXT:
-                    displaytext.setText((CharSequence) msg.obj);
+                case SETLIST:
+                    List<BirdData> bs = (List<BirdData>) msg.obj;
+                    for (BirdData b : bs) {
+                        Log.i(TAG, "handleMessage: data a ru " + b.getNameCN());
+                    }
+                    mAdapter.changeList(bs);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + msg.what);
             }
         }
     };
-    private TextView displaytext;
+    private ItemAdapter mAdapter;
 
 
     @Override
@@ -66,43 +64,98 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
         return inflater.inflate(R.layout.fragment_first, container, false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O_MR1)
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
-            }
-        });
+        EditText edittext = view.findViewById(R.id.textview_edit);
+        edittext.setText(History.initInstance(getContext()).getLatestInput());
 
-        imgView=view.findViewById(R.id.main_img);
-        displaytext = view.findViewById(R.id.textview_first);
-        Log.i(TAG, "onViewCreated: imgview create success");
+        View v = getLayoutInflater().inflate(R.layout.fragment_first, null);
+        ListView listView = v.findViewById(R.id.list_view);
+        BirdBaseDataBase bd = BirdBaseDataBase.getInstance(getContext());
+        mAdapter = new ItemAdapter(getContext(), bd.myDao().findByNameCN("鹌鹑"));
+        listView.setAdapter(mAdapter);
 
-        imgView.setImageResource(R.drawable.default_pic);//设置初始图片
-        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view,handler));
-
-        requestPermissions(new String[]{
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.INTERNET
-        },1);
+        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(getActivity(), view, handler, getContext()));
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 1) {
-            for (int i = 0; i < permissions.length; i++) {
-                //TODO：显示申请成功与否，后续会删除
-                if (grantResults[i] == PERMISSION_GRANTED) {//选择了“始终允许”
-                    Toast.makeText(this.getActivity(), "" + "权限" + permissions[i] + "申请成功", Toast.LENGTH_SHORT).show();
-                }
+    public void onDetach() {
+        BirdBaseDataBase.getInstance(this.getContext()).close();
+        super.onDetach();
+    }
+
+    class ItemAdapter extends BaseAdapter implements AdapterView.OnItemClickListener {
+        private List<BirdData> list;
+        private LayoutInflater mInflater;
+
+        ItemAdapter(Context context, List<BirdData> list) {
+            super();
+            this.list = list;
+            this.mInflater = LayoutInflater.from(context);
+        }
+
+        void changeList(List<BirdData> list) {
+            list.clear();
+            this.list.addAll(list);
+            this.notifyDataSetChanged();
+        }
+
+        @Override
+        public int getCount() {
+            return Integer.MAX_VALUE;
+        }
+
+        @Override
+        public BirdData getItem(int position) {
+            return list.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @SuppressLint("InflateParams")
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder = null;
+
+            if (convertView == null) {
+
+                holder = new ViewHolder();
+                convertView = mInflater.inflate(R.layout.item_ex, null);
+                holder.name = (TextView) convertView.findViewById(R.id.textView_name);
+                holder.genus = (TextView) convertView.findViewById(R.id.genus);
+                holder.order = (TextView) convertView.findViewById(R.id.family_order);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
             }
-        }else{
-            Log.i(TAG, "onRequestPermissionsResult: rejectede");
+
+            BirdData curr = list.get(position);
+            holder.name.setText(curr.getSimpleName());
+            holder.genus.setText(curr.getGenusCN());
+            holder.order.setText(curr.getOrderAndFamily());
+
+            return convertView;
+        }
+
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            BirdData clicked = getItem(position);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("click", clicked);
+            NavHostFragment.findNavController(FirstFragment.this)
+                    .navigate(R.id.action_FirstFragment_to_SecondFragment, bundle);
+        }
+
+        final class ViewHolder {
+            private TextView name;
+            private TextView genus;
+            private TextView order;
         }
     }
+
 }

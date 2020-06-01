@@ -6,61 +6,60 @@
     android:layout_height="match_parent"
     tools:context=".FirstFragment">
 
-    <TextView
-        android:id="@+id/textview_first"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+    <LinearLayout
+        android:id="@+id/rough_info"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
         android:text="@string/hello_first_fragment"
-        app:layout_constraintBottom_toTopOf="@id/button_search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="  parent"
-        app:layout_constraintTop_toBottomOf="@id/main_img" />
-
-    <ImageView
-        android:id="@+id/main_img"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:contentDescription="@string/picture_to_display"
-        app:layout_constraintBottom_toTopOf="@id/textview_first"
-        app:layout_constraintTop_toBottomOf="@id/textview_edit"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.57"
-        tools:layout_editor_absoluteX="16dp" />
-
-    <EditText
-        android:id="@+id/textview_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints="@string/search_hint"
-        android:hint="@string/search_hint"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/textview_first"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.00999999"
-        tools:ignore="LabelFor" />
-
-    <Button
-        android:id="@+id/button_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_first" />
+        app:layout_constraintTop_toBottomOf="@id/search_bar">
 
-    <Button
-        android:id="@+id/button_search"
-        android:layout_width="wrap_content"
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/search"
-        android:layout_marginBottom="20sp"
-        app:layout_constraintTop_toBottomOf="@id/textview_first"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/rough_info"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/button_first"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:weightSum="1">
 
+        <EditText
+            android:layout_weight="0.8"
+            android:id="@+id/textview_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="@string/search_hint"
+            android:hint="@string/search_hint"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="LabelFor" />
+
+
+        <Button
+            android:layout_weight="0.2"
+            android:id="@+id/button_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/search"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/textview_edit"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
