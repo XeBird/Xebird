@@ -19,9 +19,8 @@ import com.lockon.xebird.db.BirdData;
 import java.io.File;
 import java.util.List;
 
-import static com.lockon.xebird.FirstFragment.SETLIST;
-import static com.lockon.xebird.FirstFragment.SETNULLTEXT;
-
+import static com.lockon.xebird.XeBirdHandler.SETLIST;
+import static com.lockon.xebird.XeBirdHandler.SETNULLTEXT;
 
 public class ButtonListener implements View.OnClickListener {
     private final String TAG = "ButtonLis";
@@ -58,7 +57,7 @@ public class ButtonListener implements View.OnClickListener {
                 msgWithString.what = SETLIST;
                 msgWithString.obj = whatGet;
                 msgWithString.sendToTarget();
-                Log.i(TAG, "onClick: send name info to FirstFragment");
+                Log.i(TAG, "onClick: send name info to InfoShowNameFragment");
 
             }
         }

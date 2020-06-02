@@ -14,7 +14,8 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static com.lockon.xebird.FirstFragment.SETBITMAP;
+import static com.lockon.xebird.XeBirdHandler.SETBITMAP;
+
 
 public class getImgAndSave implements Runnable {
     private final String Host = "https://xebird.proto.cf/";
@@ -36,7 +37,7 @@ public class getImgAndSave implements Runnable {
             case "Map":
                 DMP1 = "-M-";
                 break;
-            case "Photo":
+            case "Photos":
                 DMP1 = "-P-";
                 break;
             default:
@@ -59,12 +60,11 @@ public class getImgAndSave implements Runnable {
 
         String picName = input + DMP + index + ".jpg";
         File localImg = new File(path2Img, picName.replace("-", "_"));
+        Bitmap bitmap = null;
         if (!localImg.exists()) {
-
             Log.i(TAG, "onClick: local file dont exist");
             String totalWeb = Host + Path + "/" + picName;
             Log.i(TAG, "getImgFromWeb: download from " + totalWeb);
-            Bitmap bitmap = null;
             try {
                 //网络请求
                 URL url = new URL(totalWeb);
@@ -93,18 +93,15 @@ public class getImgAndSave implements Runnable {
                 }
                 e.printStackTrace();
             }
-            Message msg = Message.obtain(handler);
-            msg.what = SETBITMAP;
-            msg.obj = bitmap;
-            Log.i(TAG, "getImgFromWeb: send message");
-            msg.sendToTarget();
         } else {
-            Message msg = Message.obtain(handler);
-            msg.what = SETBITMAP;
-            msg.obj = BitmapFactory.decodeFile(localImg.getPath());
-            Log.i(TAG, "getImgFromWeb: send message from local");
-            msg.sendToTarget();
+            bitmap = BitmapFactory.decodeFile(localImg.getAbsolutePath());
+            Log.i(TAG, "getImgFromLocal: get success");
         }
+        Message msg = Message.obtain(handler);
+        msg.what = SETBITMAP;
+        msg.obj = bitmap;
+        Log.i(TAG, "getImgFromWeb: send message");
+        msg.sendToTarget();
     }
 }
 

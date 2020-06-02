@@ -1,9 +1,6 @@
 package com.lockon.xebird;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,35 +22,14 @@ import com.lockon.xebird.db.BirdData;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirstFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
-    private final String TAG="FirstFragment";
+public class InfoShowNameFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
+    private final String TAG = "NameInfo";
 
-    static final int SETBITMAP=0;
-    static final int SETNULLTEXT = 1;
-    static final int SETLIST = 2;
-    @SuppressLint("HandlerLeak")
-    private final Handler handler = new Handler() {
+    private static XeBirdHandler.InfoNameHandler handler;
 
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case SETNULLTEXT:
-                    break;
-                case SETLIST:
-                    List<BirdData> bs = (List<BirdData>) msg.obj;
-                    for (BirdData b : bs) {
-                        Log.i(TAG, "handleMessage: data a ru " + b.getNameCN());
-                    }
-                    mAdapter.changeList(bs);
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + msg.what);
-            }
-        }
-    };
-    private RecyclerView recyclerView;
-    private ItemAdapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
+    RecyclerView recyclerView;
+    ItemAdapter mAdapter;
+    RecyclerView.LayoutManager layoutManager;
 
 
     @Override
@@ -67,6 +43,8 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        handler = new XeBirdHandler.InfoNameHandler(this);
 
         EditText edittext = view.findViewById(R.id.textview_edit);
         edittext.setText(History.initInstance(getContext()).getLatestInput());
@@ -83,7 +61,13 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
     @Override
     public void onDetach() {
         BirdBaseDataBase.getInstance(this.getContext()).close();
+        handler.removeMessages(XeBirdHandler.SETLIST);
+        handler.removeMessages(XeBirdHandler.SETNULLTEXT);
         super.onDetach();
+    }
+
+    final public String getTAG() {
+        return TAG;
     }
 
     class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
@@ -146,7 +130,7 @@ public class FirstFragment extends Fragment implements ActivityCompat.OnRequestP
 
                 bundle.putSerializable("click", birdData);
                 Log.i(TAG, "onClick: click on " + birdData.getNameCN());
-                NavHostFragment.findNavController(FirstFragment.this).navigate(R.id.action_FirstFragment_to_SecondFragment, bundle);
+                NavHostFragment.findNavController(InfoShowNameFragment.this).navigate(R.id.action_InfoShowNameFragment_to_InfoShowDetailFragment, bundle);
             }
         }
     }
