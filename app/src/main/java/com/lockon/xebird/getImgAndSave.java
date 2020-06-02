@@ -15,6 +15,7 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 import static com.lockon.xebird.XeBirdHandler.SETBITMAP;
+import static com.lockon.xebird.XeBirdHandler.SETNULLBITMAP;
 
 
 public class getImgAndSave implements Runnable {
@@ -97,11 +98,16 @@ public class getImgAndSave implements Runnable {
             bitmap = BitmapFactory.decodeFile(localImg.getAbsolutePath());
             Log.i(TAG, "getImgFromLocal: get success");
         }
-        Message msg = Message.obtain(handler);
-        msg.what = SETBITMAP;
-        msg.obj = bitmap;
-        Log.i(TAG, "getImgFromWeb: send message");
-        msg.sendToTarget();
+        if (bitmap == null) {
+            handler.sendEmptyMessage(SETNULLBITMAP);
+            Log.i(TAG, "getImgFromWeb: send message");
+        } else {
+            Message msg = Message.obtain(handler);
+            msg.what = SETBITMAP;
+            msg.obj = bitmap;
+            Log.i(TAG, "getImgFromWeb: send message");
+            msg.sendToTarget();
+        }
     }
 }
 

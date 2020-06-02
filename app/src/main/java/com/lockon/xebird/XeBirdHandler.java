@@ -16,10 +16,13 @@ import java.util.List;
 
 import kotlin.TypeCastException;
 
+import static com.lockon.xebird.R.drawable.no_bitmap;
+
 class XeBirdHandler {
     static final int SETBITMAP = 0;
     static final int SETNULLTEXT = 1;
     static final int SETLIST = 2;
+    static final int SETNULLBITMAP = 3;
 
     static abstract class BaseHandler extends Handler {
         public WeakReference<Fragment> mFragment;
@@ -74,6 +77,10 @@ class XeBirdHandler {
                 case SETBITMAP:
                     Log.i(TAG, "handleMessage: set bitmap");
                     f.imageView.setImageBitmap((Bitmap) msg.obj);
+                    break;
+                case SETNULLBITMAP:
+                    Log.i(TAG, "handleMessage: set NULL bitmap");
+                    f.imageView.setImageResource(no_bitmap);
             }
         }
     }
