@@ -31,7 +31,6 @@ public class InfoShowNameFragment extends Fragment implements ActivityCompat.OnR
     ItemAdapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
 
-
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,

@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        toolbar.setLogo(R.mipmap.ic_launcher);
+        toolbar.setTitle("XeBird");
     }
 
     @Override
