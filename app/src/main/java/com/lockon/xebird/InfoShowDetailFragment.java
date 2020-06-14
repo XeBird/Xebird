@@ -1,29 +1,25 @@
 package com.lockon.xebird;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.lockon.xebird.db.BirdData;
-
-import java.io.File;
 
 public class InfoShowDetailFragment extends Fragment {
 
     private final String TAG = "DetailInfo";
-    private static XeBirdHandler.InfoDetailHandler handler;
-    private File path2img;
-    ImageView imageView;
+    CollectionAdapter collectionAdapter;
+    ViewPager2 viewPager2;
 
     @Override
     public View onCreateView(
@@ -31,38 +27,75 @@ public class InfoShowDetailFragment extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false);
+        return inflater.inflate(R.layout.fragment_info_detail, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        handler = new XeBirdHandler.InfoDetailHandler(this);
-        path2img = ActivityCompat.getExternalFilesDirs(requireContext(), Environment.DIRECTORY_PICTURES)[0];
-
-        view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(InfoShowDetailFragment.this)
-                        .navigate(R.id.action_InfoShowDetailFragment_to_InfoShowNameFragment);
-            }
-        });
-
-        imageView = view.findViewById(R.id.main_img);
-        imageView.setImageResource(R.drawable.default_pic);//设置初始图片
-
-        TextView textView = view.findViewById(R.id.detail_text);
-
         if (getArguments() != null) {
             BirdData curr = (BirdData) getArguments().getSerializable("click");
             assert curr != null;
-            Log.i(TAG, "onViewCreated: set detail for " + curr.getNameCN());
-            textView.setText(curr.toString());
-            new Thread(new getImgAndSave("Photos", 1, curr.getNameLA(), handler, path2img)).start();
+            String name = curr.getNameCN();
+            Log.i(TAG, "onViewCreated: set detail for " + name);
+
+            collectionAdapter = new CollectionAdapter(this, curr);
+            viewPager2 = view.findViewById(R.id.pager);
+            viewPager2.setAdapter(collectionAdapter);
+            TabLayout tabLayout = view.findViewById(R.id.tab_layout);
+            new TabLayoutMediator(tabLayout, viewPager2,
+                    new TabLayoutMediator.TabConfigurationStrategy() {
+                        @Override
+                        public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                            switch (position) {
+                                case 0:
+                                    tab.setText("Photo");
+                                    break;
+                                case 1:
+                                    tab.setText("Main Info");
+                                    break;
+                                case 2:
+                                    tab.setText("Range");
+                                    break;
+                                default:
+                                    Log.i(TAG, "onConfigureTab: invalid position");
+                            }
+                        }
+                    }
+            ).attach();
+        } else {
+            Log.i(TAG, "onViewCreated: Arg is null");
         }
     }
 
     public String getTAG() {
         return TAG;
     }
+
+    private static class CollectionAdapter extends FragmentStateAdapter {
+
+        private BirdData birdData;
+
+        public CollectionAdapter(@NonNull Fragment fragment, BirdData curr) {
+            super(fragment);
+            birdData = curr;
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            Fragment fragment = new CollectFragment();
+            Bundle args = new Bundle();
+            args.putSerializable("BirdData", birdData);
+            args.putInt("Position", position);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public int getItemCount() {
+            return 3;
+        }
+    }
+
 }

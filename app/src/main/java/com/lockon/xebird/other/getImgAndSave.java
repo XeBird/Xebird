@@ -1,4 +1,4 @@
-package com.lockon.xebird;
+package com.lockon.xebird.other;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,8 +14,8 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static com.lockon.xebird.XeBirdHandler.SETBITMAP;
-import static com.lockon.xebird.XeBirdHandler.SETNULLBITMAP;
+import static com.lockon.xebird.other.XeBirdHandler.SETBITMAP;
+import static com.lockon.xebird.other.XeBirdHandler.SETNULLBITMAP;
 
 
 public class getImgAndSave implements Runnable {

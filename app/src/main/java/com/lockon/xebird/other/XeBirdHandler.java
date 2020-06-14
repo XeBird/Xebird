@@ -1,4 +1,4 @@
-package com.lockon.xebird;
+package com.lockon.xebird.other;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
@@ -8,6 +8,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.lockon.xebird.CollectFragment;
+import com.lockon.xebird.InfoShowNameFragment;
 import com.lockon.xebird.db.BirdData;
 
 import java.lang.ref.WeakReference;
@@ -18,18 +20,20 @@ import kotlin.TypeCastException;
 
 import static com.lockon.xebird.R.drawable.no_bitmap;
 
-class XeBirdHandler {
-    static final int SETBITMAP = 0;
-    static final int SETNULLTEXT = 1;
-    static final int SETLIST = 2;
-    static final int SETNULLBITMAP = 3;
+public class XeBirdHandler {
+    public static final int SETBITMAP = 0;
+    public static final int SETNULLTEXT = 1;
+    public static final int SETLIST = 2;
+    public static final int SETNULLBITMAP = 3;
+    public static final int INFONAME = 4;
+    public static final int INFODETAIL = 5;
 
     static abstract class BaseHandler extends Handler {
         public WeakReference<Fragment> mFragment;
         public String TAG;
     }
 
-    static class InfoNameHandler extends BaseHandler {
+    public static class InfoNameHandler extends BaseHandler {
         public InfoNameHandler(InfoShowNameFragment f) {
             this.mFragment = new WeakReference<Fragment>(f);
             this.TAG = f.getTAG();
@@ -63,15 +67,15 @@ class XeBirdHandler {
         }
     }
 
-    static class InfoDetailHandler extends BaseHandler {
-        public InfoDetailHandler(InfoShowDetailFragment f) {
+    public static class InfoDetailHandler extends BaseHandler {
+        public InfoDetailHandler(CollectFragment f) {
             this.mFragment = new WeakReference<Fragment>(f);
             this.TAG = f.getTAG();
         }
 
         @Override
         public void handleMessage(@NonNull Message msg) {
-            InfoShowDetailFragment f = (InfoShowDetailFragment) mFragment.get();
+            CollectFragment f = (CollectFragment) mFragment.get();
             assert f != null;
             switch (msg.what) {
                 case SETBITMAP:
@@ -84,4 +88,6 @@ class XeBirdHandler {
             }
         }
     }
+
+
 }

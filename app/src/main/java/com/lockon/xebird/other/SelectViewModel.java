@@ -1,4 +1,4 @@
-package com.lockon.xebird;
+package com.lockon.xebird.other;
 
 import androidx.lifecycle.ViewModel;
 

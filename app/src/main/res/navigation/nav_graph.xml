@@ -9,7 +9,7 @@
         android:id="@+id/InfoShowNameFragment"
         android:name="com.lockon.xebird.InfoShowNameFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_info_name">
 
         <action
             android:id="@+id/action_InfoShowNameFragment_to_InfoShowDetailFragment"
@@ -23,7 +23,7 @@
         android:id="@+id/InfoShowDetailFragment"
         android:name="com.lockon.xebird.InfoShowDetailFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/fragment_one_view">
 
         <action
             android:id="@+id/action_InfoShowDetailFragment_to_InfoShowNameFragment"

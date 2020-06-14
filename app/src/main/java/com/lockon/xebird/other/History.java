@@ -1,4 +1,4 @@
-package com.lockon.xebird;
+package com.lockon.xebird.other;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Set;
 
-class History {
+public class History {
 
     private final String historySearch = "history search";
     private LinkedList<Long> history;
@@ -21,7 +21,7 @@ class History {
         this.sharedPreferences = sharedPreferences;
     }
 
-    static History initInstance(Context context) {
+    public static History initInstance(Context context) {
         if (instance == null) {
             SharedPreferences sharedPreferences = context.getSharedPreferences("history search", Context.MODE_PRIVATE);
             Set<String> res = sharedPreferences.getAll().keySet();
@@ -35,7 +35,7 @@ class History {
         return instance;
     }
 
-    void put(Editable input) {
+    public void put(Editable input) {
         Long currTime = System.currentTimeMillis();
         history.add(currTime);
         LinkedList<String> remove = generate();
@@ -47,7 +47,7 @@ class History {
         editor.apply();
     }
 
-    String getLatestInput() {
+    public String getLatestInput() {
         if (history.size() == 0) {
             return " ";
         } else {
