@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/InfoShowNameFragment">
+    app:startDestination="@id/indexFragment">
 
     <fragment
         android:id="@+id/InfoShowNameFragment"
@@ -37,5 +37,22 @@
             app:argType="com.lockon.xebird.db.BirdData"
             app:nullable="true"
             android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/checklistFragment"
+        android:name="com.lockon.xebird.checklistFragment"
+        android:label="fragment_checklist"
+        tools:layout="@layout/fragment_checklist" />
+    <fragment
+        android:id="@+id/indexFragment"
+        android:name="com.lockon.xebird.IndexFragment"
+        android:label="fragment_index"
+        tools:layout="@layout/fragment_index" >
+        <action
+            android:id="@+id/action_indexFragment_to_checklistFragment"
+            app:destination="@id/checklistFragment" />
+        <action
+            android:id="@+id/action_indexFragment_to_InfoShowNameFragment"
+            app:destination="@id/InfoShowNameFragment" />
     </fragment>
 </navigation>

@@ -8,8 +8,6 @@
     <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="trysomething">trysomething</string>
 
     <string name="title_activity_fullscreen">FullscreenActivity</string>
     <string name="default_search">石鸡</string>
@@ -21,4 +19,18 @@
     <string name="null_searchede">何一つも探しない</string>
     <string name="null_input">何も入れない</string>
     <string name="search_icon">Search</string>
+
+    <!-- for IndexFragment-->
+    <string name="explore_birds">Explore birds</string>
+    <string name="start_a_checklist">Start a checklist</string>
+    <string name="all_records">All Records</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="timer_title">Timer: </string>
+    <string name="timer">00:00:00</string>
+    <string name="location">location</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="checklist_comments">Checklist_Comments</string>
+
 </resources>
