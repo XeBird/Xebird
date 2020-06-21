@@ -2,8 +2,8 @@
     <string name="app_name">Xebird</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="first_fragment_label">XeBird</string>
+    <string name="second_fragment_label">Detail Info</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -20,4 +20,5 @@
     <string name="start_picture">start picture</string>
     <string name="null_searchede">何一つも探しない</string>
     <string name="null_input">何も入れない</string>
+    <string name="search_icon">Search</string>
 </resources>

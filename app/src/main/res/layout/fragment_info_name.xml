@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FirstFragment">
+    tools:context=".InfoShowNameFragment">
 
     <LinearLayout
         android:id="@+id/rough_info"
@@ -18,9 +18,10 @@
         app:layout_constraintTop_toBottomOf="@id/search_bar">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/recycle_view"
+            android:clipToPadding="true"
             android:scrollbars="vertical" />
 
     </LinearLayout>

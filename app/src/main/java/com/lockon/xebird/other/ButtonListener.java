@@ -1,4 +1,4 @@
-package com.lockon.xebird;
+package com.lockon.xebird.other;
 
 import android.Manifest;
 import android.content.Context;
@@ -13,15 +13,15 @@ import android.widget.EditText;
 
 import androidx.core.content.ContextCompat;
 
+import com.lockon.xebird.R;
 import com.lockon.xebird.db.BirdBaseDataBase;
 import com.lockon.xebird.db.BirdData;
 
 import java.io.File;
 import java.util.List;
 
-import static com.lockon.xebird.FirstFragment.SETLIST;
-import static com.lockon.xebird.FirstFragment.SETNULLTEXT;
-
+import static com.lockon.xebird.other.XeBirdHandler.SETLIST;
+import static com.lockon.xebird.other.XeBirdHandler.SETNULLTEXT;
 
 public class ButtonListener implements View.OnClickListener {
     private final String TAG = "ButtonLis";
@@ -30,7 +30,7 @@ public class ButtonListener implements View.OnClickListener {
     private Context context;
     private final File path2Img;
 
-    ButtonListener(View v, Handler handler, Context context) {
+    public ButtonListener(View v, Handler handler, Context context) {
         this.han = handler;
         this.view = v;
         this.context = context;
@@ -58,7 +58,7 @@ public class ButtonListener implements View.OnClickListener {
                 msgWithString.what = SETLIST;
                 msgWithString.obj = whatGet;
                 msgWithString.sendToTarget();
-                Log.i(TAG, "onClick: send name info to FirstFragment");
+                Log.i(TAG, "onClick: send name info to InfoShowNameFragment");
 
             }
         }

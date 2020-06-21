@@ -1,4 +1,4 @@
-package com.lockon.xebird;
+package com.lockon.xebird.other;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,7 +14,9 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import static com.lockon.xebird.FirstFragment.SETBITMAP;
+import static com.lockon.xebird.other.XeBirdHandler.SETBITMAP;
+import static com.lockon.xebird.other.XeBirdHandler.SETNULLBITMAP;
+
 
 public class getImgAndSave implements Runnable {
     private final String Host = "https://xebird.proto.cf/";
@@ -36,7 +38,7 @@ public class getImgAndSave implements Runnable {
             case "Map":
                 DMP1 = "-M-";
                 break;
-            case "Photo":
+            case "Photos":
                 DMP1 = "-P-";
                 break;
             default:
@@ -59,12 +61,11 @@ public class getImgAndSave implements Runnable {
 
         String picName = input + DMP + index + ".jpg";
         File localImg = new File(path2Img, picName.replace("-", "_"));
+        Bitmap bitmap = null;
         if (!localImg.exists()) {
-
             Log.i(TAG, "onClick: local file dont exist");
             String totalWeb = Host + Path + "/" + picName;
             Log.i(TAG, "getImgFromWeb: download from " + totalWeb);
-            Bitmap bitmap = null;
             try {
                 //网络请求
                 URL url = new URL(totalWeb);
@@ -93,16 +94,18 @@ public class getImgAndSave implements Runnable {
                 }
                 e.printStackTrace();
             }
+        } else {
+            bitmap = BitmapFactory.decodeFile(localImg.getAbsolutePath());
+            Log.i(TAG, "getImgFromLocal: get success");
+        }
+        if (bitmap == null) {
+            handler.sendEmptyMessage(SETNULLBITMAP);
+            Log.i(TAG, "getImgFromWeb: send message");
+        } else {
             Message msg = Message.obtain(handler);
             msg.what = SETBITMAP;
             msg.obj = bitmap;
             Log.i(TAG, "getImgFromWeb: send message");
-            msg.sendToTarget();
-        } else {
-            Message msg = Message.obtain(handler);
-            msg.what = SETBITMAP;
-            msg.obj = BitmapFactory.decodeFile(localImg.getPath());
-            Log.i(TAG, "getImgFromWeb: send message from local");
             msg.sendToTarget();
         }
     }

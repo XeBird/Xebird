@@ -9,7 +9,7 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-public class Preparing extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class PreparingActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
     private final String TAG = "preparing";
 
 
@@ -29,8 +29,9 @@ public class Preparing extends AppCompatActivity implements ActivityCompat.OnReq
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(Preparing.this, MainActivity.class);
+                Intent intent = new Intent(PreparingActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         }, 5000);
     }
