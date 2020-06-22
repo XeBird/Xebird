@@ -6,7 +6,7 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface MyDao {
+public interface BirdDataDao {
     @Query("SELECT * FROM MainDATA")
     List<BirdData> getAll();
 

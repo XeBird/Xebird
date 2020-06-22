@@ -4,13 +4,6 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.TimeZone;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -19,8 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
-public class checklistFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
+
+public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String TAG = "Checklist";
 
     //计时，参考了 https://www.xp.cn/b.php/86888.html
@@ -50,7 +49,7 @@ public class checklistFragment extends Fragment implements ActivityCompat.OnRequ
 
         //计时，timer;
         //下方的TimeThread 和 timeHandler 也是用于计时
-        timer = (TextView) getView().findViewById(R.id.timer);
+        timer = getView().findViewById(R.id.timer);
         new TimeThread().start();
         startTime = System.currentTimeMillis();
         Log.i(TAG, "startTime："+startTime);
