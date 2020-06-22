@@ -40,7 +40,7 @@ public class BirdRecord {
         birdLongitude = longitude;
     }
 
-    //以下全是gettrt和setter
+    //以下全是getter和setter
     public int getUid() {
         return uid;
     }

@@ -24,8 +24,16 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
 
     //计时，参考了 https://www.xp.cn/b.php/86888.html
     private static final int msgKey1 = 1;
-    public TextView timer;
+    public TextView timerTV;
     private long startTime;
+    private Tracker tracker;
+    public TextView LatitudeTV, LongitudeTV, LocationTV;
+
+    //用1000来代表经纬度错误返回值
+    final double FailedResult = 1000;
+
+    public ChecklistFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,12 +55,34 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        tracker = Tracker.getInstance(this.getActivity());
         //计时，timer;
         //下方的TimeThread 和 timeHandler 也是用于计时
-        timer = getView().findViewById(R.id.timer);
+        timerTV = getView().findViewById(R.id.timer);
         new TimeThread().start();
         startTime = System.currentTimeMillis();
         Log.i(TAG, "startTime："+startTime);
+
+        //获取位置信息
+        LatitudeTV = getView().findViewById(R.id.Latitude);
+        LongitudeTV = getView().findViewById(R.id.Longitude);
+        LocationTV = getView().findViewById(R.id.Location);
+
+        double Latitude = FailedResult;
+        double Longitude = FailedResult;
+        Latitude = tracker.getLatestLatitude();
+        if (Latitude != FailedResult){
+            LatitudeTV.setText(String.valueOf(Latitude));
+        } else{
+            LatitudeTV.setText(R.string.latitude);
+        }
+
+        Longitude = tracker.getLatestLongitude();
+        if (Longitude != FailedResult){
+            LongitudeTV.setText(String.valueOf(Longitude));
+        } else{
+            LongitudeTV.setText(R.string.longitude);
+        }
     }
 
     public class TimeThread extends Thread {
@@ -85,7 +115,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                     TimeZone tz = TimeZone.getTimeZone("UTC");
                     mdf.setTimeZone(tz);
                     String sysTimeStr = mdf.format(sysTime);
-                    timer.setText(sysTimeStr);
+                    timerTV.setText(sysTimeStr);
                     break;
 
                 default:

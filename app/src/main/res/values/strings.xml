@@ -28,9 +28,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="timer_title">Timer: </string>
     <string name="timer">00:00:00</string>
-    <string name="location">location</string>
-    <string name="latitude">Latitude</string>
-    <string name="longitude">Longitude</string>
+    <string name="location">Getting location…</string>
+    <string name="latitude">Getting latitude…</string>
+    <string name="longitude">Getting longitude…</string>
     <string name="checklist_comments">Checklist_Comments</string>
     <string name="profile_image">Profile image</string>
     <string name="explore">Explore</string>
