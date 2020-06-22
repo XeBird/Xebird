@@ -1,6 +1,7 @@
 package com.lockon.xebird;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class InfoShowNameFragment extends Fragment implements ActivityCompat.OnR
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Log.i(TAG, "onViewCreated: after navigation");
         handler = new XeBirdHandler.InfoNameHandler(this);
 
         EditText edittext = view.findViewById(R.id.textview_edit);
@@ -58,8 +60,12 @@ public class InfoShowNameFragment extends Fragment implements ActivityCompat.OnR
         recyclerView.setAdapter(mAdapter);
 
         view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view, handler, getContext()));
+    }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(TAG, "onStart: fragment start");
     }
 
     @Override

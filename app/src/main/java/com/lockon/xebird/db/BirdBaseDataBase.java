@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 @Database(entities={BirdData.class},version = 1)
 public abstract class BirdBaseDataBase extends RoomDatabase {
 
-    public abstract MyDao myDao();
+    public abstract BirdDataDao myDao();
     private final static String DBNAME="Bird.bd";
     private volatile static BirdBaseDataBase BirdBaseDataBase;
 

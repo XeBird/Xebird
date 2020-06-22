@@ -32,5 +32,10 @@
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="checklist_comments">Checklist_Comments</string>
+    <string name="profile_image">Profile image</string>
+    <string name="explore">Explore</string>
+    <string name="record">Record</string>
+    <string name="open_drawer">open_drawer</string>
+    <string name="close_drawer">close_drawer</string>
 
 </resources>
