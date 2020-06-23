@@ -12,7 +12,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.lockon.xebird.Tracker;
+import com.lockon.xebird.other.Tracker;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;

@@ -28,6 +28,11 @@
             android:id="@+id/menu_record"
             android:icon="@drawable/search"
             android:title="@string/record" />
+
+        <item
+            android:id="@+id/menu_setting"
+            android:icon="@drawable/search"
+            android:title="@string/setting" />
     </group>
 
     <!--    <item android:title="Communicate">-->
