@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_InfoShowNameFragment_to_ChecklistFragment"
             app:destination="@id/checklistFragment" />
+        <action
+            android:id="@+id/action_InfoShowNameFragment_to_settingsFragment2"
+            app:destination="@id/settingsFragment2" />
     </fragment>
     <fragment
         android:id="@+id/InfoShowDetailFragment"
@@ -28,15 +31,6 @@
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_one_view">
 
-        <action
-            android:id="@+id/action_InfoShowDetailFragment_to_InfoShowNameFragment"
-            app:destination="@id/InfoShowNameFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@+id/InfoShowNameFragment"
-            app:popUpToInclusive="true" />
         <argument
             android:name="click"
             app:argType="com.lockon.xebird.db.BirdData"
@@ -47,11 +41,9 @@
         android:id="@+id/checklistFragment"
         android:name="com.lockon.xebird.ChecklistFragment"
         android:label="fragment_checklist"
-        tools:layout="@layout/fragment_checklist">
-        <action
-            android:id="@+id/action_checklistFragment_to_InfoShowNameFragment"
-            app:destination="@id/InfoShowNameFragment"
-            app:popUpTo="@+id/InfoShowNameFragment"
-            app:popUpToInclusive="true" />
-    </fragment>
+        tools:layout="@layout/fragment_checklist" />
+    <fragment
+        android:id="@+id/settingsFragment2"
+        android:name="com.lockon.xebird.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

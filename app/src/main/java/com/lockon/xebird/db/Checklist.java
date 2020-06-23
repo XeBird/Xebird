@@ -12,7 +12,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import com.lockon.xebird.Tracker;
+import com.lockon.xebird.other.Tracker;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -50,7 +50,7 @@ public class Checklist {
     @Ignore
     private Thread trackerThread;
     private String LocationName;
-    private float checklistLatitude, checklistLongitude;
+    private double checklistLatitude, checklistLongitude;
     private String Province;
     private String Country;
     private float Distance;
@@ -149,19 +149,19 @@ public class Checklist {
         LocationName = locationName;
     }
 
-    public float getChecklistLatitude() {
+    public double getChecklistLatitude() {
         return checklistLatitude;
     }
 
-    public void setChecklistLatitude(float checklistLatitude) {
+    public void setChecklistLatitude(double checklistLatitude) {
         this.checklistLatitude = checklistLatitude;
     }
 
-    public float getChecklistLongitude() {
+    public double getChecklistLongitude() {
         return checklistLongitude;
     }
 
-    public void setChecklistLongitude(float checklistLongitude) {
+    public void setChecklistLongitude(double checklistLongitude) {
         this.checklistLongitude = checklistLongitude;
     }
 

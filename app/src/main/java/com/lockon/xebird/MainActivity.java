@@ -15,6 +15,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
@@ -40,16 +41,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawer = findViewById(R.id.drawer_layout);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         mToolbar = findViewById(R.id.toolbar);
+        mNavigation = findViewById(R.id.meun_list);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mNavigation = findViewById(R.id.meun_list);
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.InfoShowNameFragment).setOpenableLayout(mDrawer).build();
         mToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar,
                 R.string.open_drawer, R.string.close_drawer);
 
         mDrawer.setScrimColor(Color.parseColor("#66666666"));
         mDrawer.addDrawerListener(mToggle);
         mToggle.syncState();
-        NavigationUI.setupWithNavController(mNavigation, navController);
+        NavigationUI.setupWithNavController(mToolbar, navController, appBarConfiguration);
         mToolbar.setTitle(R.string.app_name);
         mNavigation.setNavigationItemSelectedListener(this);
 
@@ -82,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.menu_record:
                 navController.navigate(R.id.checklistFragment);
+                break;
+            case R.id.menu_setting:
+                navController.navigate(R.id.settingsFragment2);
                 break;
             default:
                 break;
