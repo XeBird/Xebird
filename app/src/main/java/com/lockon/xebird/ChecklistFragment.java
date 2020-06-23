@@ -78,6 +78,13 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
             }, 1);
         }
 
+        //获取TextView
+        Log.i(TAG,"Get TextVies");
+        timerTV = (TextView) view.findViewById(R.id.timer);
+        LatitudeTV = (TextView) view.findViewById(R.id.Latitude);
+        LongitudeTV = (TextView) view.findViewById(R.id.Longitude);
+        LocationTV = (TextView) view.findViewById(R.id.Location);
+
         //实例化一个Checklist，数据均存储于其中
         String uid = "20000101235959";
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdf= new SimpleDateFormat("yyyyMMddHHmmss");
@@ -85,12 +92,6 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         uid = mdf.format(System.currentTimeMillis());
         Log.i(TAG,"UTC:"+uid);
         Checklist checklist = new Checklist(uid,trackerHandler,this.getContext());
-
-        //获取TextView
-        timerTV = getView().findViewById(R.id.timer);
-        LatitudeTV = getView().findViewById(R.id.Latitude);
-        LongitudeTV = getView().findViewById(R.id.Longitude);
-        LocationTV = getView().findViewById(R.id.Location);
     }
 
 
@@ -103,7 +104,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
             switch (msg.what) {
                 case msgTime:
                     long duration = (long) msg.obj;
-                    Log.i(TAG, ""+duration);
+                    Log.i(TAG, "Get Message duration: "+duration);
                     SimpleDateFormat mdf= new SimpleDateFormat("HH:mm:ss");
                     TimeZone tz = TimeZone.getTimeZone("UTC");
                     mdf.setTimeZone(tz);
@@ -116,6 +117,8 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                     double Latitude, Longitude;
                     Latitude = bundle.getDouble("Latitude");
                     Longitude = bundle.getDouble("Longitude");
+                    Log.i(TAG, "Get Message Latitude: "+Latitude);
+                    Log.i(TAG, "Get Message Longitude: "+Longitude);
                     if (Latitude != FailedResult){
                         LatitudeTV.setText(String.valueOf(Latitude));
                     } else{
