@@ -135,7 +135,7 @@
             "notNull": false
           },
           {
-            "fieldPath": "recoder",
+            "fieldPath": "recorder",
             "columnName": "RECORDER",
             "affinity": "TEXT",
             "notNull": false

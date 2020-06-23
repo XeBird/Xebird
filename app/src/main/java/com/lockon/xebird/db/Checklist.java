@@ -50,10 +50,10 @@ public class Checklist {
     @Ignore
     private Thread trackerThread;
     private String LocationName;
-    private float checklistLatitude, checklistLongitude;
+    private double checklistLatitude, checklistLongitude;
     private String Province;
     private String Country;
-    private float Distance;
+    private double Distance;
     //TODO: 存储路径数据的类
 
     private String Protocol;
@@ -65,6 +65,7 @@ public class Checklist {
 
     public Checklist(){}
 
+    @Ignore
     public Checklist(String uid, Handler trackerHandler, Context context) {
         this.uid = uid;
         this.trackerHandler = trackerHandler;
@@ -149,19 +150,19 @@ public class Checklist {
         LocationName = locationName;
     }
 
-    public float getChecklistLatitude() {
+    public double getChecklistLatitude() {
         return checklistLatitude;
     }
 
-    public void setChecklistLatitude(float checklistLatitude) {
+    public void setChecklistLatitude(double checklistLatitude) {
         this.checklistLatitude = checklistLatitude;
     }
 
-    public float getChecklistLongitude() {
+    public double getChecklistLongitude() {
         return checklistLongitude;
     }
 
-    public void setChecklistLongitude(float checklistLongitude) {
+    public void setChecklistLongitude(double checklistLongitude) {
         this.checklistLongitude = checklistLongitude;
     }
 
@@ -181,11 +182,11 @@ public class Checklist {
         Country = country;
     }
 
-    public float getDistance() {
+    public double getDistance() {
         return Distance;
     }
 
-    public void setDistance(float distance) {
+    public void setDistance(double distance) {
         Distance = distance;
     }
 
