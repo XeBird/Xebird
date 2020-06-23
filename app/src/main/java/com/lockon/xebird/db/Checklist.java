@@ -1,27 +1,56 @@
 package com.lockon.xebird.db;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.lockon.xebird.Tracker;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 @Entity(tableName = "Checklist")
 public class Checklist {
+    private static final String TAG = "Checklist";
 
     //TODO:设置相关，要加入语言
+    @SuppressLint("ConstantLocale")
     public static final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒", Locale.getDefault());
 
     //unused // private String recordFile="Bird_record";
 
     //参考 Appendix A (eBird Data Fields).pdf
     @PrimaryKey
-    private int uid;
+    @NonNull
+    private String uid;
+
+    {
+        uid = "20000101000000";
+    }
+
     //时间信息
     private long startTime, endTime;
+
     //地点信息
+    @Ignore
+    private Tracker tracker;
+    //用1000来代表经纬度错误返回值
+    @Ignore
+    final double FailedResult = 1000;
+    @Ignore
+    private Handler trackerHandler;
+    @Ignore
+    private Thread trackerThread;
     private String LocationName;
-    private float Latitude, Longitude;
+    private float checklistLatitude, checklistLongitude;
     private String Province;
     private String Country;
     private float Distance;
@@ -34,15 +63,65 @@ public class Checklist {
 
     private String Checklist_Comments;
 
-    public Checklist() {
+    public Checklist(){}
+
+    public Checklist(String uid, Handler trackerHandler, Context context) {
+        this.uid = uid;
+        this.trackerHandler = trackerHandler;
+        tracker = Tracker.getInstance(context.getApplicationContext());
+        startTime = System.currentTimeMillis();
+        Log.i(TAG, "startTime："+startTime);
+        trackerThread = new TrackerThread();
+        trackerThread.start();
+    }
+
+    //计时，参考了 https://www.xp.cn/b.php/86888.html
+    @Ignore
+    private static final int msgTime = 1;
+    @Ignore
+    private static final int msgLocation = 2;
+
+    public class TrackerThread extends Thread {
+        @Override
+        public void run () {
+            do {
+                try {
+                    Thread.sleep(1000);
+
+                    //获取时间间隔
+                    long sysTime = System.currentTimeMillis();
+                    Message msg1 = new Message();
+                    msg1.what = msgTime;
+                    msg1.obj = (long) (sysTime - startTime);
+                    Log.i(TAG, "sysTime："+sysTime+" startTime："+startTime);
+                    trackerHandler.sendMessage(msg1);
+
+                    //获取地理位置
+                    Bundle bundle =  new Bundle();
+                    double Latitude = FailedResult;
+                    double Longitude = FailedResult;
+                    Latitude = tracker.getLatestLatitude();
+                    Longitude = tracker.getLatestLongitude();
+                    bundle.putDouble("Latitude", Latitude);
+                    bundle.putDouble("Longitude", Longitude);
+                    Message msg2 = new Message();
+                    msg2.what = msgLocation;
+                    msg2.obj = bundle;
+                    trackerHandler.sendMessage(msg2);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while(true);
+        }
     }
 
     //以下全是getter和setter
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -70,20 +149,20 @@ public class Checklist {
         LocationName = locationName;
     }
 
-    public float getLatitude() {
-        return Latitude;
+    public float getChecklistLatitude() {
+        return checklistLatitude;
     }
 
-    public void setLatitude(float latitude) {
-        Latitude = latitude;
+    public void setChecklistLatitude(float checklistLatitude) {
+        this.checklistLatitude = checklistLatitude;
     }
 
-    public float getLongitude() {
-        return Longitude;
+    public float getChecklistLongitude() {
+        return checklistLongitude;
     }
 
-    public void setLongitude(float longitude) {
-        Longitude = longitude;
+    public void setChecklistLongitude(float checklistLongitude) {
+        this.checklistLongitude = checklistLongitude;
     }
 
     public String getProvince() {

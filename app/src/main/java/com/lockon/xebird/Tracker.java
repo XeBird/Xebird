@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 
-
 import androidx.core.app.ActivityCompat;
 
 import java.util.List;
@@ -21,6 +20,7 @@ import java.util.List;
  * Created by ljk5403 on 2020/06/23.
  * 监听轨迹，并可用于获取位置信息（单例模式）
  * 暂先实现获取位置。 TODO: 监听并记录轨迹
+ * 监听位置参考了：https://www.cnblogs.com/tangzh/p/8969898.html
  */
 
 public class Tracker {
@@ -60,7 +60,7 @@ public class Tracker {
 
 
     private Tracker(Context context) {
-        this.mContext = context;
+        this.mContext = context.getApplicationContext();
 
         //地理位置监听
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
@@ -162,6 +162,9 @@ public class Tracker {
             return FailedResult;
         }
     }
+
+
+
 
 //    /**
 //     * 获取经纬度
