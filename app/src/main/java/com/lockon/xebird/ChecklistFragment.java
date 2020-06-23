@@ -3,6 +3,7 @@ package com.lockon.xebird;
 import android.annotation.SuppressLint;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.TimeZone;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,7 +21,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.lockon.xebird.db.Checklist;
-import com.lockon.xebird.other.Tracker;
+
+import java.util.Locale;
 
 
 public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {

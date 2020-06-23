@@ -53,7 +53,7 @@ public class Checklist {
     private double checklistLatitude, checklistLongitude;
     private String Province;
     private String Country;
-    private float Distance;
+    private double Distance;
     //TODO: 存储路径数据的类
 
     private String Protocol;
@@ -65,6 +65,7 @@ public class Checklist {
 
     public Checklist(){}
 
+    @Ignore
     public Checklist(String uid, Handler trackerHandler, Context context) {
         this.uid = uid;
         this.trackerHandler = trackerHandler;
@@ -181,11 +182,11 @@ public class Checklist {
         Country = country;
     }
 
-    public float getDistance() {
+    public double getDistance() {
         return Distance;
     }
 
-    public void setDistance(float distance) {
+    public void setDistance(double distance) {
         Distance = distance;
     }
 

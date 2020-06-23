@@ -19,8 +19,8 @@ public class BirdRecord {
     private String birdName;
     private int birdCount;
     private String birdComments;
-    private float birdLatitude;
-    private float birdLongitude;
+    private double birdLatitude;
+    private double birdLongitude;
 
     public BirdRecord() {
     }
@@ -73,19 +73,19 @@ public class BirdRecord {
         this.birdComments = birdComments;
     }
 
-    public float getBirdLatitude() {
+    public double getBirdLatitude() {
         return birdLatitude;
     }
 
-    public void setBirdLatitude(float birdLatitude) {
+    public void setBirdLatitude(double birdLatitude) {
         this.birdLatitude = birdLatitude;
     }
 
-    public float getBirdLongitude() {
+    public double getBirdLongitude() {
         return birdLongitude;
     }
 
-    public void setBirdLongitude(float birdLongitude) {
+    public void setBirdLongitude(double birdLongitude) {
         this.birdLongitude = birdLongitude;
     }
 
