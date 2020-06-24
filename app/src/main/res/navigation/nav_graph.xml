@@ -41,9 +41,22 @@
         android:id="@+id/checklistFragment"
         android:name="com.lockon.xebird.ChecklistFragment"
         android:label="fragment_checklist"
-        tools:layout="@layout/fragment_checklist" />
+        tools:layout="@layout/fragment_checklist" >
+        <action
+            android:id="@+id/action_checklistFragment_to_addRecordFragment"
+            app:destination="@id/addRecordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment2"
         android:name="com.lockon.xebird.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/addRecordFragment"
+        android:name="com.lockon.xebird.AddRecordFragment"
+        android:label="fragment_add_record"
+        tools:layout="@layout/fragment_add_record" >
+        <argument
+            android:name="checklist"
+            app:argType="com.lockon.xebird.db.Checklist" />
+    </fragment>
 </navigation>

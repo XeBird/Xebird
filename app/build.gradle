@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+//navigation safe args, unused.
+//apply plugin: "androidx.navigation.safeargs"
 
 android {
     compileSdkVersion 29

@@ -14,11 +14,14 @@ import androidx.room.PrimaryKey;
 
 import com.lockon.xebird.other.Tracker;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 @Entity(tableName = "Checklist")
-public class Checklist {
+public class Checklist implements Serializable {
     private static final String TAG = "Checklist";
 
     //TODO:设置相关，要加入语言
@@ -38,6 +41,7 @@ public class Checklist {
 
     //时间信息
     private long startTime, endTime;
+    private float Duration;
 
     //地点信息
     @Ignore
@@ -58,12 +62,15 @@ public class Checklist {
 
     private String Protocol;
     private int Number_of_observers;
-    private float Duration;
     private boolean All_observations_reported;
 
     private String Checklist_Comments;
 
-    public Checklist(){}
+    @Ignore
+    private ArrayList<BirdRecord> birdList = new ArrayList<BirdRecord>(Arrays.<BirdRecord>asList());
+
+    public Checklist(){
+    }
 
     @Ignore
     public Checklist(String uid, Handler trackerHandler, Context context) {
@@ -76,6 +83,24 @@ public class Checklist {
             trackerThread = new TrackerThread();
             trackerThread.start();
         }
+    }
+
+    public BirdRecord addBirdRecord (String bname, int bcount, String bcomments, float latitude, float longitude){
+        long birdRecordUid = System.currentTimeMillis();
+        BirdRecord birdRecord = new BirdRecord(birdRecordUid,uid);
+        birdList.add(birdRecord);
+        setBirdRecord (birdRecord, bname, bcount, bcomments, latitude, longitude);
+        return birdRecord;
+    }
+
+    public void setBirdRecord (BirdRecord birdRecord,
+                                   String bname, int bcount, String bcomments,
+                                   float latitude, float longitude){
+        birdRecord.setBirdName(bname);
+        birdRecord.setBirdCount(bcount);
+        birdRecord.setBirdComments(bcomments);
+        birdRecord.setBirdLatitude(latitude);
+        birdRecord.setBirdLongitude(longitude);
     }
 
     //计时，参考了 https://www.xp.cn/b.php/86888.html
@@ -230,5 +255,9 @@ public class Checklist {
 
     public void setChecklist_Comments(String checklist_Comments) {
         Checklist_Comments = checklist_Comments;
+    }
+
+    public ArrayList<BirdRecord> getBirdList() {
+        return birdList;
     }
 }

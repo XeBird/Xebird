@@ -64,4 +64,22 @@
         app:layout_constraintLeft_toLeftOf="@id/Latitude"
         app:layout_constraintTop_toBottomOf="@id/Latitude" />
 
+    <Button
+        android:id="@+id/add_birdrecord_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Checklist_Comments" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/added_bird_list"
+        android:layout_width="409dp"
+        android:layout_height="625dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_birdrecord_button"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
