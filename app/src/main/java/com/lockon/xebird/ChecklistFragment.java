@@ -26,7 +26,6 @@ import com.lockon.xebird.db.Checklist;
 
 import java.util.Objects;
 
-
 public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String TAG = "ChecklistFragment";
 
