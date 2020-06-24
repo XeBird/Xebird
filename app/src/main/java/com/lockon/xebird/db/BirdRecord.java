@@ -15,7 +15,7 @@ import androidx.room.PrimaryKey;
 public class BirdRecord {
     @PrimaryKey
     private int uid;
-    private int checklistId;
+    private String checklistId;
     private String birdName;
     private int birdCount;
     private String birdComments;
@@ -26,7 +26,7 @@ public class BirdRecord {
     }
 
     @Ignore
-    public BirdRecord(int uid, int checklistId) {
+    public BirdRecord(int uid, String checklistId) {
         this.uid = uid;
         this.checklistId = checklistId;
     }
@@ -38,6 +38,10 @@ public class BirdRecord {
         birdComments = bcomments;
         birdLatitude = latitude;
         birdLongitude = longitude;
+    }
+
+    public String getBaseInfo() {
+        return birdName + "\t" + birdCount + "\t" + birdLatitude + " " + birdLongitude;
     }
 
     //以下全是getter和setter
@@ -89,11 +93,11 @@ public class BirdRecord {
         this.birdLongitude = birdLongitude;
     }
 
-    public int getChecklistId() {
+    public String getChecklistId() {
         return checklistId;
     }
 
-    public void setChecklistId(int checklistId) {
+    public void setChecklistId(String checklistId) {
         this.checklistId = checklistId;
     }
 }

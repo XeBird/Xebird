@@ -2,20 +2,14 @@ package com.lockon.xebird.other;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
-import com.lockon.xebird.MainActivity;
 
 import java.util.List;
 
@@ -130,8 +124,7 @@ public class Tracker {
         Location location = locationManager.getLastKnownLocation(locationProvider);
         if (location != null) {
             Log.i(TAG, "Successfully get location!");
-        }
-        else{
+        } else {
             Log.e(TAG, "Failed to get location!");
         }
         return location;
@@ -144,13 +137,12 @@ public class Tracker {
     //用1000来代表经纬度的错误返回值
     final double FailedResult = 1000;
 
-    public double getLatestLatitude(){
+    public double getLatestLatitude() {
         Location location = getLatestLocation();
         if (location != null) {
             Log.i(TAG, "Successfully get latitude!");
             return location.getLatitude();
-        }
-        else{
+        } else {
             Log.e(TAG, "Failed to get latitude!");
             //用1000来代表错误返回值
             return FailedResult;

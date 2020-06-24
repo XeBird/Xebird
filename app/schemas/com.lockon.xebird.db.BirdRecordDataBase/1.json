@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ff47b1ab655c7ad9bf701d1d78972420",
+    "identityHash": "af03bde5df9079d179ea2426bb3b8194",
     "entities": [
       {
         "tableName": "BirdRecord",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `checklistId` INTEGER NOT NULL, `birdName` TEXT, `birdCount` INTEGER NOT NULL, `birdComments` TEXT, `birdLatitude` REAL NOT NULL, `birdLongitude` REAL NOT NULL, PRIMARY KEY(`uid`), FOREIGN KEY(`checklistId`) REFERENCES `Checklist`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` INTEGER NOT NULL, `checklistId` TEXT, `birdName` TEXT, `birdCount` INTEGER NOT NULL, `birdComments` TEXT, `birdLatitude` REAL NOT NULL, `birdLongitude` REAL NOT NULL, PRIMARY KEY(`uid`), FOREIGN KEY(`checklistId`) REFERENCES `Checklist`(`uid`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "uid",
@@ -17,8 +17,8 @@
           {
             "fieldPath": "checklistId",
             "columnName": "checklistId",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "birdName",
@@ -183,7 +183,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ff47b1ab655c7ad9bf701d1d78972420')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'af03bde5df9079d179ea2426bb3b8194')"
     ]
   }
 }

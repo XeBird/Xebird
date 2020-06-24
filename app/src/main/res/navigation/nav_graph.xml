@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_InfoShowNameFragment_to_settingsFragment2"
             app:destination="@id/settingsFragment2" />
+        <action
+            android:id="@+id/action_InfoShowNameFragment_to_checklistItemFragment"
+            app:destination="@id/checklistItemFragment" />
     </fragment>
     <fragment
         android:id="@+id/InfoShowDetailFragment"
@@ -46,4 +49,19 @@
         android:id="@+id/settingsFragment2"
         android:name="com.lockon.xebird.SettingsFragment"
         android:label="SettingsFragment" />
+
+    <fragment
+        android:id="@+id/checklistItemFragment"
+        android:name="com.lockon.xebird.ChecklistItemFragment"
+        android:label="fragment_checklist_item"
+        tools:layout="@layout/fragment_item_list">
+        <action
+            android:id="@+id/action_checklistItemFragment_to_birdRecordFragment"
+            app:destination="@id/birdRecordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/birdRecordFragment"
+        android:name="com.lockon.xebird.BirdRecordFragment"
+        android:label="fragment_record_list"
+        tools:layout="@layout/fragment_record_list" />
 </navigation>

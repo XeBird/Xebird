@@ -24,8 +24,6 @@ import androidx.fragment.app.Fragment;
 
 import com.lockon.xebird.db.Checklist;
 
-import java.util.Objects;
-
 
 public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String TAG = "ChecklistFragment";
@@ -39,7 +37,8 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     //用1000来代表经纬度错误返回值
     final double FailedResult = 1000;
 
-    public ChecklistFragment() { }
+    public ChecklistFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,8 +68,8 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         int hasACCESS_COARSE_LOCATIONPermission =
                 ContextCompat.checkSelfPermission(this.requireActivity().getApplication(),
                         Manifest.permission.ACCESS_COARSE_LOCATION);
-        if ((hasACCESS_FINE_LOCATIONPermission != PackageManager.PERMISSION_GRANTED)||
-                (hasACCESS_COARSE_LOCATIONPermission != PackageManager.PERMISSION_GRANTED)){
+        if ((hasACCESS_FINE_LOCATIONPermission != PackageManager.PERMISSION_GRANTED) ||
+                (hasACCESS_COARSE_LOCATIONPermission != PackageManager.PERMISSION_GRANTED)) {
             requestPermissions(new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -79,7 +78,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         }
 
         //获取TextView
-        Log.i(TAG,"Get TextVies");
+        Log.i(TAG, "Get TextVies");
         timerTV = (TextView) view.findViewById(R.id.timer);
         LatitudeTV = (TextView) view.findViewById(R.id.Latitude);
         LongitudeTV = (TextView) view.findViewById(R.id.Longitude);
@@ -87,11 +86,11 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
 
         //实例化一个Checklist，数据均存储于其中
         String uid = "20000101235959";
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdf= new SimpleDateFormat("yyyyMMddHHmmss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat mdf = new SimpleDateFormat("yyyyMMddHHmmss");
         mdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         uid = mdf.format(System.currentTimeMillis());
-        Log.i(TAG,"UTC:"+uid);
-        Checklist checklist = new Checklist(uid,trackerHandler,this.getContext());
+        Log.i(TAG, "UTC:" + uid);
+        Checklist checklist = new Checklist(uid, trackerHandler, this.getContext());
     }
 
 
@@ -104,7 +103,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
             switch (msg.what) {
                 case msgTime:
                     long duration = (long) msg.obj;
-                    Log.i(TAG, "Get Message duration: "+duration);
+                    Log.i(TAG, "Get Message duration: " + duration);
                     SimpleDateFormat mdf= new SimpleDateFormat("HH:mm:ss");
                     TimeZone tz = TimeZone.getTimeZone("UTC");
                     mdf.setTimeZone(tz);
@@ -117,16 +116,16 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                     double Latitude, Longitude;
                     Latitude = bundle.getDouble("Latitude");
                     Longitude = bundle.getDouble("Longitude");
-                    Log.i(TAG, "Get Message Latitude: "+Latitude);
-                    Log.i(TAG, "Get Message Longitude: "+Longitude);
-                    if (Latitude != FailedResult){
+                    Log.i(TAG, "Get Message Latitude: " + Latitude);
+                    Log.i(TAG, "Get Message Longitude: " + Longitude);
+                    if (Latitude != FailedResult) {
                         LatitudeTV.setText(String.valueOf(Latitude));
-                    } else{
+                    } else {
                         LatitudeTV.setText(R.string.latitude);
                     }
-                    if (Longitude != FailedResult){
+                    if (Longitude != FailedResult) {
                         LongitudeTV.setText(String.valueOf(Longitude));
-                    } else{
+                    } else {
                         LongitudeTV.setText(R.string.longitude);
                     }
                     break;
