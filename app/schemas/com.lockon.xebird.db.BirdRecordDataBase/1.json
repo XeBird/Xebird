@@ -83,7 +83,7 @@
       },
       {
         "tableName": "Checklist",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `startTime` INTEGER NOT NULL, `endTime` INTEGER NOT NULL, `LocationName` TEXT, `checklistLatitude` REAL NOT NULL, `checklistLongitude` REAL NOT NULL, `Province` TEXT, `Country` TEXT, `Distance` REAL NOT NULL, `Protocol` TEXT, `Number_of_observers` INTEGER NOT NULL, `Duration` REAL NOT NULL, `All_observations_reported` INTEGER NOT NULL, `Checklist_Comments` TEXT, PRIMARY KEY(`uid`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`uid` TEXT NOT NULL, `startTime` INTEGER NOT NULL, `endTime` INTEGER NOT NULL, `Duration` REAL NOT NULL, `LocationName` TEXT, `checklistLatitude` REAL NOT NULL, `checklistLongitude` REAL NOT NULL, `Province` TEXT, `Country` TEXT, `Distance` REAL NOT NULL, `Protocol` TEXT, `Number_of_observers` INTEGER NOT NULL, `All_observations_reported` INTEGER NOT NULL, `Checklist_Comments` TEXT, PRIMARY KEY(`uid`))",
         "fields": [
           {
             "fieldPath": "uid",
@@ -101,6 +101,12 @@
             "fieldPath": "endTime",
             "columnName": "endTime",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "Duration",
+            "columnName": "Duration",
+            "affinity": "REAL",
             "notNull": true
           },
           {
@@ -149,12 +155,6 @@
             "fieldPath": "Number_of_observers",
             "columnName": "Number_of_observers",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "Duration",
-            "columnName": "Duration",
-            "affinity": "REAL",
             "notNull": true
           },
           {

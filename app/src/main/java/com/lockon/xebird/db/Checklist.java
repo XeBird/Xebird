@@ -14,8 +14,6 @@ import androidx.room.PrimaryKey;
 
 import com.lockon.xebird.other.Tracker;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -68,7 +66,7 @@ public class Checklist {
     public Checklist(){}
 
     @Ignore
-    public Checklist(@NotNull String uid, Handler trackerHandler, Context context) {
+    public Checklist(String uid, Handler trackerHandler, Context context) {
         this.uid = uid;
         this.trackerHandler = trackerHandler;
         tracker = Tracker.getInstance(context.getApplicationContext());
@@ -119,15 +117,6 @@ public class Checklist {
             } while (true);
         }
     }
-
-    public String getTime() {
-        return startTime + "---" + endTime;
-    }
-
-    public String getLocation() {
-        return LocationName + "\n" + Province + "\t" + Country;
-    }
-
 
     //以下全是getter和setter
     public String getUid() {

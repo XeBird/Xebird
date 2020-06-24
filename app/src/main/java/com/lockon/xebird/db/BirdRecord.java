@@ -6,15 +6,17 @@ import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "BirdRecord",
         indices = {@Index("checklistId")},
         foreignKeys = @ForeignKey(entity = Checklist.class,
                 parentColumns = "uid",
                 childColumns = "checklistId",
                 onDelete = ForeignKey.CASCADE))
-public class BirdRecord {
+public class BirdRecord implements Serializable {
     @PrimaryKey
-    private int uid;
+    private long uid;
     private String checklistId;
     private String birdName;
     private int birdCount;
@@ -26,7 +28,7 @@ public class BirdRecord {
     }
 
     @Ignore
-    public BirdRecord(int uid, String checklistId) {
+    public BirdRecord(long uid, String checklistId) {
         this.uid = uid;
         this.checklistId = checklistId;
     }
@@ -40,16 +42,12 @@ public class BirdRecord {
         birdLongitude = longitude;
     }
 
-    public String getBaseInfo() {
-        return birdName + "\t" + birdCount + "\t" + birdLatitude + " " + birdLongitude;
-    }
-
     //以下全是getter和setter
-    public int getUid() {
+    public long getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(long uid) {
         this.uid = uid;
     }
 
