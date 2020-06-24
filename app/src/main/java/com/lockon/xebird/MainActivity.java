@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_setting:
                 navController.navigate(R.id.settingsFragment2);
                 break;
+            case R.id.menu_watch:
+                navController.navigate(R.id.checklistItemFragment);
+                break;
             default:
                 break;
         }

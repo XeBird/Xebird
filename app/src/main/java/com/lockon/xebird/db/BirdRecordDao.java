@@ -10,8 +10,12 @@ import java.util.List;
 
 @Dao
 public interface BirdRecordDao {
+
+    @Query("SELECT * FROM BirdRecord")
+    List<BirdRecord> getAllBirdRecord();
+
     @Query("SELECT * FROM BirdRecord WHERE checklistId == :cid")
-    List<BirdRecord> getAllByCid(int cid);
+    List<BirdRecord> getAllByCid(String cid);
 
     @Query("SELECT * FROM Checklist")
     List<Checklist> getAllChecklist();

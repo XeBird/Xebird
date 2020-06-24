@@ -33,6 +33,11 @@
             android:id="@+id/menu_setting"
             android:icon="@drawable/search"
             android:title="@string/setting" />
+
+        <item
+            android:id="@+id/menu_watch"
+            android:icon="@drawable/search"
+            android:title="@string/profile" />
     </group>
 
     <!--    <item android:title="Communicate">-->
