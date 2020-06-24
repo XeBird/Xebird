@@ -21,9 +21,11 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.lockon.xebird.db.Checklist;
 
+import java.io.Serializable;
 
 public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String TAG = "ChecklistFragment";
@@ -58,7 +60,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         //请求地理位置权限
@@ -91,6 +93,18 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         uid = mdf.format(System.currentTimeMillis());
         Log.i(TAG, "UTC:" + uid);
         Checklist checklist = new Checklist(uid, trackerHandler, this.getContext());
+
+        final Bundle bundle = new Bundle();
+        bundle.putSerializable("checklist", (Serializable) checklist);
+        view.findViewById(R.id.add_birdrecord_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view)
+                        .navigate(R.id.action_checklistFragment_to_addRecordFragment, bundle);
+            }
+        });
+
+        //TODO //addedBirdListHandler = new XeBirdHandler.InfoNameHandler(this);
     }
 
 
