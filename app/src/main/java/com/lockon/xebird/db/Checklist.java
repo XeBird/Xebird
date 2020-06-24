@@ -48,7 +48,7 @@ public class Checklist {
     @Ignore
     private Handler trackerHandler;
     @Ignore
-    private Thread trackerThread;
+    private static Thread trackerThread = null;
     private String LocationName;
     private double checklistLatitude, checklistLongitude;
     private String Province;
@@ -71,9 +71,11 @@ public class Checklist {
         this.trackerHandler = trackerHandler;
         tracker = Tracker.getInstance(context.getApplicationContext());
         startTime = System.currentTimeMillis();
-        Log.i(TAG, "startTime："+startTime);
-        trackerThread = new TrackerThread();
-        trackerThread.start();
+        Log.i(TAG, "startTime：" + startTime);
+        if (trackerThread == null) {
+            trackerThread = new TrackerThread();
+            trackerThread.start();
+        }
     }
 
     //计时，参考了 https://www.xp.cn/b.php/86888.html

@@ -2,13 +2,11 @@ package com.lockon.xebird.other;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
@@ -60,7 +58,7 @@ public class Tracker {
 
 
     private Tracker(Context context) {
-        this.mContext = context.getApplicationContext();
+        this.mContext = context;
 
         //地理位置监听
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
@@ -75,9 +73,10 @@ public class Tracker {
             //如果是Network
             locationProvider = LocationManager.NETWORK_PROVIDER;
         } else {
-            Intent i = new Intent();
-            i.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            mContext.startActivity(i);
+//            Intent i = new Intent();
+//            i.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//            mContext.startActivity(i);
+            //TODO: 申请权限/打开GPS？
         }
 
         //监视地理位置变化
@@ -90,10 +89,9 @@ public class Tracker {
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             Log.w(TAG, "Insufficient location permission.");
-            return;
         }
 
-        // Consider_TODO: 官方文档建议构造一个 LocationRequest 对象来确定 requestLocationUpdates 的参数
+        // TODO -Consider: 官方文档建议构造一个 LocationRequest 对象来确定 requestLocationUpdates 的参数
         // https://developer.android.com/training/location/request-updates#callback
         assert locationProvider != null;
         locationManager.requestLocationUpdates(locationProvider, 500, 1, locationListener);
@@ -120,30 +118,31 @@ public class Tracker {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            Log.w(TAG, "Insufficient location permission.");
             return null;
         }
         locationManager.requestLocationUpdates(locationProvider, 500, 1, locationListener);
         Location location = locationManager.getLastKnownLocation(locationProvider);
         if (location != null) {
             Log.i(TAG, "Successfully get location!");
-        }
-        else{
+        } else {
             Log.e(TAG, "Failed to get location!");
         }
         return location;
     }
 
+    public void removeListener() {
+        locationManager.removeUpdates(locationListener);
+    }
+
     //用1000来代表经纬度的错误返回值
     final double FailedResult = 1000;
 
-    public double getLatestLatitude(){
+    public double getLatestLatitude() {
         Location location = getLatestLocation();
         if (location != null) {
             Log.i(TAG, "Successfully get latitude!");
             return location.getLatitude();
-        }
-        else{
+        } else {
             Log.e(TAG, "Failed to get latitude!");
             //用1000来代表错误返回值
             return FailedResult;
@@ -162,70 +161,4 @@ public class Tracker {
             return FailedResult;
         }
     }
-
-
-
-
-//    /**
-//     * 获取经纬度
-//     */
-//    public String getLngAndLat(OnLocationResultListener onLocationResultListener) {
-//        double latitude = 0.0;
-//        double longitude = 0.0;
-//
-//        mOnLocationListener = onLocationResultListener;
-//
-//
-//
-//        //获取Location
-//        Location location = locationManager.getLastKnownLocation(locationProvider);
-//        if (location != null) {
-//            //不为空,显示地理位置经纬度
-//            if (mOnLocationListener != null) {
-//                mOnLocationListener.onLocationResult(location);
-//            }
-//
-//        }
-//    }
-//
-//    public LocationListener locationListener = new LocationListener() {
-//
-//        // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-//        @Override
-//        public void onStatusChanged(String provider, int status, Bundle extras) {
-//
-//        }
-//
-//        // Provider被enable时触发此函数，比如GPS被打开
-//        @Override
-//        public void onProviderEnabled(String provider) {
-//
-//        }
-//
-//        // Provider被disable时触发此函数，比如GPS被关闭
-//        @Override
-//        public void onProviderDisabled(String provider) {
-//
-//        }
-//
-//        //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-//        @Override
-//        public void onLocationChanged(Location location) {
-//            if (mOnLocationListener != null) {
-//                mOnLocationListener.OnLocationChange(location);
-//            }
-//        }
-//    };
-//
-//    public void removeListener() {
-//        locationManager.removeUpdates(locationListener);
-//    }
-//
-//    private OnLocationResultListener mOnLocationListener;
-//
-//    public interface OnLocationResultListener {
-//        void onLocationResult(Location location);
-//
-//        void OnLocationChange(Location location);
-//    }
 }
