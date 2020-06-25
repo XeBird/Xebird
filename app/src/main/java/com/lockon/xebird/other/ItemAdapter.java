@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,12 +20,12 @@ import com.lockon.xebird.db.BirdData;
 import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
-    private final InfoShowNameFragment infoShowNameFragment;
     public List<BirdData> mList;
+    private Fragment f;
 
-    public ItemAdapter(InfoShowNameFragment infoShowNameFragment, List<BirdData> mList) {
-        this.infoShowNameFragment = infoShowNameFragment;
+    public ItemAdapter(List<BirdData> mList, InfoShowNameFragment f) {
         this.mList = mList;
+        this.f = f;
     }
 
     public void changeList(List<BirdData> l) {
@@ -50,7 +51,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mList.size();
+        if (mList == null) {
+            return 0;
+        } else {
+            return mList.size();
+        }
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -80,8 +86,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             Bundle bundle = new Bundle();
 
             bundle.putSerializable("click", birdData);
-            Log.i(infoShowNameFragment.getTAG(), "onClick: click on " + birdData.getNameCN());
-            NavHostFragment.findNavController(infoShowNameFragment).navigate(R.id.action_InfoShowNameFragment_to_InfoShowDetailFragment, bundle);
+            Log.i(InfoShowNameFragment.getTAG(), "onClick: click on " + birdData.getNameCN());
+            NavHostFragment.findNavController(f).navigate(R.id.InfoShowDetailFragment, bundle);
         }
     }
 }

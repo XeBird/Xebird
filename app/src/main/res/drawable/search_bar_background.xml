@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!--设置背景色-->
+    <solid android:color="#ffffff" />
+    <!-- stroke设置描边 -->
+    <stroke
+        android:width="2dp"
+        android:color="@android:color/darker_gray"
+        android:dashWidth="4dp" />
+    <!--设置圆角-->
+    <corners android:radius="80dip" />
+    <padding
+        android:bottom="0dp"
+        android:left="10dp"
+        android:right="10dp"
+        android:top="0dp" />
+    <!--设置边框线的宽度和颜色-->
+
+</shape>
