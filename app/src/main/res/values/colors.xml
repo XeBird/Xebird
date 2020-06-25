@@ -6,4 +6,5 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="black">#000000</color>
+    <color name="bird_blue">#093FC8</color>
 </resources>

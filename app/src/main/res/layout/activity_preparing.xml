@@ -10,20 +10,24 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:contentDescription="@string/start_picture"
         android:src="@drawable/splash_bg"
         android:visibility="visible"
-        android:contentDescription="@string/start_picture" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="141dp" />
+
     <TextView
         android:id="@+id/start_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_content"
+        android:textColor="@color/bird_blue"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.72" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

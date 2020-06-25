@@ -43,7 +43,7 @@ public class CollectFragment extends Fragment {
         int position = args.getInt("Position");
 
         imageView = view.findViewById(R.id.main_img);
-        imageView.setImageResource(R.drawable.default_pic);
+        imageView.setImageResource(R.drawable.ic_stat_name);
 
         TextView textView = view.findViewById(R.id.detail_text);
         assert birdData != null;
