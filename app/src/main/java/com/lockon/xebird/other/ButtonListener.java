@@ -46,7 +46,7 @@ public class ButtonListener implements View.OnClickListener {
         }else {
             Log.i(TAG, "onClick: get edittext " + input);
             BirdBaseDataBase db = BirdBaseDataBase.getInstance(view.getContext());
-            List<BirdData> whatGet = db.myDao().findByNameCN(input.toString());
+            List<BirdData> whatGet = db.myDao().findByNameCN(input.toString().trim());
 
             if (whatGet.size() == 0) {
                 han.sendEmptyMessage(SETNULLTEXT);

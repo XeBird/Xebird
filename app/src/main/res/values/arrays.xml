@@ -9,4 +9,35 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="country">
+        <item>中国</item>
+        <item>美国</item>
+        <item>英国</item>
+        <item>法国</item>
+        <item>德国</item>
+        <item>日本</item>
+        <item>俄罗斯</item>
+        <item>加拿大</item>
+        <item>印度</item>
+        <item>意大利</item>
+        <item>埃及</item>
+        <item>瑞文希尔</item>
+        <item>罗翰</item>
+        <item>刚铎</item>
+        <item>魔多</item>
+    </string-array>
+
+    <string-array name="language">
+        <item>中文-简体</item>
+        <item>中文-繁体</item>
+        <item>英语</item>
+        <item>西班牙语</item>
+        <item>俄语</item>
+        <item>德语</item>
+        <item>意大利语</item>
+        <item>法语</item>
+        <item>日语</item>
+        <item>昆雅语</item>
+    </string-array>
 </resources>
