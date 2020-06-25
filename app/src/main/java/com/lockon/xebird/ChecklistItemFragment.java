@@ -70,22 +70,6 @@ public class ChecklistItemFragment extends Fragment {
             BirdRecordDataBase bd = BirdRecordDataBase.getInstance(requireContext());
             List<Checklist> whatget = bd.myDao().getAllChecklist();
 
-            //一下数据做测试用
-//            Checklist test=new Checklist();
-//            test.setUid("1234568");
-//            test.setProvince("provice");
-//            test.setCountry("country");
-//            test.setEndTime(10000000001L);
-//            test.setStartTime(111111111111L);
-//            test.setProtocol("Protocol");
-//            bd.myDao().insertToChecklist(test);
-//            BirdRecord test1=new BirdRecord(1,"123456");
-//            test1.setBirdComments("conment");
-//            test1.setBirdCount(12);
-//            test1.setBirdName("birdname");
-//            test1.setBirdLatitude(12.23);
-//            test1.setBirdLongitude(43.21);
-//            bd.myDao().insertToBirdRecord(test1);
 
             recyclerView.setAdapter(new ChecklistItemRecyclerViewAdapter(this, whatget));
         }

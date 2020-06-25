@@ -73,6 +73,7 @@ public class BirdlistFragment extends Fragment {
         Log.i(TAG, "onCreateView!");
 
         BirdRecordDataBase bd = BirdRecordDataBase.getInstance(requireContext());
+        assert getArguments() != null;
         checklistId = getArguments().getString("checklistId");
 
 

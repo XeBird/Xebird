@@ -109,12 +109,10 @@ public class XeBirdHandler {
                 case SETLIST:
                     if (msg.obj instanceof List<?>) {
                         List<BirdData> bs = (List<BirdData>) msg.obj;
-                        if (bs != null) {
-                            for (BirdData b : bs) {
-                                Log.i(TAG, "handleMessage: data a ru " + b.getNameCN());
-                            }
-                            f.mAdapter.changeList(bs);
+                        for (BirdData b : bs) {
+                            Log.i(TAG, "handleMessage: data a ru " + b.getNameCN());
                         }
+                        f.mAdapter.changeList(bs);
                     } else {
                         throw new TypeCastException();
                     }
