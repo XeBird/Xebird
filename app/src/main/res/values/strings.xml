@@ -55,5 +55,7 @@
     <string name="profile">Profile</string>
     <string name="add_button">add</string>
     <string name="icon">icon</string>
+    <string name="bird_list_details">Details</string>
+    <string name="bird_list_add">Add</string>
 
 </resources>

@@ -66,15 +66,6 @@
         android:label="fragment_checklist"
         tools:layout="@layout/fragment_checklist">
         <action
-            android:id="@+id/action_checklistFragment_to_addRecordFragment"
-            app:destination="@id/addRecordFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"
-            app:popUpTo="@id/checklistFragment"
-            app:popUpToInclusive="false" />
-        <action
             android:id="@+id/action_checklistFragment_to_birdlistFragment"
             app:destination="@id/birdlistFragment"
             app:enterAnim="@anim/fragment_fade_enter"
@@ -88,11 +79,6 @@
         android:id="@+id/settingsFragment2"
         android:name="com.lockon.xebird.SettingsFragment"
         android:label="SettingsFragment" />
-    <fragment
-        android:id="@+id/addRecordFragment"
-        android:name="com.lockon.xebird.AddRecordFragment"
-        android:label="fragment_add_record"
-        tools:layout="@layout/fragment_add_record" />
 
     <fragment
         android:id="@+id/checklistItemFragment"
@@ -118,5 +104,9 @@
         android:id="@+id/birdlistFragment"
         android:name="com.lockon.xebird.BirdlistFragment"
         android:label="fragment_birdlist_list"
-        tools:layout="@layout/fragment_birdlist_list" />
+        tools:layout="@layout/fragment_birdlist_list" >
+        <action
+            android:id="@+id/action_birdlistFragment_to_InfoShowDetailFragment"
+            app:destination="@id/InfoShowDetailFragment" />
+    </fragment>
 </navigation>

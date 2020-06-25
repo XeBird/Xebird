@@ -30,8 +30,6 @@ import java.util.ArrayList;
 public class BirdlistFragment extends Fragment {
     private static final String TAG = "BirdlistFragment";
 
-
-    private static final String ARG_COLUMN_COUNT = "column-count";
     private static final String ARG_CHECKLIST_ID = "checklistId";
 
     private int mColumnCount = 1;
@@ -49,10 +47,9 @@ public class BirdlistFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static BirdlistFragment newInstance(int columnCount, String checklistId) {
+    public static BirdlistFragment newInstance(String checklistId) {
         BirdlistFragment fragment = new BirdlistFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         args.putSerializable(ARG_CHECKLIST_ID, checklistId);
         fragment.setArguments(args);
         return fragment;
@@ -62,7 +59,6 @@ public class BirdlistFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
             checklistId = getArguments().getString(ARG_CHECKLIST_ID);
         }
     }
@@ -85,11 +81,7 @@ public class BirdlistFragment extends Fragment {
             Log.v(TAG, "Initiating RecyclerView...");
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
             mAdapter = new MyBirdRecyclerViewAdapter(this, new ArrayList<BirdData>());
             recyclerView.setAdapter(mAdapter);
         }
