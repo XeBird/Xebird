@@ -18,7 +18,7 @@ public class BirdRecord implements Serializable {
     @PrimaryKey
     private long uid;
     private String checklistId;
-    private String birdName;
+    private int birdId;
     private int birdCount;
     private String birdComments;
     private double birdLatitude;
@@ -34,8 +34,8 @@ public class BirdRecord implements Serializable {
     }
 
     @Ignore
-    public BirdRecord(String bname, int bcount, String bcomments, float latitude, float longitude) {
-        birdName = bname;
+    public BirdRecord(int bid, int bcount, String bcomments, float latitude, float longitude) {
+        birdId = bid;
         birdCount = bcount;
         birdComments = bcomments;
         birdLatitude = latitude;
@@ -55,12 +55,12 @@ public class BirdRecord implements Serializable {
         this.uid = uid;
     }
 
-    public String getBirdName() {
-        return birdName;
+    public int getBirdId() {
+        return birdId;
     }
 
-    public void setBirdName(String birdName) {
-        this.birdName = birdName;
+    public void setBirdId(int birdId) {
+        this.birdId = birdId;
     }
 
     public int getBirdCount() {

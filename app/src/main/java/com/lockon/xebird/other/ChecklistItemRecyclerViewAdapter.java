@@ -38,8 +38,8 @@ public class ChecklistItemRecyclerViewAdapter extends RecyclerView.Adapter<Check
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         Checklist curr = mValues.get(position);
-        holder.mDateView.setText(curr.getTime());
-        holder.mLocationView.setText(curr.getLocation());
+        holder.mDateView.setText(String.valueOf(curr.getStartTime()));
+        holder.mLocationView.setText(curr.getLocationName());
         holder.mProtocalView.setText(curr.getProtocol());
         holder.mView.setOnClickListener(new ItemListener(curr));
     }

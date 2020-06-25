@@ -19,6 +19,9 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
+            android:id="@+id/action_InfoShowNameFragment_to_ChecklistFragment"
+            app:destination="@id/checklistFragment" />
+        <action
             android:id="@+id/action_InfoShowNameFragment_to_settingsFragment2"
             app:destination="@id/settingsFragment2"
             app:enterAnim="@anim/fragment_fade_enter"
@@ -33,7 +36,6 @@
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
-
     <fragment
         android:id="@+id/InfoShowDetailFragment"
         android:name="com.lockon.xebird.InfoShowDetailFragment"
@@ -46,11 +48,27 @@
             app:nullable="true"
             android:defaultValue="@null" />
     </fragment>
-
+    <fragment
+        android:id="@+id/checklistFragment"
+        android:name="com.lockon.xebird.ChecklistFragment"
+        android:label="fragment_checklist"
+        tools:layout="@layout/fragment_checklist">
+        <action
+            android:id="@+id/action_checklistFragment_to_addRecordFragment"
+            app:destination="@id/addRecordFragment" />
+        <action
+            android:id="@+id/action_checklistFragment_to_birdlistFragment"
+            app:destination="@id/birdlistFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment2"
         android:name="com.lockon.xebird.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/addRecordFragment"
+        android:name="com.lockon.xebird.AddRecordFragment"
+        android:label="fragment_add_record"
+        tools:layout="@layout/fragment_add_record" />
 
     <fragment
         android:id="@+id/checklistItemFragment"
@@ -70,4 +88,9 @@
         android:name="com.lockon.xebird.BirdRecordFragment"
         android:label="fragment_record_list"
         tools:layout="@layout/fragment_record_list" />
+    <fragment
+        android:id="@+id/birdlistFragment"
+        android:name="com.lockon.xebird.BirdlistFragment"
+        android:label="fragment_birdlist_list"
+        tools:layout="@layout/fragment_birdlist_list" />
 </navigation>

@@ -1,8 +1,6 @@
 package com.lockon.xebird.other;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -66,14 +64,14 @@ public class ButtonListener implements View.OnClickListener {
         History.initInstance(context).put(input);
     }
 
-    public boolean checkPression() {
-        int hasReadPression = ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
-        int hasWritePression = ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int hasInterPression = ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.INTERNET);
-        boolean res = hasInterPression == PackageManager.PERMISSION_GRANTED && hasReadPression == PackageManager.PERMISSION_GRANTED && hasWritePression == PackageManager.PERMISSION_GRANTED;
-        Log.i(TAG, "checkPression: Pression is " + res);
-        return res;
-    }
+//    public boolean checkPression() {
+//        int hasReadPression = ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
+//        int hasWritePression = ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        int hasInterPression = ContextCompat.checkSelfPermission(view.getContext(), Manifest.permission.INTERNET);
+//        boolean res = hasInterPression == PackageManager.PERMISSION_GRANTED && hasReadPression == PackageManager.PERMISSION_GRANTED && hasWritePression == PackageManager.PERMISSION_GRANTED;
+//        Log.i(TAG, "checkPression: Pression is " + res);
+//        return res;
+//    }
 
 }
 

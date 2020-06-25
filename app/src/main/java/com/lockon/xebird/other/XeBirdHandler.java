@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.lockon.xebird.BirdlistFragment;
 import com.lockon.xebird.CollectFragment;
 import com.lockon.xebird.InfoShowNameFragment;
 import com.lockon.xebird.db.BirdData;
@@ -85,6 +86,43 @@ public class XeBirdHandler {
                 case SETNULLBITMAP:
                     Log.i(TAG, "handleMessage: set NULL bitmap");
                     f.imageView.setImageResource(no_bitmap);
+            }
+        }
+    }
+
+    public static class BirdlistHandler extends BaseHandler {
+        public BirdlistHandler(BirdlistFragment fragment) {
+            this.mFragment = new WeakReference<Fragment>(fragment);
+            this.TAG = fragment.getTAG();
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            BirdlistFragment f = (BirdlistFragment) mFragment.get();
+            assert f != null;
+            switch (msg.what) {
+                case SETNULLTEXT:
+                    Log.i(TAG, "handleMessage: null get");
+                    List<BirdData> bs_null = new ArrayList<>();
+                    f.mAdapter.changeList(bs_null);
+                    break;
+                case SETLIST:
+                    if (msg.obj instanceof List<?>) {
+                        List<BirdData> bs = (List<BirdData>) msg.obj;
+                        if (bs != null) {
+                            for (BirdData b : bs) {
+                                Log.i(TAG, "handleMessage: data a ru " + b.getNameCN());
+                            }
+                            f.mAdapter.changeList(bs);
+                        }
+                    } else {
+                        throw new TypeCastException();
+                    }
+
+                    break;
+
+                default:
+                    throw new IllegalStateException("Unexpected value: " + msg.what);
             }
         }
     }

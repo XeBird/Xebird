@@ -30,7 +30,7 @@ public class MyBirdRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyBird
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mBirdRecordBaseInfoView.setText(mValues.get(position).getBaseInfo());
+        holder.mBirdRecordBaseInfoView.setText(String.valueOf(mValues.get(position).getUid()));
         holder.mConmment.setText(mValues.get(position).getBirdComments());
     }
 
