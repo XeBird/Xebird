@@ -79,14 +79,14 @@ public class BirdData implements Serializable {
         if (nameCN == null) {
             return " ";
         }
-        return nameCN + "\n" + nameLA;
+        return nameCN + "\t" + nameLA;
     }
 
     public String getOrderAndFamily() {
         if (nameCN == null) {
             return " ";
         }
-        return orderCN + "\t" + famliyCN;
+        return genusCN + "\t" + orderCN + "\t" + famliyCN;
     }
 
     //以下全是getter和setter

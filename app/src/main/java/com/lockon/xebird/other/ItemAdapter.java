@@ -5,10 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +35,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ex, parent, false);
+        ConstraintLayout v = (ConstraintLayout) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_info_show_name_fragment, parent, false);
         return new ViewHolder(v);
     }
 
@@ -43,9 +43,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BirdData b = mList.get(position);
         holder.itemView.setOnClickListener(new ItemListener(b));
-        holder.name.setText(b.getSimpleName());
-        holder.genus.setText(b.getGenusCN());
-        holder.order.setText(b.getOrderAndFamily());
+        holder.nameCN.setText(b.getNameCN());
+        holder.genus.setText(b.getOrderAndFamily());
+        holder.nameLA.setText(b.getNameLA());
     }
 
     @Override
@@ -55,15 +55,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name;
+        public TextView nameCN;
         public TextView genus;
-        public TextView order;
+        public TextView nameLA;
 
         public ViewHolder(View item) {
             super(item);
-            this.name = item.findViewById(R.id.textView_name);
-            this.genus = item.findViewById(R.id.genus);
-            this.order = item.findViewById(R.id.family_order);
+            this.nameCN = item.findViewById(R.id.textview_info_show_name_simple_name_cn);
+            this.genus = item.findViewById(R.id.textview_info_show_name_order_and_family);
+            this.nameLA = item.findViewById(R.id.textview_info_show_name_simple_name_la);
+
         }
     }
 

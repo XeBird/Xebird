@@ -54,5 +54,6 @@
     <string name="setting">Setting</string>
     <string name="profile">Profile</string>
     <string name="add_button">add</string>
+    <string name="icon">icon</string>
 
 </resources>

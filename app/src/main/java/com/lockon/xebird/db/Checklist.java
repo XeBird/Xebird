@@ -14,6 +14,8 @@ import androidx.room.PrimaryKey;
 
 import com.lockon.xebird.other.Tracker;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -66,7 +68,7 @@ public class Checklist {
     public Checklist(){}
 
     @Ignore
-    public Checklist(String uid, Handler trackerHandler, Context context) {
+    public Checklist(@NotNull String uid, Handler trackerHandler, Context context) {
         this.uid = uid;
         this.trackerHandler = trackerHandler;
         tracker = Tracker.getInstance(context.getApplicationContext());
@@ -84,9 +86,17 @@ public class Checklist {
     @Ignore
     private static final int msgLocation = 2;
 
+    public String getTime() {
+        return startTime + "\t" + endTime;
+    }
+
+    public String getLocation() {
+        return LocationName + "\n" + Province + "\t" + Country;
+    }
+
     public class TrackerThread extends Thread {
         @Override
-        public void run () {
+        public void run() {
             do {
                 try {
                     Thread.sleep(1000);
@@ -95,8 +105,8 @@ public class Checklist {
                     long sysTime = System.currentTimeMillis();
                     Message msg1 = new Message();
                     msg1.what = msgTime;
-                    msg1.obj = (long) (sysTime - startTime);
-                    Log.i(TAG, "sysTime："+sysTime+" startTime："+startTime);
+                    msg1.obj = sysTime - startTime;
+                    Log.i(TAG, "sysTime：" + sysTime + " startTime：" + startTime);
                     trackerHandler.sendMessage(msg1);
 
                     //获取地理位置

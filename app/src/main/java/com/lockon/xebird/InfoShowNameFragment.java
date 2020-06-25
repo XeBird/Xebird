@@ -10,6 +10,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -58,6 +59,7 @@ public class InfoShowNameFragment extends Fragment implements ActivityCompat.OnR
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ItemAdapter(this, new ArrayList<BirdData>());
         recyclerView.setAdapter(mAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL));
 
         view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view, handler, getContext()));
     }

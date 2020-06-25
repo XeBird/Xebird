@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_explore:
                 navController.navigate(R.id.InfoShowNameFragment);
                 break;
-            case R.id.menu_record:
-                navController.navigate(R.id.checklistFragment);
-                break;
+//            case R.id.menu_record:
+//                navController.navigate(R.id.checklistFragment);
+//                break;
             case R.id.menu_setting:
                 navController.navigate(R.id.settingsFragment2);
                 break;

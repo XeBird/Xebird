@@ -42,6 +42,10 @@ public class BirdRecord implements Serializable {
         birdLongitude = longitude;
     }
 
+    public String getBaseInfo() {
+        return "";
+    }
+
     //以下全是getter和setter
     public long getUid() {
         return uid;
