@@ -6,30 +6,44 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lockon.xebird.db.BirdBaseDataBase;
+import com.lockon.xebird.db.BirdData;
 import com.lockon.xebird.db.BirdRecord;
+import com.lockon.xebird.db.BirdRecordDao;
+import com.lockon.xebird.db.BirdRecordDataBase;
 import com.lockon.xebird.db.Checklist;
+import com.lockon.xebird.other.ButtonListener;
+import com.lockon.xebird.other.History;
+import com.lockon.xebird.other.ItemAdapter;
+import com.lockon.xebird.other.XeBirdHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of birds to add a bird record.
  */
 public class BirdlistFragment extends Fragment {
     private static final String TAG = "BirdlistFragment";
 
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private static final String ARG_CHECKLIST = "checklist";
-    // TODO: Customize parameters
+    private static final String ARG_CHECKLIST_ID = "checklistId";
+
     private int mColumnCount = 1;
-    private Checklist checklist;
+    public String checklistId;
+
+    public static  XeBirdHandler.BirdlistHandler birdlistHandler;
+    public MyBirdRecyclerViewAdapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -40,20 +54,12 @@ public class BirdlistFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static BirdlistFragment newInstance(int columnCount, Bundle mBundle) {
+    public static BirdlistFragment newInstance(int columnCount, String checklistId) {
         BirdlistFragment fragment = new BirdlistFragment();
         Bundle args = new Bundle();
-//        if (mBundle != null) {
-//            Log.i(TAG, "Successfully get mBundle!");
-//        }
         args.putInt(ARG_COLUMN_COUNT, columnCount);
-        args.putSerializable(ARG_CHECKLIST, (Checklist) mBundle.getSerializable("checklist"));
+        args.putSerializable(ARG_CHECKLIST_ID, checklistId);
         fragment.setArguments(args);
-        if (fragment.getArguments() != null) {
-            Log.i(TAG, "newInstance: Successfully getArguments!");
-        } else {
-            Log.i(TAG, "newInstance: Failed to getArguments!");
-        }
         return fragment;
     }
 
@@ -62,7 +68,7 @@ public class BirdlistFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            checklist = (Checklist) getArguments().getSerializable(ARG_CHECKLIST);
+            checklistId = getArguments().getString(ARG_CHECKLIST_ID);
         }
     }
 
@@ -70,21 +76,13 @@ public class BirdlistFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView!");
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            Log.i(TAG, "onCreateView: getArguments Successfully!");
-        } else {
-            Log.i(TAG, "onCreateView: getArguments Failed!");
-        }
-        //mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        checklist = (Checklist) getArguments().getSerializable(ARG_CHECKLIST);
-        if (checklist != null) {
-            Log.i(TAG, "onCreateView: Successfully get checklist!");
-        } else {
-            Log.i(TAG, "onCreateView: Failed to get checklist!");
-        }
 
-        View view = inflater.inflate(R.layout.fragment_birdlist_list, container, false);
+        BirdRecordDataBase bd = BirdRecordDataBase.getInstance(requireContext());
+        checklistId =  getArguments().getString("checklistId");
+
+
+        View view = inflater.inflate(R.layout.fragment_birdlist_list,
+                container, false);
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -94,10 +92,33 @@ public class BirdlistFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            List<BirdRecord> whatget = (List<BirdRecord>) checklist.getBirdList(); //TODO：确保getBirdList() 返回非空（建立一个默认对象？）
-            recyclerView.setAdapter(new MyBirdRecyclerViewAdapter(this, whatget));
-            //TODO：
+            mAdapter = new MyBirdRecyclerViewAdapter(this, new ArrayList<BirdData>());
+            recyclerView.setAdapter(mAdapter);
         }
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        EditText edittext = view.findViewById(R.id.textview_edit);
+        edittext.setText(History.initInstance(getContext()).getLatestInput());
+
+        birdlistHandler = new XeBirdHandler.BirdlistHandler(this);
+        view.findViewById(R.id.button_search).setOnClickListener(
+                new ButtonListener(view, birdlistHandler, getContext()));
+    }
+
+    @Override
+    public void onDetach() {
+        BirdBaseDataBase.getInstance(this.getContext()).close();
+        birdlistHandler.removeMessages(XeBirdHandler.SETLIST);
+        birdlistHandler.removeMessages(XeBirdHandler.SETNULLTEXT);
+        super.onDetach();
+    }
+
+    final public String getTAG() {
+        return TAG;
     }
 }

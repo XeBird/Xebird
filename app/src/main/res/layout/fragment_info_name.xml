@@ -31,17 +31,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:weightSum="1"
         app:layout_constraintBottom_toTopOf="@+id/rough_info"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:weightSum="1">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:layout_weight="0.8"
             android:id="@+id/textview_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="0.8"
             android:autofillHints="@string/search_hint"
             android:hint="@string/search_hint"
             android:inputType="text"
@@ -53,11 +53,11 @@
 
 
         <Button
-            android:layout_weight="0.2"
             android:id="@+id/button_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:layout_weight="0.2"
             android:text="@string/search"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

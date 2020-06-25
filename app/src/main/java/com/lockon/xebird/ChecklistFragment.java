@@ -92,15 +92,15 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         mdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         uid = mdf.format(System.currentTimeMillis());
         Log.i(TAG, "UTC:" + uid);
-        Checklist checklist = new Checklist(uid, trackerHandler, this.getContext());
+        final Checklist checklist = new Checklist(uid, trackerHandler, this.getContext());
 
         final Bundle bundle = new Bundle();
-        bundle.putSerializable("checklist", (Serializable) checklist);
+        bundle.putString("checklistId", checklist.getUid());
         view.findViewById(R.id.add_birdrecord_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(view)
-                        .navigate(R.id.action_checklistFragment_to_addRecordFragment, bundle);
+                        .navigate(R.id.action_checklistFragment_to_birdlistFragment, bundle);
             }
         });
 

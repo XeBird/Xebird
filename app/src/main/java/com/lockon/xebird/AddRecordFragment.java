@@ -29,7 +29,7 @@ public class AddRecordFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Checklist checklist;
+    private String checklistId;
 
     public AddRecordFragment() {
         // Required empty public constructor
@@ -74,11 +74,11 @@ public class AddRecordFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         assert getArguments() != null;
-        checklist = (Checklist) getArguments().getSerializable("checklist");
+        checklistId = getArguments().getString("checklistId");
 
         BirdlistFragment birdlistFragment = new BirdlistFragment();
         Bundle mBundle = new Bundle();
-        mBundle.putSerializable("checklist", checklist);
+        //mBundle.putSerializable("checklist", checklist);
         mBundle.putInt("column-count", (int) 1);
         birdlistFragment.setArguments(mBundle);
 

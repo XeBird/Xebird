@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lockon.xebird.db.BirdData;
 import com.lockon.xebird.db.BirdRecord;
 
 import java.util.List;
@@ -17,13 +18,17 @@ import java.util.List;
  */
 public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecyclerViewAdapter.ViewHolder> {
 
-    private final List<BirdRecord> mValues;
     private final BirdlistFragment fragment;
+    public List<BirdData> mList;
 
-
-    public MyBirdRecyclerViewAdapter(BirdlistFragment fragment, List<BirdRecord> items) {
+    public MyBirdRecyclerViewAdapter(BirdlistFragment fragment, List<BirdData> items) {
         this.fragment = fragment;
-        this.mValues = items;
+        this.mList = items;
+    }
+
+    public void changeList(List<BirdData> l) {
+        mList = l;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -35,32 +40,49 @@ public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecycl
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getBirdName());
-        holder.mContentView.setText(mValues.get(position).getBirdCount());
+        holder.birdData = mList.get(position);
+        holder.itemView.setOnClickListener(new MyBirdRecyclerViewAdapter.ItemListener(mList.get(position)));
+        holder.name.setText(mList.get(position).getNameCN());
+        holder.family.setText(mList.get(position).getFamliyCN());
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public BirdRecord mItem;
+        public final TextView name;
+        public final TextView family;
+        public BirdData birdData;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            name = (TextView) view.findViewById(R.id.item_number);
+            family = (TextView) view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + family.getText() + "'";
+        }
+    }
+
+    class ItemListener implements View.OnClickListener {
+        private BirdRecord birdRecord;
+
+        public ItemListener(BirdData birdData) {
+            birdRecord.setBirdId(birdData.getUid());
+            birdRecord.setChecklistId(fragment.checklistId);
+            birdRecord.setUid(System.currentTimeMillis());
+        }
+
+        @Override
+        public void onClick(View v) {
+            //TODO: go to the fragment to fill in the information about birdRecord.
+            //TODO: Save to database
         }
     }
 }
