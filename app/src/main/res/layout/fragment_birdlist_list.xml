@@ -25,15 +25,14 @@
         <!--            android:scrollbars="vertical" />-->
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list"
-            android:name="com.lockon.xebird.BirdlistFragment"
+            android:id="@+id/birdlist_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             app:layoutManager="LinearLayoutManager"
             tools:context=".BirdlistFragment"
-            tools:listitem="@layout/fragment_birdlist" />
+            tools:listitem="@layout/fragment_bird_list" />
 
     </LinearLayout>
 

@@ -37,7 +37,7 @@ public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecycl
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_birdlist_list, parent, false);
+                .inflate(R.layout.fragment_bird_list, parent, false);
         return new ViewHolder(view);
     }
 
@@ -78,9 +78,8 @@ public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecycl
         private BirdRecord birdRecord;
 
         public ItemListener(BirdData birdData) {
+            birdRecord = new BirdRecord(System.currentTimeMillis(), fragment.checklistId);
             birdRecord.setBirdId(birdData.getUid());
-            birdRecord.setChecklistId(fragment.checklistId);
-            birdRecord.setUid(System.currentTimeMillis());
         }
 
         @Override

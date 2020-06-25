@@ -77,10 +77,12 @@ public class BirdlistFragment extends Fragment {
         checklistId = getArguments().getString("checklistId");
 
 
-        View view = inflater.inflate(R.layout.fragment_birdlist_list,
+        View mView = inflater.inflate(R.layout.fragment_birdlist_list,
                 container, false);
+        View view = mView.findViewById(R.id.birdlist_list);
         // Set the adapter
         if (view instanceof RecyclerView) {
+            Log.v(TAG, "Initiating RecyclerView...");
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
@@ -91,7 +93,7 @@ public class BirdlistFragment extends Fragment {
             mAdapter = new MyBirdRecyclerViewAdapter(this, new ArrayList<BirdData>());
             recyclerView.setAdapter(mAdapter);
         }
-        return view;
+        return mView;
     }
 
     @Override
