@@ -43,10 +43,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mToolbar = findViewById(R.id.toolbar);
         mNavigation = findViewById(R.id.meun_list);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.InfoShowNameFragment).setOpenableLayout(mDrawer).build();
         mToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar,
                 R.string.open_drawer, R.string.close_drawer);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDrawer.setScrimColor(Color.parseColor("#66666666"));
         mDrawer.addDrawerListener(mToggle);
@@ -99,4 +99,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mDrawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

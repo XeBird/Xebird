@@ -17,24 +17,36 @@
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/InfoShowNameFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_InfoShowNameFragment_to_ChecklistFragment"
-            app:destination="@id/checklistFragment" />
+            app:destination="@id/checklistFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/InfoShowNameFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_InfoShowNameFragment_to_settingsFragment2"
             app:destination="@id/settingsFragment2"
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/InfoShowNameFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_InfoShowNameFragment_to_checklistItemFragment"
             app:destination="@id/checklistItemFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@id/InfoShowNameFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/InfoShowDetailFragment"
@@ -55,10 +67,22 @@
         tools:layout="@layout/fragment_checklist">
         <action
             android:id="@+id/action_checklistFragment_to_addRecordFragment"
-            app:destination="@id/addRecordFragment" />
+            app:destination="@id/addRecordFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/checklistFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_checklistFragment_to_birdlistFragment"
-            app:destination="@id/birdlistFragment" />
+            app:destination="@id/birdlistFragment"
+            app:enterAnim="@anim/fragment_fade_enter"
+            app:exitAnim="@anim/fragment_fade_exit"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/checklistFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment2"
@@ -81,7 +105,9 @@
             app:enterAnim="@anim/fragment_fade_enter"
             app:exitAnim="@anim/fragment_fade_exit"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right"
+            app:popUpTo="@id/checklistItemFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/birdRecordFragment"

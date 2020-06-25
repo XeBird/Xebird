@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 
 import com.lockon.xebird.BirdlistFragment;
 import com.lockon.xebird.CollectFragment;
-import com.lockon.xebird.InfoShowNameFragment;
 import com.lockon.xebird.db.BirdData;
 
 import java.lang.ref.WeakReference;
@@ -34,39 +33,6 @@ public class XeBirdHandler {
         public String TAG;
     }
 
-    public static class InfoNameHandler extends BaseHandler {
-        public InfoNameHandler(InfoShowNameFragment f) {
-            this.mFragment = new WeakReference<Fragment>(f);
-            this.TAG = f.getTAG();
-        }
-
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            InfoShowNameFragment f = (InfoShowNameFragment) mFragment.get();
-            assert f != null;
-            switch (msg.what) {
-                case SETNULLTEXT:
-                    Log.i(TAG, "handleMessage: null get");
-                    List<BirdData> bs_null = new ArrayList<>();
-                    f.mAdapter.changeList(bs_null);
-                    break;
-                case SETLIST:
-                    if (msg.obj instanceof List<?>) {
-                        List<BirdData> bs = (List<BirdData>) msg.obj;
-                        for (BirdData b : bs) {
-                            Log.i(TAG, "handleMessage: data a ru " + b.getNameCN());
-                        }
-                        f.mAdapter.changeList(bs);
-                    } else {
-                        throw new TypeCastException();
-                    }
-
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + msg.what);
-            }
-        }
-    }
 
     public static class InfoDetailHandler extends BaseHandler {
         public InfoDetailHandler(CollectFragment f) {

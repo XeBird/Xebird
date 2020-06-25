@@ -1,85 +1,104 @@
 package com.lockon.xebird;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lockon.xebird.db.BirdBaseDataBase;
 import com.lockon.xebird.db.BirdData;
-import com.lockon.xebird.other.ButtonListener;
 import com.lockon.xebird.other.History;
 import com.lockon.xebird.other.ItemAdapter;
-import com.lockon.xebird.other.XeBirdHandler;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
-public class InfoShowNameFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
-    private final String TAG = "NameInfo";
-    public static String date = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA).format(new Date());
+public class InfoShowNameFragment extends Fragment {
+    private static final String TAG = "InfoShownameFragment";
 
-    private static XeBirdHandler.InfoNameHandler handler;
+    private InfoShowNameViewModel mViewModel;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private ItemAdapter mAdapter;
+    private BirdBaseDataBase bd;
+    private EditText edittext;
 
-    public RecyclerView recyclerView;
-    public ItemAdapter mAdapter;
-    public RecyclerView.LayoutManager layoutManager;
+    public static InfoShowNameFragment newInstance() {
+        return new InfoShowNameFragment();
+    }
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState
-    ) {
-        // Inflate the layout for this fragment
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mViewModel = new ViewModelProvider(this).get(InfoShowNameViewModel.class);
+
+        final Observer<List<BirdData>> listObserver = new Observer<List<BirdData>>() {
+            @Override
+            public void onChanged(List<BirdData> s) {
+                mAdapter.changeList(s);
+            }
+        };
+
+        mViewModel.getBirdDatas().observe(this, listObserver);
+
+        final Observer<String> editObserver = new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                if (s == null) {
+                    mViewModel.getBirdDatas().postValue(new ArrayList<BirdData>());
+                } else {
+                    List<BirdData> whatget = bd.myDao().findByNameCN(s);
+                    mViewModel.getBirdDatas().postValue(whatget);
+                }
+            }
+        };
+
+        mViewModel.getEditText().observe(this, editObserver);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_info_name, container, false);
     }
 
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.i(TAG, "onViewCreated: after navigation");
-        handler = new XeBirdHandler.InfoNameHandler(this);
+        bd = BirdBaseDataBase.getInstance(requireContext());
 
-        EditText edittext = view.findViewById(R.id.textview_edit);
+        edittext = view.findViewById(R.id.textview_edit);
         edittext.setText(History.initInstance(getContext()).getLatestInput());
 
         recyclerView = view.findViewById(R.id.recycle_view);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ItemAdapter(this, new ArrayList<BirdData>());
+        mAdapter = new ItemAdapter(mViewModel.getBirdDatas().getValue(), this);
         recyclerView.setAdapter(mAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL));
 
-        view.findViewById(R.id.button_search).setOnClickListener(new ButtonListener(view, handler, getContext()));
+        view.findViewById(R.id.button_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mViewModel.getEditText().postValue(String.valueOf(edittext.getText()));
+            }
+        });
+
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.i(TAG, "onStart: fragment start");
-    }
-
-    @Override
-    public void onDetach() {
-        BirdBaseDataBase.getInstance(this.getContext()).close();
-        handler.removeMessages(XeBirdHandler.SETLIST);
-        handler.removeMessages(XeBirdHandler.SETNULLTEXT);
-        super.onDetach();
-    }
-
-    final public String getTAG() {
+    public static String getTAG() {
         return TAG;
     }
-
 }
