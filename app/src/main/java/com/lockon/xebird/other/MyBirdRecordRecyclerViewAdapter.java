@@ -23,7 +23,7 @@ public class MyBirdRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyBird
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_record, parent, false);
+                .inflate(R.layout.item_show_record_fragment, parent, false);
         return new ViewHolder(view);
     }
 
@@ -48,8 +48,8 @@ public class MyBirdRecordRecyclerViewAdapter extends RecyclerView.Adapter<MyBird
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mBirdRecordBaseInfoView = (TextView) view.findViewById(R.id.item_bird_record_base_info);
-            mConmment = (TextView) view.findViewById(R.id.item_conment);
+            mBirdRecordBaseInfoView = view.findViewById(R.id.item_bird_record_base_info);
+            mConmment = view.findViewById(R.id.item_conment);
         }
 
         @Override

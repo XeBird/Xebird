@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.lockon.xebird.db.BirdData;
 import com.lockon.xebird.db.BirdRecord;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -31,10 +33,11 @@ public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecycl
         notifyDataSetChanged();
     }
 
+    @NotNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_birdlist, parent, false);
+                .inflate(R.layout.fragment_birdlist_list, parent, false);
         return new ViewHolder(view);
     }
 
@@ -60,10 +63,11 @@ public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecycl
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            name = (TextView) view.findViewById(R.id.item_number);
-            family = (TextView) view.findViewById(R.id.content);
+            name = view.findViewById(R.id.item_number);
+            family = view.findViewById(R.id.content);
         }
 
+        @NotNull
         @Override
         public String toString() {
             return super.toString() + " '" + family.getText() + "'";

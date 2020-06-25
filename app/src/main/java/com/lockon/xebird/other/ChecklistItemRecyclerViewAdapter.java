@@ -30,7 +30,7 @@ public class ChecklistItemRecyclerViewAdapter extends RecyclerView.Adapter<Check
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_item, parent, false);
+                .inflate(R.layout.item_show_checklist_fragment, parent, false);
         return new ViewHolder(view);
     }
 
@@ -59,9 +59,9 @@ public class ChecklistItemRecyclerViewAdapter extends RecyclerView.Adapter<Check
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mDateView = (TextView) view.findViewById(R.id.item_location);
-            mLocationView = (TextView) view.findViewById(R.id.item_date);
-            mProtocalView = (TextView) view.findViewById(R.id.item_Protocol);
+            mDateView = view.findViewById(R.id.item_location);
+            mLocationView = view.findViewById(R.id.item_date);
+            mProtocalView = view.findViewById(R.id.item_Protocol);
         }
 
         @NotNull

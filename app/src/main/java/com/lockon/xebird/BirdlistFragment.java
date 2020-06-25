@@ -17,17 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lockon.xebird.db.BirdBaseDataBase;
 import com.lockon.xebird.db.BirdData;
-import com.lockon.xebird.db.BirdRecord;
-import com.lockon.xebird.db.BirdRecordDao;
 import com.lockon.xebird.db.BirdRecordDataBase;
-import com.lockon.xebird.db.Checklist;
 import com.lockon.xebird.other.ButtonListener;
 import com.lockon.xebird.other.History;
-import com.lockon.xebird.other.ItemAdapter;
 import com.lockon.xebird.other.XeBirdHandler;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A fragment representing a list of birds to add a bird record.
@@ -42,7 +37,7 @@ public class BirdlistFragment extends Fragment {
     private int mColumnCount = 1;
     public String checklistId;
 
-    public static  XeBirdHandler.BirdlistHandler birdlistHandler;
+    public static XeBirdHandler.BirdlistHandler birdlistHandler;
     public MyBirdRecyclerViewAdapter mAdapter;
 
     /**
@@ -78,7 +73,8 @@ public class BirdlistFragment extends Fragment {
         Log.i(TAG, "onCreateView!");
 
         BirdRecordDataBase bd = BirdRecordDataBase.getInstance(requireContext());
-        checklistId =  getArguments().getString("checklistId");
+        assert getArguments() != null;
+        checklistId = getArguments().getString("checklistId");
 
 
         View view = inflater.inflate(R.layout.fragment_birdlist_list,

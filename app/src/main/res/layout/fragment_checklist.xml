@@ -13,8 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/timer"
-        app:layout_constraintBottom_toBottomOf="@id/timer_title"
-        app:layout_constraintLeft_toRightOf="@id/timer_title" />
+        app:layout_constraintBottom_toBottomOf="@+id/timer_title"
+        app:layout_constraintLeft_toRightOf="@+id/timer_title" />
 
     <TextView
         android:id="@+id/timer_title"
@@ -41,8 +41,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/latitude"
-        app:layout_constraintLeft_toLeftOf="@id/Location"
-        app:layout_constraintTop_toBottomOf="@id/Location" />
+        app:layout_constraintLeft_toLeftOf="@+id/Location"
+        app:layout_constraintTop_toBottomOf="@+id/Location" />
 
     <TextView
         android:id="@+id/Longitude"
@@ -54,15 +54,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toEndOf="@+id/Latitude"
-        app:layout_constraintTop_toTopOf="@id/Latitude" />
+        app:layout_constraintTop_toTopOf="@+id/Latitude" />
 
     <TextView
         android:id="@+id/Checklist_Comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/checklist_comments"
-        app:layout_constraintLeft_toLeftOf="@id/Latitude"
-        app:layout_constraintTop_toBottomOf="@id/Latitude" />
+        app:layout_constraintLeft_toLeftOf="@+id/Latitude"
+        app:layout_constraintTop_toBottomOf="@+id/Latitude" />
 
     <Button
         android:id="@+id/add_birdrecord_button"
@@ -71,7 +71,7 @@
         android:text="@string/add_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Checklist_Comments" />
+        app:layout_constraintTop_toBottomOf="@+id/Checklist_Comments" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/added_bird_list"
@@ -80,6 +80,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/add_birdrecord_button" />
+        app:layout_constraintTop_toBottomOf="@+id/add_birdrecord_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

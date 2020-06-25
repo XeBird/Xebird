@@ -25,8 +25,6 @@ import androidx.navigation.Navigation;
 
 import com.lockon.xebird.db.Checklist;
 
-import java.io.Serializable;
-
 public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String TAG = "ChecklistFragment";
 
@@ -81,10 +79,10 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
 
         //获取TextView
         Log.i(TAG, "Get TextVies");
-        timerTV = (TextView) view.findViewById(R.id.timer);
-        LatitudeTV = (TextView) view.findViewById(R.id.Latitude);
-        LongitudeTV = (TextView) view.findViewById(R.id.Longitude);
-        LocationTV = (TextView) view.findViewById(R.id.Location);
+        timerTV = view.findViewById(R.id.timer);
+        LatitudeTV = view.findViewById(R.id.Latitude);
+        LongitudeTV = view.findViewById(R.id.Longitude);
+        LocationTV = view.findViewById(R.id.Location);
 
         //实例化一个Checklist，数据均存储于其中
         String uid = "20000101235959";
@@ -112,13 +110,13 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     private Handler trackerHandler = new Handler() {
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
-        public void handleMessage (Message msg) {
+        public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case msgTime:
                     long duration = (long) msg.obj;
                     Log.i(TAG, "Get Message duration: " + duration);
-                    SimpleDateFormat mdf= new SimpleDateFormat("HH:mm:ss");
+                    SimpleDateFormat mdf = new SimpleDateFormat("HH:mm:ss");
                     TimeZone tz = TimeZone.getTimeZone("UTC");
                     mdf.setTimeZone(tz);
                     String sysTimeStr = mdf.format(duration);

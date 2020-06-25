@@ -10,8 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.lockon.xebird.db.Checklist;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddRecordFragment#newInstance} factory method to
@@ -79,7 +77,7 @@ public class AddRecordFragment extends Fragment {
         BirdlistFragment birdlistFragment = new BirdlistFragment();
         Bundle mBundle = new Bundle();
         //mBundle.putSerializable("checklist", checklist);
-        mBundle.putInt("column-count", (int) 1);
+        mBundle.putInt("column-count", 1);
         birdlistFragment.setArguments(mBundle);
 
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
