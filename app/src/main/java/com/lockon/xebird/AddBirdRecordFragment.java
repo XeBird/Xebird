@@ -128,6 +128,9 @@ public class AddBirdRecordFragment extends Fragment {
                         BirdRecordDataBase db = BirdRecordDataBase.getInstance(getContext());
                         db.myDao().updateInBirdRecord(birdRecord);
                         Navigation.findNavController(view).navigateUp();
+                        Toast.makeText(getContext(), "Add/Modify record:" + birdData.getNameCN() +
+                                        ". Count: " + birdRecord.getBirdCount(),
+                                Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getContext(), R.string.error_count_positive_interger,
                                 Toast.LENGTH_LONG).show();
