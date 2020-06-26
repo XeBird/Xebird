@@ -38,9 +38,9 @@ public class ChecklistItemRecyclerViewAdapter extends RecyclerView.Adapter<Check
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         Checklist curr = mValues.get(position);
-        holder.mDateView.setText(String.valueOf(curr.getTime()));
-        holder.mLocationView.setText(curr.getLocation());
-        holder.mProtocalView.setText(curr.getProtocol());
+        holder.mLocation.setText(curr.getLocation());
+        holder.mDate.setText(String.valueOf(curr.getTime()));
+        holder.mProtocal.setText(curr.getProtocol());
         holder.mView.setOnClickListener(new ItemListener(curr));
     }
 
@@ -51,23 +51,23 @@ public class ChecklistItemRecyclerViewAdapter extends RecyclerView.Adapter<Check
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mDateView;
-        public final TextView mLocationView;
-        public final TextView mProtocalView;
+        public final TextView mLocation;
+        public final TextView mDate;
+        public final TextView mProtocal;
         public Checklist mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mDateView = view.findViewById(R.id.item_location);
-            mLocationView = view.findViewById(R.id.item_date);
-            mProtocalView = view.findViewById(R.id.item_Protocol);
+            mLocation = view.findViewById(R.id.item_location);
+            mDate = view.findViewById(R.id.item_date);
+            mProtocal = view.findViewById(R.id.item_Protocol);
         }
 
         @NotNull
         @Override
         public String toString() {
-            return super.toString() + "\t" + mLocationView.getText() + "\t";
+            return super.toString() + "\t" + mDate.getText() + "\t";
         }
     }
 

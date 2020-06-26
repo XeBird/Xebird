@@ -78,7 +78,7 @@ public class BirdRecordFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyBirdRecordRecyclerViewAdapter(whatget));
+            recyclerView.setAdapter(new MyBirdRecordRecyclerViewAdapter(whatget, requireContext()));
         }
         return view;
     }

@@ -25,7 +25,7 @@ public class Checklist {
 
     //TODO:设置相关，要加入语言
     @SuppressLint("ConstantLocale")
-    public static final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒", Locale.getDefault());
+    public static final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault());
 
     //unused // private String recordFile="Bird_record";
 
@@ -93,11 +93,12 @@ public class Checklist {
     private static final int msgLocation = 2;
 
     public String getTime() {
-        return startTime + "\t" + endTime;
+
+        return timeFormat.format(startTime) + "\t" + timeFormat.format(endTime);
     }
 
     public String getLocation() {
-        return LocationName + "\n" + Province + "\t" + Country;
+        return LocationName + "              " + Province + "\t" + Country;
     }
 
     public class TrackerThread extends Thread {
