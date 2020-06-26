@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.lockon.xebird.ChecklistItemFragment;
+import com.lockon.xebird.InfoShowChecklistFragment;
 import com.lockon.xebird.R;
 import com.lockon.xebird.db.Checklist;
 
@@ -18,10 +18,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class ChecklistItemRecyclerViewAdapter extends RecyclerView.Adapter<ChecklistItemRecyclerViewAdapter.ViewHolder> {
-    private final ChecklistItemFragment fragment;
+    private final InfoShowChecklistFragment fragment;
     private final List<Checklist> mValues;
 
-    public ChecklistItemRecyclerViewAdapter(ChecklistItemFragment fragment, List<Checklist> items) {
+    public ChecklistItemRecyclerViewAdapter(InfoShowChecklistFragment fragment, List<Checklist> items) {
         this.fragment = fragment;
         mValues = items;
     }
@@ -38,8 +38,8 @@ public class ChecklistItemRecyclerViewAdapter extends RecyclerView.Adapter<Check
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         Checklist curr = mValues.get(position);
-        holder.mDateView.setText(String.valueOf(curr.getStartTime()));
-        holder.mLocationView.setText(curr.getLocationName());
+        holder.mDateView.setText(String.valueOf(curr.getTime()));
+        holder.mLocationView.setText(curr.getLocation());
         holder.mProtocalView.setText(curr.getProtocol());
         holder.mView.setOnClickListener(new ItemListener(curr));
     }

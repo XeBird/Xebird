@@ -65,7 +65,11 @@ public class Checklist {
 
     private String Checklist_Comments;
 
-    public Checklist(){}
+    @Ignore
+    private boolean isClose;
+
+    public Checklist() {
+    }
 
     @Ignore
     public Checklist(@NotNull String uid, Handler trackerHandler, Context context) {
@@ -131,6 +135,15 @@ public class Checklist {
     }
 
     //以下全是getter和setter
+
+    public boolean isClose() {
+        return isClose;
+    }
+
+    public void setClose(boolean close) {
+        isClose = close;
+    }
+
     public String getUid() {
         return uid;
     }

@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  */
-public class ChecklistItemFragment extends Fragment {
+public class InfoShowChecklistFragment extends Fragment {
 
     private static final String NUM = "column-count";
     private int mColumnCount = 1;
@@ -31,13 +31,13 @@ public class ChecklistItemFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ChecklistItemFragment() {
+    public InfoShowChecklistFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static ChecklistItemFragment newInstance(int columnCount) {
-        ChecklistItemFragment fragment = new ChecklistItemFragment();
+    public static InfoShowChecklistFragment newInstance(int columnCount) {
+        InfoShowChecklistFragment fragment = new InfoShowChecklistFragment();
         Bundle args = new Bundle();
         args.putInt(NUM, columnCount);
         fragment.setArguments(args);

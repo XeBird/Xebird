@@ -87,7 +87,7 @@
 
     <fragment
         android:id="@+id/checklistItemFragment"
-        android:name="com.lockon.xebird.ChecklistItemFragment"
+        android:name="com.lockon.xebird.InfoShowChecklistFragment"
         android:label="fragment_checklist_item"
         tools:layout="@layout/fragment_show_checklist">
         <action
