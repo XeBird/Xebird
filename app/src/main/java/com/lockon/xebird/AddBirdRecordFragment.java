@@ -117,8 +117,7 @@ public class AddBirdRecordFragment extends Fragment {
 
                         BirdRecordDataBase db = BirdRecordDataBase.getInstance(getContext());
                         db.myDao().insertToBirdRecord(birdRecord);
-                        Navigation.findNavController(view)
-                                .navigate(R.id.action_addBirdRecordFragment_to_checklistFragment);
+                        Navigation.findNavController(view).navigateUp();
                     } else {
                         errorNotificationTV.setText(R.string.error_count_positive_interger);
                     }

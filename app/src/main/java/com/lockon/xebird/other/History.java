@@ -49,9 +49,9 @@ public class History {
 
     public String getLatestInput() {
         if (history.size() == 0) {
-            return " ";
+            return "";
         } else {
-            return sharedPreferences.getString(String.valueOf(history.getLast()), " ");
+            return sharedPreferences.getString(String.valueOf(history.getLast()), "");
         }
 
     }

@@ -95,15 +95,25 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         trackerHandler = new XeBirdHandler.TrackerHandler(this);
         final Checklist checklist = new Checklist(uid, trackerHandler, this.getContext());
 
+        final BirdRecordDataBase db = BirdRecordDataBase.getInstance(getContext());
+
         final Bundle bundle = new Bundle();
         bundle.putString("checklistId", checklist.getUid());
         view.findViewById(R.id.add_birdrecord_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BirdRecordDataBase db = BirdRecordDataBase.getInstance(getContext());
                 db.myDao().insertToChecklist(checklist);
                 Navigation.findNavController(view)
                         .navigate(R.id.action_checklistFragment_to_birdlistFragment, bundle);
+            }
+        });
+
+        view.findViewById(R.id.submit_checklist_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checklist.setEndTime(System.currentTimeMillis());
+                db.myDao().updateInChecklist(checklist);
+                Navigation.findNavController(view).navigateUp();
             }
         });
     }

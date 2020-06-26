@@ -74,6 +74,11 @@
             app:popExitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/checklistFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_checklistFragment_to_InfoShowNameFragment"
+            app:destination="@id/InfoShowNameFragment"
+            app:popUpTo="@id/InfoShowNameFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment2"
@@ -119,6 +124,8 @@
         tools:layout="@layout/fragment_add_bird_record" >
         <action
             android:id="@+id/action_addBirdRecordFragment_to_checklistFragment"
-            app:destination="@id/checklistFragment" />
+            app:destination="@id/checklistFragment"
+            app:popUpTo="@id/birdlistFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
