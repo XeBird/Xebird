@@ -29,7 +29,7 @@ public class CollectFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_one_view, container, false);
+        return inflater.inflate(R.layout.fragment_show_detail_one_view, container, false);
     }
 
     @SuppressLint("SetTextI18n")
