@@ -123,9 +123,9 @@ public class Tracker {
         locationManager.requestLocationUpdates(locationProvider, 1000, 1, locationListener);
         Location location = locationManager.getLastKnownLocation(locationProvider);
         if (location != null) {
-            Log.i(TAG, "Successfully get location!");
+            Log.v(TAG, "Successfully get location!");
         } else {
-            Log.e(TAG, "Failed to get location!");
+            Log.w(TAG, "Failed to get location!");
         }
         return location;
     }
@@ -140,10 +140,10 @@ public class Tracker {
     public double getLatestLatitude() {
         Location location = getLatestLocation();
         if (location != null) {
-            Log.i(TAG, "Successfully get latitude!");
+            Log.v(TAG, "Successfully get latitude!");
             return location.getLatitude();
         } else {
-            Log.e(TAG, "Failed to get latitude!");
+            Log.w(TAG, "Failed to get latitude!");
             //用1000来代表错误返回值
             return FailedResult;
         }
@@ -152,11 +152,11 @@ public class Tracker {
     public double getLatestLongitude(){
         Location location = getLatestLocation();
         if (location != null) {
-            Log.i(TAG, "Successfully get longitude!");
+            Log.v(TAG, "Successfully get longitude!");
             return location.getLongitude();
         }
         else{
-            Log.e(TAG, "Failed to get longitude!");
+            Log.w(TAG, "Failed to get longitude!");
             //用1000来代表错误返回值
             return FailedResult;
         }

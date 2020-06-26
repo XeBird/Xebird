@@ -22,6 +22,9 @@ public class PreparingActivity extends AppCompatActivity implements ActivityComp
             requestPermissions(new String[]{
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_BACKGROUND_LOCATION,
                     Manifest.permission.INTERNET
             }, 1);
         }
