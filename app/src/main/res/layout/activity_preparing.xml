@@ -12,6 +12,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@string/start_picture"
         android:src="@drawable/splash_bg"
+        android:scaleType="centerCrop"
         android:visibility="visible"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="141dp" />

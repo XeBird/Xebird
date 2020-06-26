@@ -6,8 +6,9 @@
     android:name="com.lockon.xebird.checklistItemFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginTop="20dp"
+    android:background="#ffffff"
+    android:clipChildren="true"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".ChecklistItemFragment"
+    tools:context=".InfoShowChecklistFragment"
     tools:listitem="@layout/item_show_checklist_fragment" />

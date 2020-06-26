@@ -58,7 +58,7 @@ public class InfoShowNameFragment extends Fragment {
                 if (s == null) {
                     mViewModel.getBirdDatas().postValue(new ArrayList<BirdData>());
                 } else {
-                    List<BirdData> whatget = bd.myDao().findByNameCN(s);
+                    List<BirdData> whatget = bd.myDao().findByNameCN(s.trim());
                     mViewModel.getBirdDatas().postValue(whatget);
                 }
             }

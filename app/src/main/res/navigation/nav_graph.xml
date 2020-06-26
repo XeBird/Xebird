@@ -52,7 +52,7 @@
         android:id="@+id/InfoShowDetailFragment"
         android:name="com.lockon.xebird.InfoShowDetailFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_one_view">
+        tools:layout="@layout/fragment_show_detail_one_view">
 
         <argument
             android:name="click"
@@ -87,9 +87,9 @@
 
     <fragment
         android:id="@+id/checklistItemFragment"
-        android:name="com.lockon.xebird.ChecklistItemFragment"
+        android:name="com.lockon.xebird.InfoShowChecklistFragment"
         android:label="fragment_checklist_item"
-        tools:layout="@layout/fragment_item_list">
+        tools:layout="@layout/fragment_show_checklist">
         <action
             android:id="@+id/action_checklistItemFragment_to_birdRecordFragment"
             app:destination="@id/birdRecordFragment"

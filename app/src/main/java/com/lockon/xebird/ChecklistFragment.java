@@ -53,7 +53,8 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     public static XeBirdHandler.TrackerHandler trackerHandler;
 
 
-    public ChecklistFragment() { }
+    public ChecklistFragment() {
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override

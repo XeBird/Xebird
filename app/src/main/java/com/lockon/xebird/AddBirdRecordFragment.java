@@ -1,12 +1,6 @@
 package com.lockon.xebird;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import com.lockon.xebird.db.BirdData;
 import com.lockon.xebird.db.BirdRecord;
-import com.lockon.xebird.db.BirdRecordDao;
 import com.lockon.xebird.db.BirdRecordDataBase;
 import com.lockon.xebird.other.Tracker;
 
