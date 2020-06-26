@@ -1,6 +1,5 @@
 package com.lockon.xebird.db;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,16 +15,9 @@ import com.lockon.xebird.other.Tracker;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 @Entity(tableName = "Checklist")
 public class Checklist {
     private static final String TAG = "Checklist";
-
-    //TODO:设置相关，要加入语言
-    @SuppressLint("ConstantLocale")
-    public static final SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.getDefault());
 
     //unused // private String recordFile="Bird_record";
 
@@ -91,11 +83,6 @@ public class Checklist {
     private static final int msgTime = 1;
     @Ignore
     private static final int msgLocation = 2;
-
-    public String getTime() {
-
-        return timeFormat.format(startTime) + "\t" + timeFormat.format(endTime);
-    }
 
     public String getLocation() {
         return LocationName + "              " + Province + "\t" + Country;

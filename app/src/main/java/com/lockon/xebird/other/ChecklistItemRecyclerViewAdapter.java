@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lockon.xebird.InfoShowChecklistFragment;
@@ -15,15 +16,23 @@ import com.lockon.xebird.db.Checklist;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ChecklistItemRecyclerViewAdapter extends RecyclerView.Adapter<ChecklistItemRecyclerViewAdapter.ViewHolder> {
+    public final SimpleDateFormat timeFormat;
     private final InfoShowChecklistFragment fragment;
     private final List<Checklist> mValues;
 
     public ChecklistItemRecyclerViewAdapter(InfoShowChecklistFragment fragment, List<Checklist> items) {
         this.fragment = fragment;
         mValues = items;
+        timeFormat = new SimpleDateFormat("yyyy年MM月dd日",
+                new Locale.Builder()
+                        .setLanguage(PreferenceManager.getDefaultSharedPreferences(fragment.requireContext()).getString("language", "zh"))
+                        .setRegion(PreferenceManager.getDefaultSharedPreferences(fragment.requireContext()).getString("country", "ch"))
+                        .build());
     }
 
     @NotNull
@@ -39,7 +48,7 @@ public class ChecklistItemRecyclerViewAdapter extends RecyclerView.Adapter<Check
         holder.mItem = mValues.get(position);
         Checklist curr = mValues.get(position);
         holder.mLocation.setText(curr.getLocation());
-        holder.mDate.setText(String.valueOf(curr.getTime()));
+        holder.mDate.setText(timeFormat.format(curr.getStartTime()) + "\t" + timeFormat.format(curr.getEndTime()));
         holder.mProtocal.setText(curr.getProtocol());
         holder.mView.setOnClickListener(new ItemListener(curr));
     }

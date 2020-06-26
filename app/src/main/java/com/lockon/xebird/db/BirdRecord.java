@@ -47,9 +47,6 @@ public class BirdRecord implements Serializable {
         return "";
     }
 
-    public String getTime() {
-        return Checklist.timeFormat.format(uid);
-    }
 
     //以下全是getter和setter
     public long getUid() {

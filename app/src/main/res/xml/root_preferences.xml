@@ -24,16 +24,16 @@
             app:useSimpleSummaryProvider="true"
             app:key="contry"
             app:entries="@array/country"
-            app:entryValues="@array/country"
-            app:defaultValue="CHINA" />
+            app:entryValues="@array/country_values"
+            app:defaultValue="CN" />
 
         <ListPreference
             app:title="language"
             app:useSimpleSummaryProvider="true"
             app:key="language"
             app:entries="@array/language"
-            app:entryValues="@array/language"
-            app:defaultValue="SIMPLY_CHINESE" />
+            app:entryValues="@array/language_values"
+            app:defaultValue="zh" />
 
     </PreferenceCategory>
 
