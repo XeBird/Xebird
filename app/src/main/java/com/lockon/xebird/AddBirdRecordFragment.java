@@ -38,7 +38,7 @@ public class AddBirdRecordFragment extends Fragment {
     private BirdRecord birdRecord;
     private String checklistId;
     public TextView nameTV, latitudeTV, longitudeTV, errorNotificationTV;
-    public EditText countET,locationET, commentsET;
+    public EditText countET, locationET, commentsET;
     public Button submitBtn;
 
     public AddBirdRecordFragment() {
@@ -100,9 +100,9 @@ public class AddBirdRecordFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (countET.getText().toString() != ""){
+                if (!"".equals(countET.getText().toString())) {
                     int count = Integer.parseInt(countET.getText().toString());
-                    if (count >0){
+                    if (count > 0) {
                         String location = locationET.getText().toString();
                         String comments = commentsET.getText().toString();
 
@@ -111,8 +111,8 @@ public class AddBirdRecordFragment extends Fragment {
                         birdRecord.setBirdLongitude(birdLongitude);
                         birdRecord.setBirdLocation(location);
                         birdRecord.setBirdComments(comments);
-                        Log.i(TAG, " "+birdRecord.getUid()+" "+birdRecord.getChecklistId()+
-                                birdRecord.getBirdId()+" "+birdRecord.getBirdLatitude()+" "+
+                        Log.i(TAG, " " + birdRecord.getUid() + " " + birdRecord.getChecklistId() +
+                                birdRecord.getBirdId() + " " + birdRecord.getBirdLatitude() + " " +
                                 birdRecord.getBirdLocation());
 
                         BirdRecordDataBase db = BirdRecordDataBase.getInstance(getContext());

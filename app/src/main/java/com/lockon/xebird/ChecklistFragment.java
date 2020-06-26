@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.lockon.xebird.db.BirdRecordDataBase;
 import com.lockon.xebird.db.Checklist;
 import com.lockon.xebird.other.XeBirdHandler;
 
@@ -99,6 +100,8 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         view.findViewById(R.id.add_birdrecord_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BirdRecordDataBase db = BirdRecordDataBase.getInstance(getContext());
+                db.myDao().insertToChecklist(checklist);
                 Navigation.findNavController(view)
                         .navigate(R.id.action_checklistFragment_to_birdlistFragment, bundle);
             }

@@ -73,6 +73,8 @@ public class Checklist {
         this.trackerHandler = trackerHandler;
         tracker = Tracker.getInstance(context.getApplicationContext());
         startTime = System.currentTimeMillis();
+        checklistLatitude = tracker.getLatestLatitude();
+        checklistLongitude = tracker.getLatestLongitude();
         Log.i(TAG, "startTime：" + startTime);
         if (trackerThread == null) {
             trackerThread = new TrackerThread();

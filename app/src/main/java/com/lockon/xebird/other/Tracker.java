@@ -94,7 +94,7 @@ public class Tracker {
         // TODO -Consider: 官方文档建议构造一个 LocationRequest 对象来确定 requestLocationUpdates 的参数
         // https://developer.android.com/training/location/request-updates#callback
         assert locationProvider != null;
-        locationManager.requestLocationUpdates(locationProvider, 500, 1, locationListener);
+        locationManager.requestLocationUpdates(locationProvider, 1000, 1, locationListener);
 
         //TODO: 提供计时器；etc.
     }
@@ -120,7 +120,7 @@ public class Tracker {
             // for ActivityCompat#requestPermissions for more details.
             return null;
         }
-        locationManager.requestLocationUpdates(locationProvider, 500, 1, locationListener);
+        locationManager.requestLocationUpdates(locationProvider, 1000, 1, locationListener);
         Location location = locationManager.getLastKnownLocation(locationProvider);
         if (location != null) {
             Log.i(TAG, "Successfully get location!");

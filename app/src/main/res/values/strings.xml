@@ -66,6 +66,7 @@
     <string name="submit_birdRecord">Submit</string>
     <string name="error_count_positive_interger">Bird count must be a positive integer!</string>
     <string name="error_count_empty">Bird count can  not be empty!</string>
+    <string name="default_birdcount">1</string>
 
 
 </resources>
