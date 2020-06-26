@@ -54,7 +54,7 @@ public class Checklist {
     private String LocationName;
     private double checklistLatitude, checklistLongitude;
     private String Province;
-    private String Country;
+    private String Country = "China";
     private double Distance;
     //TODO: 存储路径数据的类
 
@@ -112,7 +112,7 @@ public class Checklist {
                     Message msg1 = new Message();
                     msg1.what = msgTime;
                     msg1.obj = sysTime - startTime;
-                    Log.i(TAG, "sysTime：" + sysTime + " startTime：" + startTime);
+                    Log.v(TAG, "sysTime：" + sysTime + " startTime：" + startTime);
                     trackerHandler.sendMessage(msg1);
 
                     //获取地理位置

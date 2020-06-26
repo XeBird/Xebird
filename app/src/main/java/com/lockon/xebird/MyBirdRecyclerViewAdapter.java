@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.lockon.xebird.db.BirdData;
 import com.lockon.xebird.db.BirdRecord;
+import com.lockon.xebird.db.BirdRecordDataBase;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -60,7 +61,7 @@ public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecycl
         return mList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView name;
         public final TextView family;
@@ -89,6 +90,7 @@ public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecycl
         public DetailsListener(BirdData birdData) {
             this.birdData = birdData;
         }
+
         @Override
         public void onClick(View v) {
             Bundle bundle = new Bundle();
@@ -103,23 +105,25 @@ public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecycl
         public BirdRecord birdRecord;
 
 
-        public AddBirdRecordListener (BirdData birdData) {
+        public AddBirdRecordListener(BirdData birdData) {
             this.birdData = birdData;
         }
 
         @Override
         public void onClick(View v) {
-            //TODO: go to the fragment to fill in the information about birdRecord.
+            BirdRecordDataBase db = BirdRecordDataBase.getInstance(v.getContext());
+            birdRecord = db.myDao().getFirstByBirdId(fragment.checklistId, birdData.getUid());
+            if (birdRecord == null) {
+                birdRecord = new BirdRecord(System.currentTimeMillis(), fragment.checklistId);
+                birdRecord.setBirdId(birdData.getUid());
+                db.myDao().insertToBirdRecord(birdRecord);
+            }
             Bundle bundle = new Bundle();
-            birdRecord = new BirdRecord(System.currentTimeMillis(), fragment.checklistId);
-            birdRecord.setBirdId(birdData.getUid());
             bundle.putSerializable("BirdData", birdData);
             bundle.putSerializable("BirdRecord", birdRecord);
-            bundle.putString("ChecklistId",fragment.checklistId);
+            bundle.putString("ChecklistId", fragment.checklistId);
             Log.i(fragment.getTAG(), "onClick: click on ADD of " + birdData.getNameCN());
             NavHostFragment.findNavController(fragment).navigate(R.id.action_birdlistFragment_to_addBirdRecordFragment, bundle);
-
-            //TODO: Save to database
         }
     }
 }

@@ -17,6 +17,9 @@ public interface BirdRecordDao {
     @Query("SELECT * FROM BirdRecord WHERE checklistId == :cid")
     List<BirdRecord> getAllByCid(String cid);
 
+    @Query("SELECT * FROM BirdRecord WHERE birdId == :bId AND checklistId == :cid limit 0,1")
+    BirdRecord getFirstByBirdId(String cid, int bId);
+
     @Query("SELECT * FROM Checklist")
     List<Checklist> getAllChecklist();
 

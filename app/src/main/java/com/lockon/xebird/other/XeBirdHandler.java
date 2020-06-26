@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
-import com.lockon.xebird.AddBirdRecordFragment;
 import com.lockon.xebird.BirdlistFragment;
 import com.lockon.xebird.ChecklistFragment;
 import com.lockon.xebird.CollectFragment;
@@ -119,7 +118,7 @@ public class XeBirdHandler {
             switch (msg.what) {
                 case msgTime:
                     long duration = (long) msg.obj;
-                    Log.i(TAG, "Get Message duration: " + duration);
+                    Log.v(TAG, "Get Message duration: " + duration);
                     SimpleDateFormat mdf = new SimpleDateFormat("HH:mm:ss");
                     TimeZone tz = TimeZone.getTimeZone("UTC");
                     mdf.setTimeZone(tz);
@@ -132,8 +131,8 @@ public class XeBirdHandler {
                     double Latitude, Longitude;
                     Latitude = bundle.getDouble("Latitude");
                     Longitude = bundle.getDouble("Longitude");
-                    Log.i(TAG, "Get Message Latitude: " + Latitude);
-                    Log.i(TAG, "Get Message Longitude: " + Longitude);
+                    Log.v(TAG, "Get Message Latitude: " + Latitude);
+                    Log.v(TAG, "Get Message Longitude: " + Longitude);
                     if (Latitude != FailedResult) {
                         f.LatitudeTV.setText(String.valueOf(Latitude));
                     } else {

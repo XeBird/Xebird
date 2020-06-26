@@ -19,7 +19,7 @@ public class BirdRecord implements Serializable {
     private long uid;
     private String checklistId;
     private int birdId;
-    private int birdCount;
+    private int birdCount = 0;
     private String birdComments;
     private String birdLocation;
     private double birdLatitude;

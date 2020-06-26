@@ -1,12 +1,6 @@
 package com.lockon.xebird;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +8,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.lockon.xebird.db.BirdData;
 import com.lockon.xebird.db.BirdRecord;
-import com.lockon.xebird.db.BirdRecordDao;
 import com.lockon.xebird.db.BirdRecordDataBase;
 import com.lockon.xebird.other.Tracker;
 
@@ -37,7 +36,7 @@ public class AddBirdRecordFragment extends Fragment {
     private BirdData birdData;
     private BirdRecord birdRecord;
     private String checklistId;
-    public TextView nameTV, latitudeTV, longitudeTV, errorNotificationTV;
+    public TextView nameTV, latitudeTV, longitudeTV;
     public EditText countET, locationET, commentsET;
     public Button submitBtn;
 
@@ -89,10 +88,19 @@ public class AddBirdRecordFragment extends Fragment {
         longitudeTV.setText(String.valueOf(birdLongitude));
 
         countET = view.findViewById(R.id.addBirdRcord_birdcount);
+        if (birdRecord.getBirdCount() != 0) {
+            countET.setText(String.valueOf(birdRecord.getBirdCount()));
+        }
         locationET = view.findViewById(R.id.addBirdRecord_location);
+        String str = birdRecord.getBirdLocation();
+        if (str != null && str.length() != 0) {
+            locationET.setText(str);
+        }
         commentsET = view.findViewById(R.id.addBirdRecord_comments);
-
-        errorNotificationTV = view.findViewById(R.id.error_notification);
+        str = birdRecord.getBirdComments();
+        if (str != null && str.length() != 0) {
+            commentsET.setText(str);
+        }
 
         submitBtn = view.findViewById(R.id.submit_button);
 
@@ -111,18 +119,21 @@ public class AddBirdRecordFragment extends Fragment {
                         birdRecord.setBirdLongitude(birdLongitude);
                         birdRecord.setBirdLocation(location);
                         birdRecord.setBirdComments(comments);
-                        Log.i(TAG, " " + birdRecord.getUid() + " " + birdRecord.getChecklistId() +
-                                birdRecord.getBirdId() + " " + birdRecord.getBirdLatitude() + " " +
+                        Log.i(TAG, " " + birdRecord.getUid() + " " +
+                                birdRecord.getChecklistId() + " " +
+                                birdRecord.getBirdId() + " " +
+                                birdRecord.getBirdLatitude() + " " +
                                 birdRecord.getBirdLocation());
 
                         BirdRecordDataBase db = BirdRecordDataBase.getInstance(getContext());
-                        db.myDao().insertToBirdRecord(birdRecord);
+                        db.myDao().updateInBirdRecord(birdRecord);
                         Navigation.findNavController(view).navigateUp();
                     } else {
-                        errorNotificationTV.setText(R.string.error_count_positive_interger);
+                        Toast.makeText(getContext(), R.string.error_count_positive_interger,
+                                Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    errorNotificationTV.setText(R.string.error_count_empty);
+                    Toast.makeText(getContext(), R.string.error_count_empty, Toast.LENGTH_LONG).show();
                 }
             }
         });
