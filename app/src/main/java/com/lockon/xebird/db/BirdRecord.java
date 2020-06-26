@@ -21,6 +21,7 @@ public class BirdRecord implements Serializable {
     private int birdId;
     private int birdCount;
     private String birdComments;
+    private String birdLocation;
     private double birdLatitude;
     private double birdLongitude;
 
@@ -73,6 +74,14 @@ public class BirdRecord implements Serializable {
 
     public String getBirdComments() {
         return birdComments;
+    }
+
+    public void setBirdLocation(String birdLocation) {
+        this.birdLocation = birdLocation;
+    }
+
+    public String getBirdLocation() {
+        return birdLocation;
     }
 
     public void setBirdComments(String birdComments) {

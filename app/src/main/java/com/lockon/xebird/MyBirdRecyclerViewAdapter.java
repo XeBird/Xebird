@@ -92,28 +92,33 @@ public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecycl
         @Override
         public void onClick(View v) {
             Bundle bundle = new Bundle();
-
             bundle.putSerializable("click", birdData);
-            Log.i(fragment.getTAG(), "onClick: click on details of " + birdData.getNameCN());
+            Log.i(fragment.getTAG(), "onClick: click on DETAILS of " + birdData.getNameCN());
             NavHostFragment.findNavController(fragment).navigate(R.id.action_birdlistFragment_to_InfoShowDetailFragment, bundle);
         }
     }
 
     class AddBirdRecordListener implements View.OnClickListener {
-        private BirdRecord birdRecord;
-        private BirdData birdData;
+        public BirdData birdData;
+        public BirdRecord birdRecord;
+
 
         public AddBirdRecordListener (BirdData birdData) {
             this.birdData = birdData;
-
         }
 
         @Override
         public void onClick(View v) {
             //TODO: go to the fragment to fill in the information about birdRecord.
-
+            Bundle bundle = new Bundle();
             birdRecord = new BirdRecord(System.currentTimeMillis(), fragment.checklistId);
             birdRecord.setBirdId(birdData.getUid());
+            bundle.putSerializable("BirdData", birdData);
+            bundle.putSerializable("BirdRecord", birdRecord);
+            bundle.putString("ChecklistId",fragment.checklistId);
+            Log.i(fragment.getTAG(), "onClick: click on ADD of " + birdData.getNameCN());
+            NavHostFragment.findNavController(fragment).navigate(R.id.action_birdlistFragment_to_addBirdRecordFragment, bundle);
+
             //TODO: Save to database
         }
     }

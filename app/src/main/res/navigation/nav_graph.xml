@@ -108,5 +108,17 @@
         <action
             android:id="@+id/action_birdlistFragment_to_InfoShowDetailFragment"
             app:destination="@id/InfoShowDetailFragment" />
+        <action
+            android:id="@+id/action_birdlistFragment_to_addBirdRecordFragment"
+            app:destination="@id/addBirdRecordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addBirdRecordFragment"
+        android:name="com.lockon.xebird.AddBirdRecordFragment"
+        android:label="fragment_add_bird_record"
+        tools:layout="@layout/fragment_add_bird_record" >
+        <action
+            android:id="@+id/action_addBirdRecordFragment_to_checklistFragment"
+            app:destination="@id/checklistFragment" />
     </fragment>
 </navigation>

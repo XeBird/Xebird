@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.lockon.xebird.db.Checklist;
+import com.lockon.xebird.other.XeBirdHandler;
 
 public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String TAG = "ChecklistFragment";
@@ -34,8 +35,9 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     public TextView timerTV;
     public TextView LatitudeTV, LongitudeTV, LocationTV;
 
-    //用1000来代表经纬度错误返回值
-    final double FailedResult = 1000;
+    public static XeBirdHandler.TrackerHandler trackerHandler;
+
+
 
     public ChecklistFragment() {
     }
@@ -78,7 +80,6 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         }
 
         //获取TextView
-        Log.i(TAG, "Get TextVies");
         timerTV = view.findViewById(R.id.timer);
         LatitudeTV = view.findViewById(R.id.Latitude);
         LongitudeTV = view.findViewById(R.id.Longitude);
@@ -90,6 +91,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         mdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         uid = mdf.format(System.currentTimeMillis());
         Log.i(TAG, "UTC:" + uid);
+        trackerHandler = new XeBirdHandler.TrackerHandler(this);
         final Checklist checklist = new Checklist(uid, trackerHandler, this.getContext());
 
         final Bundle bundle = new Bundle();
@@ -101,50 +103,5 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                         .navigate(R.id.action_checklistFragment_to_birdlistFragment, bundle);
             }
         });
-
-        //TODO //addedBirdListHandler = new XeBirdHandler.InfoNameHandler(this);
     }
-
-
-    @SuppressLint("HandlerLeak")
-    private Handler trackerHandler = new Handler() {
-        @RequiresApi(api = Build.VERSION_CODES.N)
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case msgTime:
-                    long duration = (long) msg.obj;
-                    Log.i(TAG, "Get Message duration: " + duration);
-                    SimpleDateFormat mdf = new SimpleDateFormat("HH:mm:ss");
-                    TimeZone tz = TimeZone.getTimeZone("UTC");
-                    mdf.setTimeZone(tz);
-                    String sysTimeStr = mdf.format(duration);
-                    timerTV.setText(sysTimeStr);
-                    break;
-
-                case msgLocation:
-                    Bundle bundle = (Bundle) msg.obj;
-                    double Latitude, Longitude;
-                    Latitude = bundle.getDouble("Latitude");
-                    Longitude = bundle.getDouble("Longitude");
-                    Log.i(TAG, "Get Message Latitude: " + Latitude);
-                    Log.i(TAG, "Get Message Longitude: " + Longitude);
-                    if (Latitude != FailedResult) {
-                        LatitudeTV.setText(String.valueOf(Latitude));
-                    } else {
-                        LatitudeTV.setText(R.string.latitude);
-                    }
-                    if (Longitude != FailedResult) {
-                        LongitudeTV.setText(String.valueOf(Longitude));
-                    } else {
-                        LongitudeTV.setText(R.string.longitude);
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    };
 }

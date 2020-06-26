@@ -57,5 +57,15 @@
     <string name="icon">icon</string>
     <string name="bird_list_details">Details</string>
     <string name="bird_list_add">Add</string>
+    <string name="bird_count">Bird Count</string>
+    <string name="bird_name">Bird Name</string>
+    <string name="bird_location">Bird Location</string>
+    <string name="bird_count_default_value">1</string>
+    <string name="bird_comments_title">Comments</string>
+    <string name="bird_comments">Put your comments here</string>
+    <string name="submit_birdRecord">Submit</string>
+    <string name="error_count_positive_interger">Bird count must be a positive integer!</string>
+    <string name="error_count_empty">Bird count can  not be empty!</string>
+
 
 </resources>

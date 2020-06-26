@@ -1,15 +1,23 @@
 package com.lockon.xebird.other;
 
 import android.graphics.Bitmap;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.TimeZone;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import com.lockon.xebird.AddBirdRecordFragment;
 import com.lockon.xebird.BirdlistFragment;
+import com.lockon.xebird.ChecklistFragment;
 import com.lockon.xebird.CollectFragment;
+import com.lockon.xebird.R;
 import com.lockon.xebird.db.BirdData;
 
 import java.lang.ref.WeakReference;
@@ -90,4 +98,98 @@ public class XeBirdHandler {
             }
         }
     }
+
+    public static class TrackerHandler extends BaseHandler {
+        //计时，主要功能放在参Checklist.TrackerThread
+        private static final int msgTime = 1;
+        private static final int msgLocation = 2;
+        //用1000来代表经纬度错误返回值
+        private final double FailedResult = 1000;
+
+        public TrackerHandler(ChecklistFragment fragment) {
+            this.mFragment = new WeakReference<Fragment>(fragment);
+            this.TAG = fragment.getTAG();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void handleMessage(Message msg) {
+            ChecklistFragment f = (ChecklistFragment) mFragment.get();
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case msgTime:
+                    long duration = (long) msg.obj;
+                    Log.i(TAG, "Get Message duration: " + duration);
+                    SimpleDateFormat mdf = new SimpleDateFormat("HH:mm:ss");
+                    TimeZone tz = TimeZone.getTimeZone("UTC");
+                    mdf.setTimeZone(tz);
+                    String sysTimeStr = mdf.format(duration);
+                    f.timerTV.setText(sysTimeStr);
+                    break;
+
+                case msgLocation:
+                    Bundle bundle = (Bundle) msg.obj;
+                    double Latitude, Longitude;
+                    Latitude = bundle.getDouble("Latitude");
+                    Longitude = bundle.getDouble("Longitude");
+                    Log.i(TAG, "Get Message Latitude: " + Latitude);
+                    Log.i(TAG, "Get Message Longitude: " + Longitude);
+                    if (Latitude != FailedResult) {
+                        f.LatitudeTV.setText(String.valueOf(Latitude));
+                    } else {
+                        f.LatitudeTV.setText(R.string.latitude);
+                    }
+                    if (Longitude != FailedResult) {
+                        f.LongitudeTV.setText(String.valueOf(Longitude));
+                    } else {
+                        f.LongitudeTV.setText(R.string.longitude);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
+//    public static class AddBirdRecordHandler extends BaseHandler {
+//        private static final int msgLocation = 2;
+//        //用1000来代表经纬度错误返回值
+//        private final double FailedResult = 1000;
+//
+//        public AddBirdRecordHandler(AddBirdRecordFragment fragment) {
+//            this.mFragment = new WeakReference<Fragment>(fragment);
+//            this.TAG = fragment.getTAG();
+//        }
+//
+//        @RequiresApi(api = Build.VERSION_CODES.N)
+//        @Override
+//        public void handleMessage(Message msg) {
+//            AddBirdRecordFragment f = (AddBirdRecordFragment) mFragment.get();
+//            super.handleMessage(msg);
+//            switch (msg.what) {
+//                case msgLocation:
+//                    Bundle bundle = (Bundle) msg.obj;
+//                    double Latitude, Longitude;
+//                    Latitude = bundle.getDouble("Latitude");
+//                    Longitude = bundle.getDouble("Longitude");
+//                    Log.i(TAG, "Get Message Latitude: " + Latitude);
+//                    Log.i(TAG, "Get Message Longitude: " + Longitude);
+//                    if (Latitude != FailedResult) {
+//                        f.LatitudeTV.setText(String.valueOf(Latitude));
+//                    } else {
+//                        f.LatitudeTV.setText(R.string.latitude);
+//                    }
+//                    if (Longitude != FailedResult) {
+//                        f.LongitudeTV.setText(String.valueOf(Longitude));
+//                    } else {
+//                        f.LongitudeTV.setText(R.string.longitude);
+//                    }
+//                    break;
+//
+//                default:
+//                    break;
+//            }
+//        }
+//    }
 }
