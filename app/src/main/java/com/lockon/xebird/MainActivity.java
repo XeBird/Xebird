@@ -24,6 +24,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+
     private static final String TAG = "MainActivity";
     private DrawerLayout mDrawer;
     private List<Fragment> fragments;
