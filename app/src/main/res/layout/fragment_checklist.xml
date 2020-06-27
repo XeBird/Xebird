@@ -52,6 +52,7 @@
         android:id="@+id/observers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:ems="5"
         android:hint="@string/observers_hint"
         android:importantForAutofill="no"
@@ -63,20 +64,20 @@
         android:id="@+id/Location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="8"
+        android:ems="10"
         android:hint="@string/location_hint"
         android:importantForAutofill="no"
         android:inputType="text"
+        android:maxLength="17"
         app:layout_constraintLeft_toLeftOf="@id/timer_title"
         app:layout_constraintTop_toBottomOf="@id/observers" />
 
     <Spinner
         android:id="@+id/province"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/Location"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toEndOf="@+id/Location"
         app:layout_constraintTop_toTopOf="@+id/Location" />
 
@@ -102,13 +103,13 @@
 
     <Button
         android:id="@+id/auto_fill_button"
-        style="@android:style/Widget.Material.Button.Borderless.Small"
+        style="@android:style/Widget.Material.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="0dp"
         android:minHeight="0dp"
         android:text="@string/autofill_button"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBaseline_toBaselineOf="@id/Latitude"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Longitude" />
@@ -127,7 +128,7 @@
         android:id="@+id/Checklist_Comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
+        android:ems="20"
         android:hint="@string/comments_hint"
         android:importantForAutofill="no"
         android:inputType="text"
@@ -168,7 +169,7 @@
 
     <Spinner
         android:id="@+id/protocol"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/observers"
         app:layout_constraintLeft_toRightOf="@id/observers"
@@ -176,7 +177,7 @@
 
     <CheckBox
         android:id="@+id/all_observations_reported"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/all_observations_reported"
         app:layout_constraintBottom_toBottomOf="@+id/observers"

@@ -6,12 +6,30 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 
 /**
@@ -28,33 +46,6 @@ public class Tracker {
     private Context mContext;
     private LocationManager locationManager;
     private String locationProvider = null;
-
-
-    public LocationListener locationListener = new LocationListener() {
-
-        // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        // Provider被enable时触发此函数，比如GPS被打开
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        // Provider被disable时触发此函数，比如GPS被关闭
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-
-        //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-        @Override
-        public void onLocationChanged(Location location) {
-        }
-    };
 
 
     private Tracker(Context context) {
@@ -141,7 +132,7 @@ public class Tracker {
         Location location = getLatestLocation();
         if (location != null) {
             Log.v(TAG, "Successfully get latitude!");
-            return location.getLatitude();
+            return formatDouble(location.getLatitude());
         } else {
             Log.w(TAG, "Failed to get latitude!");
             //用1000来代表错误返回值
@@ -149,16 +140,142 @@ public class Tracker {
         }
     }
 
-    public double getLatestLongitude(){
+    public double getLatestLongitude() {
         Location location = getLatestLocation();
         if (location != null) {
             Log.v(TAG, "Successfully get longitude!");
-            return location.getLongitude();
-        }
-        else{
+            return formatDouble(location.getLongitude());
+        } else {
             Log.w(TAG, "Failed to get longitude!");
             //用1000来代表错误返回值
             return FailedResult;
         }
     }
+
+
+    public JSONObject getLatestAddressJSON() throws MalformedURLException {
+
+        JSONObject result = null;
+
+        final double latitude = this.getLatestLatitude();
+        final double longitude = this.getLatestLongitude();
+        if (longitude != FailedResult && latitude != FailedResult) {
+            Callable<JSONObject> callable = new Callable<JSONObject>() {
+                @Override
+                public JSONObject call() throws Exception {
+
+                    JSONObject jsonObj = null;
+                    StringBuilder urlStr = new StringBuilder("https://restapi.amap.com/v3/geocode/regeo?");
+                    String mapKey = "6db1a0a9ab607c2bc9edaee28df9bb43";
+                    urlStr.append("output=json");
+
+                    String location = longitude + "," + latitude;
+                    urlStr.append("&location=").append(location);
+                    urlStr.append("&key=").append(mapKey);
+
+                    URL url = new URL(urlStr.toString());
+                    Log.i(TAG, url.toString());
+
+                    HttpURLConnection conn = null;
+                    try {
+                        conn = (HttpURLConnection) url.openConnection();
+
+                        conn.setRequestMethod("GET");// 设置请求方法为GET
+                        conn.setReadTimeout(5000);// 设置读取超时为5秒
+                        conn.setConnectTimeout(5000);// 设置连接网络超时为5秒
+                        conn.setDoOutput(true);// 设置此方法,允许向服务器输出内容
+                        conn.setDoInput(true);
+
+                        //返回输入流
+                        InputStream in = conn.getInputStream();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                        String line;
+                        StringBuilder response = new StringBuilder();
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
+
+                        //读取地理位置，判断是否成功
+                        jsonObj = new JSONObject(response.toString());
+                        if (jsonObj.getInt("status") != 1) {
+                            Log.w(TAG, "Amap location service failed!" + jsonObj.getInt("status"));
+                            jsonObj = null;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (conn != null) {
+                            conn.disconnect();// 关闭连接
+                        }
+                    }
+                    return jsonObj;
+                }
+            };
+
+            FutureTask<JSONObject> futureTask = new FutureTask<JSONObject>(callable);
+
+            Thread thread = new Thread(futureTask);
+            thread.start();
+
+            try {
+                result = futureTask.get();
+            } catch (ExecutionException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.w(TAG, "Failed to get latitude and longitude, so no location result!");
+            result = null;
+        }
+        return result;
+    }
+
+    public String getLatestAddress() throws MalformedURLException, JSONException {
+        JSONObject jsonObj = getLatestAddressJSON();
+        if (jsonObj != null) {
+            Log.i(TAG, jsonObj.getJSONObject("regeocode").getString("formatted_address"));
+            return jsonObj.getJSONObject("regeocode").getString("formatted_address");
+        } else {
+            return "";
+        }
+    }
+
+    public String getLatestProvince() throws MalformedURLException, JSONException {
+        JSONObject jsonObj = getLatestAddressJSON();
+        if (jsonObj != null) {
+            return jsonObj.getJSONObject("regeocode").getJSONObject("addressComponent").getString("province");
+        } else {
+            return "";
+        }
+    }
+
+    //保留5位小数
+    public final double formatDouble(double d) {
+        return ((double) ((int) (d * 1000000))) / 1000000;
+    }
+
+    public LocationListener locationListener = new LocationListener() {
+
+        // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        // Provider被enable时触发此函数，比如GPS被打开
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        // Provider被disable时触发此函数，比如GPS被关闭
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+
+        //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
+        @Override
+        public void onLocationChanged(Location location) {
+        }
+    };
 }

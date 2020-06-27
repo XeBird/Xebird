@@ -1,5 +1,6 @@
 package com.lockon.xebird.other;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.TimeZone;
@@ -119,7 +120,7 @@ public class XeBirdHandler {
                 case msgTime:
                     long duration = (long) msg.obj;
                     Log.v(TAG, "Get Message duration: " + duration);
-                    SimpleDateFormat mdf = new SimpleDateFormat("HH:mm:ss");
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat mdf = new SimpleDateFormat("HH:mm:ss");
                     TimeZone tz = TimeZone.getTimeZone("UTC");
                     mdf.setTimeZone(tz);
                     String sysTimeStr = mdf.format(duration);
@@ -129,19 +130,27 @@ public class XeBirdHandler {
                 case msgLocation:
                     Bundle bundle = (Bundle) msg.obj;
                     double Latitude, Longitude;
+                    String AddressHint;
                     Latitude = bundle.getDouble("Latitude");
                     Longitude = bundle.getDouble("Longitude");
+                    AddressHint = bundle.getString("AddressHint");
                     Log.v(TAG, "Get Message Latitude: " + Latitude);
                     Log.v(TAG, "Get Message Longitude: " + Longitude);
+                    Log.v(TAG, "Get Message AddressHint: " + AddressHint);
                     if (Latitude != FailedResult) {
-                        f.LatitudeTV.setText(String.valueOf(Latitude));
+                        f.LatitudeTV.setText("LAT: " + Latitude);
                     } else {
                         f.LatitudeTV.setText(R.string.latitude);
                     }
                     if (Longitude != FailedResult) {
-                        f.LongitudeTV.setText(String.valueOf(Longitude));
+                        f.LongitudeTV.setText("LONG: " + Longitude);
                     } else {
                         f.LongitudeTV.setText(R.string.longitude);
+                    }
+                    if (!"".equals(AddressHint)) {
+                        f.LocationET.setHint(AddressHint);
+                    } else {
+                        f.LocationET.setHint(R.string.location_hint);
                     }
                     break;
 

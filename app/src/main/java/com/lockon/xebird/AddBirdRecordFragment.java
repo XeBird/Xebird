@@ -20,6 +20,11 @@ import com.lockon.xebird.db.BirdRecord;
 import com.lockon.xebird.db.BirdRecordDataBase;
 import com.lockon.xebird.other.Tracker;
 
+import org.json.JSONException;
+
+import java.net.MalformedURLException;
+import java.util.Objects;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AddBirdRecordFragment#newInstance} factory method to
@@ -39,6 +44,7 @@ public class AddBirdRecordFragment extends Fragment {
     public TextView nameTV, latitudeTV, longitudeTV;
     public EditText countET, locationET, commentsET;
     public Button submitBtn;
+    private Tracker tracker;
 
     public AddBirdRecordFragment() {
         // Required empty public constructor
@@ -63,6 +69,7 @@ public class AddBirdRecordFragment extends Fragment {
             birdRecord = (BirdRecord) getArguments().getSerializable(ARG_BirdRecord);
             checklistId = getArguments().getString(ARG_ChecklistId);
         }
+        tracker = Tracker.getInstance(requireContext().getApplicationContext());
     }
 
     @Override
@@ -96,6 +103,13 @@ public class AddBirdRecordFragment extends Fragment {
         if (str != null && str.length() != 0) {
             locationET.setText(str);
         }
+
+        try {
+            locationET.setHint(tracker.getLatestAddress());
+        } catch (MalformedURLException | JSONException e) {
+            e.printStackTrace();
+        }
+
         commentsET = view.findViewById(R.id.addBirdRecord_comments);
         str = birdRecord.getBirdComments();
         if (str != null && str.length() != 0) {
@@ -103,7 +117,6 @@ public class AddBirdRecordFragment extends Fragment {
         }
 
         submitBtn = view.findViewById(R.id.submit_button);
-
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

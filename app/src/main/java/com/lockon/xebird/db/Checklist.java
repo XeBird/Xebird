@@ -15,7 +15,9 @@ import androidx.room.PrimaryKey;
 import com.lockon.xebird.other.Tracker;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 
+import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -117,18 +119,20 @@ public class Checklist {
                     trackerHandler.sendMessage(msg1);
 
                     //获取地理位置
-                    Bundle bundle =  new Bundle();
+                    Bundle bundle = new Bundle();
                     double Latitude = FailedResult;
                     double Longitude = FailedResult;
                     Latitude = tracker.getLatestLatitude();
                     Longitude = tracker.getLatestLongitude();
+                    String AddressHint = tracker.getLatestAddress();
                     bundle.putDouble("Latitude", Latitude);
                     bundle.putDouble("Longitude", Longitude);
+                    bundle.putString("AddressHint", AddressHint);
                     Message msg2 = new Message();
                     msg2.what = msgLocation;
                     msg2.obj = bundle;
                     trackerHandler.sendMessage(msg2);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException | JSONException | MalformedURLException e) {
                     e.printStackTrace();
                 }
             } while (true);

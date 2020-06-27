@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -28,8 +29,12 @@ import androidx.navigation.Navigation;
 import com.lockon.xebird.db.BirdRecord;
 import com.lockon.xebird.db.BirdRecordDataBase;
 import com.lockon.xebird.db.Checklist;
+import com.lockon.xebird.other.Tracker;
 import com.lockon.xebird.other.XeBirdHandler;
 
+import org.json.JSONException;
+
+import java.net.MalformedURLException;
 import java.util.List;
 
 public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -39,18 +44,22 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     private static final int msgTime = 1;
     private static final int msgLocation = 2;
     public TextView timerTV, startAtTv;
-    public TextView LatitudeTV, LongitudeTV, LocationTV;
+    public TextView LatitudeTV, LongitudeTV;
     public EditText observersET, LocationET, commentsET;
     public Spinner protocolSpinner, provinceSpinner;
     public String provinceStr = "", protocolStr = "";
     public CheckBox allObservationsReportedCheckBox;
     public boolean allObservationsReported;
+    public Button autofill;
 
     public String uid;
     public long startTime;
     public Checklist checklist;
 
     public static XeBirdHandler.TrackerHandler trackerHandler;
+    public static Tracker tracker;
+
+    public static BirdRecordDataBase db;
 
 
     public ChecklistFragment() {
@@ -70,8 +79,12 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
 
         //timer Handler
         trackerHandler = new XeBirdHandler.TrackerHandler(this);
-        checklist = new Checklist(uid, trackerHandler, this.getActivity());
+        checklist = new Checklist(uid, trackerHandler, this.requireActivity());
+        db = BirdRecordDataBase.getInstance(getContext());
+        db.myDao().insertToChecklist(checklist);
 
+        //tracker for auto fill location
+        tracker = Tracker.getInstance(requireContext().getApplicationContext());
     }
 
     @Override
@@ -172,20 +185,44 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
             }
         });
 
+        //autofill_button
 
-        final BirdRecordDataBase db = BirdRecordDataBase.getInstance(getContext());
+        view.findViewById(R.id.auto_fill_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String address, province;
+                try {
+                    address = tracker.getLatestAddress();
+                    LocationET.setText(address);
 
+                    province = tracker.getLatestProvince();
+                    String[] provinceList = getResources().getStringArray(R.array.province);
+                    int index = -1;
+                    for (int i = 0; i < provinceList.length; i++) {
+                        if (provinceList[i].equals(province)) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    provinceSpinner.setSelection(index);
+                } catch (MalformedURLException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //add_button
         final Bundle bundle = new Bundle();
         bundle.putString("checklistId", checklist.getUid());
         view.findViewById(R.id.add_birdrecord_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.myDao().insertToChecklist(checklist);
                 Navigation.findNavController(view)
                         .navigate(R.id.action_checklistFragment_to_birdlistFragment, bundle);
             }
         });
 
+        //submit_button
         view.findViewById(R.id.submit_checklist_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
