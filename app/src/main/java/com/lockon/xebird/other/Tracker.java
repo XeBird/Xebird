@@ -86,8 +86,6 @@ public class Tracker {
         // https://developer.android.com/training/location/request-updates#callback
         assert locationProvider != null;
         locationManager.requestLocationUpdates(locationProvider, 1000, 1, locationListener);
-
-        //TODO: 提供计时器；etc.
     }
 
 
@@ -121,8 +119,15 @@ public class Tracker {
         return location;
     }
 
-    public void removeListener() {
-        locationManager.removeUpdates(locationListener);
+    public void stopTracker() {
+        if (locationManager != null) {
+            locationManager.removeUpdates(locationListener);
+            locationManager = null;
+        }
+        if (locationListener != null) {
+            locationListener = null;
+        }
+        instance = null;
     }
 
     //用1000来代表经纬度的错误返回值
@@ -174,7 +179,7 @@ public class Tracker {
                     urlStr.append("&key=").append(mapKey);
 
                     URL url = new URL(urlStr.toString());
-                    Log.i(TAG, url.toString());
+                    //Log.v(TAG, "url: "+url.toString());
 
                     HttpURLConnection conn = null;
                     try {
@@ -232,7 +237,7 @@ public class Tracker {
     public String getLatestAddress() throws MalformedURLException, JSONException {
         JSONObject jsonObj = getLatestAddressJSON();
         if (jsonObj != null) {
-            Log.i(TAG, jsonObj.getJSONObject("regeocode").getString("formatted_address"));
+            //Log.v(TAG, jsonObj.getJSONObject("regeocode").getString("formatted_address"));
             return jsonObj.getJSONObject("regeocode").getString("formatted_address");
         } else {
             return "";

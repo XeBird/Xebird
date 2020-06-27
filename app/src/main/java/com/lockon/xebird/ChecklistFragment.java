@@ -5,6 +5,8 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.TimeZone;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.room.Ignore;
 
 import com.lockon.xebird.db.BirdRecord;
 import com.lockon.xebird.db.BirdRecordDataBase;
@@ -50,14 +53,15 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     public String provinceStr = "", protocolStr = "";
     public CheckBox allObservationsReportedCheckBox;
     public boolean allObservationsReported;
-    public Button autofill;
 
     public String uid;
     public long startTime;
     public Checklist checklist;
 
-    public static XeBirdHandler.TrackerHandler trackerHandler;
-    public static Tracker tracker;
+    public Thread trackerThread = null;
+    public XeBirdHandler.TrackerHandler trackerHandler;
+    public Handler loopHandler;
+    public Tracker tracker;
 
     public static BirdRecordDataBase db;
 
@@ -70,6 +74,17 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //tracker for auto fill location
+        tracker = Tracker.getInstance(requireContext());
+        trackerHandler = new XeBirdHandler.TrackerHandler(this);
+
+        //loop trackerThread for continuous update
+        loopHandler = new Handler();
+        trackerThread = new TrackerThread();
+        trackerThread.start();
+        //TODO - Remove
+        //loopHandler.postDelayed(trackerThread, 1000);
+
         //实例化一个Checklist，数据均存储于其中
         startTime = System.currentTimeMillis();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdf = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -77,20 +92,18 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         uid = mdf.format(startTime);
         Log.v(TAG, "UTC:" + uid);
 
-        //timer Handler
-        trackerHandler = new XeBirdHandler.TrackerHandler(this);
-        checklist = new Checklist(uid, trackerHandler, this.requireActivity());
+        checklist = new Checklist(uid, startTime, tracker.getLatestLatitude(), tracker.getLatestLongitude());
         db = BirdRecordDataBase.getInstance(getContext());
         db.myDao().insertToChecklist(checklist);
 
-        //tracker for auto fill location
-        tracker = Tracker.getInstance(requireContext().getApplicationContext());
+        Log.i(TAG, "onCreate!");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.i(TAG, "onCreateView!");
         return inflater.inflate(R.layout.fragment_checklist, container, false);
     }
 
@@ -102,6 +115,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "onCreateView!");
 
 //        //请求地理位置权限
 //        int hasACCESS_FINE_LOCATIONPermission =
@@ -141,7 +155,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         startAtTv.setText(mdf2.format(startTime));
 
         //protocolSpinner
-        ArrayAdapter protocolAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter protocolAdapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.protocol, android.R.layout.simple_spinner_item);
         protocolAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         protocolSpinner.setAdapter(protocolAdapter);
@@ -160,7 +174,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
 
 
         //provinceSpinner
-        ArrayAdapter provinceAdapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter provinceAdapter = ArrayAdapter.createFromResource(requireContext(),
                 R.array.province, android.R.layout.simple_spinner_item);
         provinceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinceSpinner.setAdapter(provinceAdapter);
@@ -186,7 +200,6 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         });
 
         //autofill_button
-
         view.findViewById(R.id.auto_fill_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -234,6 +247,8 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                                 List<BirdRecord> birdRecordList =
                                         db.myDao().getAllByCid(checklist.getUid());
                                 if (null != birdRecordList && !birdRecordList.isEmpty()) {
+
+                                    //submit the checklist
                                     checklist.setEndTime(System.currentTimeMillis());
                                     checklist.setNumber_of_observers(observers);
                                     checklist.setLocationName(LocationET.getText().toString());
@@ -242,6 +257,13 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                                     checklist.setProvince(provinceStr);
                                     checklist.setAll_observations_reported(allObservationsReported);
                                     db.myDao().updateInChecklist(checklist);
+
+                                    //remove handler, which lead to stop the loop of thread
+                                    loopHandler.removeCallbacksAndMessages(null);
+                                    trackerHandler.removeCallbacksAndMessages(null);
+
+                                    //stop Tracker
+                                    tracker.stopTracker();
                                     Navigation.findNavController(view).navigateUp();
                                 } else {
                                     Toast.makeText(getContext(),
@@ -266,5 +288,47 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                 }
             }
         });
+    }
+
+    public class TrackerThread extends Thread {
+        //用1000来代表经纬度错误返回值
+        final double FailedResult = 1000;
+
+        @Override
+        public void run() {
+            try {
+                //获取时间间隔
+                long sysTime = System.currentTimeMillis();
+                Message msg1 = new Message();
+                msg1.what = msgTime;
+                msg1.obj = sysTime - startTime;
+                Log.v(TAG, "sysTime：" + sysTime + " startTime：" + startTime);
+                trackerHandler.sendMessage(msg1);
+
+                //获取地理位置
+                Bundle bundle = new Bundle();
+                double Latitude = FailedResult;
+                double Longitude = FailedResult;
+                Latitude = tracker.getLatestLatitude();
+                Longitude = tracker.getLatestLongitude();
+                String AddressHint = tracker.getLatestAddress();
+                bundle.putDouble("Latitude", Latitude);
+                bundle.putDouble("Longitude", Longitude);
+                bundle.putString("AddressHint", AddressHint);
+                Message msg2 = new Message();
+                msg2.what = msgLocation;
+                msg2.obj = bundle;
+                trackerHandler.sendMessage(msg2);
+            } catch (JSONException | MalformedURLException e) {
+                e.printStackTrace();
+            }
+            loopHandler.postDelayed(this, 1000);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        Log.i(TAG, "onDetach!");
+        super.onDetach();
     }
 }

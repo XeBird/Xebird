@@ -123,7 +123,7 @@
         android:id="@+id/addBirdRecord_comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="16"
+        android:ems="14"
         android:hint="@string/comments_hint"
         android:importantForAutofill="no"
         android:inputType="text"

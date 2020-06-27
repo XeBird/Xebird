@@ -39,15 +39,6 @@ public class Checklist {
     private long startTime, endTime;
 
     //地点信息
-    @Ignore
-    private Tracker tracker;
-    //用1000来代表经纬度错误返回值
-    @Ignore
-    final double FailedResult = 1000;
-    @Ignore
-    private Handler trackerHandler;
-    @Ignore
-    private static Thread trackerThread = null;
     private String LocationName;
     private double checklistLatitude, checklistLongitude;
     private String Province;
@@ -69,64 +60,16 @@ public class Checklist {
     }
 
     @Ignore
-    public Checklist(@NotNull String uid, Handler trackerHandler, Context context) {
+    public Checklist(@NotNull String uid, long startTime, double checklistLatitude, double checklistLongitude) {
         this.uid = uid;
-        this.trackerHandler = trackerHandler;
-        tracker = Tracker.getInstance(context.getApplicationContext());
-        startTime = System.currentTimeMillis();
-        checklistLatitude = tracker.getLatestLatitude();
-        checklistLongitude = tracker.getLatestLongitude();
+        this.startTime = startTime;
+        this.checklistLatitude = checklistLatitude;
+        this.checklistLongitude = checklistLongitude;
         Log.i(TAG, "startTime：" + startTime);
-        if (trackerThread == null) {
-            trackerThread = new TrackerThread();
-            trackerThread.start();
-        }
     }
-
-    //计时，参考了 https://www.xp.cn/b.php/86888.html
-    @Ignore
-    private static final int msgTime = 1;
-    @Ignore
-    private static final int msgLocation = 2;
 
     public String getLocation() {
         return LocationName + "              " + Province + "\t" + Country;
-    }
-
-    public class TrackerThread extends Thread {
-        @Override
-        public void run() {
-            do {
-                try {
-                    Thread.sleep(1000);
-
-                    //获取时间间隔
-                    long sysTime = System.currentTimeMillis();
-                    Message msg1 = new Message();
-                    msg1.what = msgTime;
-                    msg1.obj = sysTime - startTime;
-                    Log.v(TAG, "sysTime：" + sysTime + " startTime：" + startTime);
-                    trackerHandler.sendMessage(msg1);
-
-                    //获取地理位置
-                    Bundle bundle = new Bundle();
-                    double Latitude = FailedResult;
-                    double Longitude = FailedResult;
-                    Latitude = tracker.getLatestLatitude();
-                    Longitude = tracker.getLatestLongitude();
-                    String AddressHint = tracker.getLatestAddress();
-                    bundle.putDouble("Latitude", Latitude);
-                    bundle.putDouble("Longitude", Longitude);
-                    bundle.putString("AddressHint", AddressHint);
-                    Message msg2 = new Message();
-                    msg2.what = msgLocation;
-                    msg2.obj = bundle;
-                    trackerHandler.sendMessage(msg2);
-                } catch (InterruptedException | JSONException | MalformedURLException e) {
-                    e.printStackTrace();
-                }
-            } while (true);
-        }
     }
 
     //以下全是getter和setter
