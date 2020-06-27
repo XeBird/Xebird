@@ -1,5 +1,6 @@
 package com.lockon.xebird;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ public class AddBirdRecordFragment extends Fragment {
     public EditText countET, locationET, commentsET;
     public Button submitBtn;
     private Tracker tracker;
+    private String addressHint;
 
     public AddBirdRecordFragment() {
         // Required empty public constructor
@@ -79,6 +81,7 @@ public class AddBirdRecordFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_add_bird_record, container, false);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -91,8 +94,8 @@ public class AddBirdRecordFragment extends Fragment {
         Tracker tracker = Tracker.getInstance(view.getContext().getApplicationContext());
         final double birdLatitude = tracker.getLatestLatitude();
         final double birdLongitude = tracker.getLatestLongitude();
-        latitudeTV.setText(String.valueOf(birdLatitude));
-        longitudeTV.setText(String.valueOf(birdLongitude));
+        latitudeTV.setText("LAT: " + birdLatitude);
+        longitudeTV.setText("LONG: " + birdLongitude);
 
         countET = view.findViewById(R.id.addBirdRcord_birdcount);
         if (birdRecord.getBirdCount() != 0) {
@@ -104,11 +107,20 @@ public class AddBirdRecordFragment extends Fragment {
             locationET.setText(str);
         }
 
+        //Address Hint
         try {
-            locationET.setHint(tracker.getLatestAddress());
+            addressHint = tracker.getLatestAddress();
+            locationET.setHint(addressHint);
         } catch (MalformedURLException | JSONException e) {
             e.printStackTrace();
         }
+
+        view.findViewById(R.id.auto_fill_button2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationET.setText(addressHint);
+            }
+        });
 
         commentsET = view.findViewById(R.id.addBirdRecord_comments);
         str = birdRecord.getBirdComments();
@@ -141,7 +153,7 @@ public class AddBirdRecordFragment extends Fragment {
                         BirdRecordDataBase db = BirdRecordDataBase.getInstance(getContext());
                         db.myDao().updateInBirdRecord(birdRecord);
                         Navigation.findNavController(view).navigateUp();
-                        Toast.makeText(getContext(), "Add/Modify record:" + birdData.getNameCN() +
+                        Toast.makeText(getContext(), "Add/Modify record: " + birdData.getNameCN() +
                                         ". Count: " + birdRecord.getBirdCount(),
                                 Toast.LENGTH_LONG).show();
                     } else {

@@ -128,11 +128,10 @@
         android:id="@+id/Checklist_Comments"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="20"
+        android:ems="16"
         android:hint="@string/comments_hint"
         android:importantForAutofill="no"
         android:inputType="text"
-        android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="@id/Checklist_Comments_title"
         app:layout_constraintTop_toBottomOf="@id/Checklist_Comments_title" />
 
@@ -158,14 +157,14 @@
         app:layout_constraintTop_toTopOf="@+id/add_birdrecord_button"
         app:layout_constraintVertical_bias="0.0" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/added_bird_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/submit_checklist_button" />
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/added_bird_list"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/submit_checklist_button" />-->
 
     <Spinner
         android:id="@+id/protocol"
