@@ -1,5 +1,7 @@
 package com.lockon.xebird;
 
+import android.text.Editable;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -9,7 +11,7 @@ import java.util.List;
 
 public class InfoShowNameViewModel extends ViewModel {
     private MutableLiveData<List<BirdData>> BirdDatas;
-    private MutableLiveData<String> EditText;
+    private MutableLiveData<Editable> EditText;
 
     public MutableLiveData<List<BirdData>> getBirdDatas() {
         if (BirdDatas == null) {
@@ -19,7 +21,7 @@ public class InfoShowNameViewModel extends ViewModel {
         return BirdDatas;
     }
 
-    public MutableLiveData<String> getEditText() {
+    public MutableLiveData<Editable> getEditText() {
         if (EditText == null) {
             EditText = new MutableLiveData<>();
         }
