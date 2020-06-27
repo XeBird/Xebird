@@ -15,6 +15,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.lockon.xebird.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,6 +50,7 @@ public class Tracker {
     private String locationProvider = null;
     private long lastUpdateAddressJSON = 0;
     private JSONObject addressJSON = null;
+    private int ADDRESS_MAX_UPDATE_INTERVAL = 300000;
 
 
     private Tracker(Context context) {
@@ -87,7 +90,7 @@ public class Tracker {
         // TODO -Consider: 官方文档建议构造一个 LocationRequest 对象来确定 requestLocationUpdates 的参数
         // https://developer.android.com/training/location/request-updates#callback
         assert locationProvider != null;
-        locationManager.requestLocationUpdates(locationProvider, 5000, 1, locationListener);
+        locationManager.requestLocationUpdates(locationProvider, 10000, 1, locationListener);
     }
 
 
@@ -111,7 +114,6 @@ public class Tracker {
             // for ActivityCompat#requestPermissions for more details.
             return null;
         }
-        //locationManager.requestLocationUpdates(locationProvider, 1000, 1, locationListener);
         Location location = locationManager.getLastKnownLocation(locationProvider);
         if (location != null) {
             Log.v(TAG, "Successfully get location!");
@@ -136,6 +138,7 @@ public class Tracker {
     final double FailedResult = 1000;
 
     public double getLatestLatitude() {
+        Log.i(TAG, "getLatestLatitude");
         Location location = getLatestLocation();
         if (location != null) {
             Log.v(TAG, "Successfully get latitude!");
@@ -160,17 +163,68 @@ public class Tracker {
     }
 
     public JSONObject getLatestAddressJSON() {
+        Log.i(TAG, "getLatestAddressJSON");
+        updateAddressJSONNow();
+        return addressJSON;
+    }
+
+    public String getLatestAddress() throws JSONException {
+        JSONObject jsonObj = getLatestAddressJSON();
+        if (jsonObj != null) {
+            //Log.v(TAG, jsonObj.getJSONObject("regeocode").getString("formatted_address"));
+            return jsonObj.getJSONObject("regeocode").getString("formatted_address");
+        } else {
+            return "";
+        }
+    }
+
+    public int getLatestProvince() throws JSONException {
+        JSONObject jsonObj = getLatestAddressJSON();
+        String provinceStr;
+        if (jsonObj != null) {
+            provinceStr =  jsonObj.getJSONObject("regeocode").getJSONObject("addressComponent").getString("province");
+        } else {
+            provinceStr =  "";
+        }
+        return transformStringToIndexForProvince(provinceStr);
+    }
+
+    public JSONObject getCachedAddressJSON() {
+        Log.i(TAG, "getLatestAddressJSON");
         updateAddressJSON();
         return addressJSON;
     }
 
+    public String getCachedAddress() throws JSONException {
+        JSONObject jsonObj = getCachedAddressJSON();
+        if (jsonObj != null) {
+            //Log.v(TAG, jsonObj.getJSONObject("regeocode").getString("formatted_address"));
+            return jsonObj.getJSONObject("regeocode").getString("formatted_address");
+        } else {
+            return "";
+        }
+    }
+
+    public int getCachedProvince() throws JSONException {
+        JSONObject jsonObj = getCachedAddressJSON();
+        String provinceStr;
+        if (jsonObj != null) {
+            provinceStr =  jsonObj.getJSONObject("regeocode").getJSONObject("addressComponent").getString("province");
+        } else {
+            provinceStr =  "";
+        }
+        return transformStringToIndexForProvince(provinceStr);
+    }
+
     public void updateAddressJSON() {
-        if ((System.currentTimeMillis() - lastUpdateAddressJSON) > 5000) {
+        if ((System.currentTimeMillis() - lastUpdateAddressJSON) > ADDRESS_MAX_UPDATE_INTERVAL) {
+            Log.i(TAG, "updateAddressJSON!");
             updateAddressJSONNow();
         }
     }
 
     public void updateAddressJSONNow() {
+        Log.i(TAG, "updateAddressJSONNow!");
 
         final double latitude = this.getLatestLatitude();
         final double longitude = this.getLatestLongitude();
@@ -181,7 +235,7 @@ public class Tracker {
 
                     JSONObject jsonObj = null;
                     StringBuilder urlStr = new StringBuilder("https://restapi.amap.com/v3/geocode/regeo?");
-                    String mapKey = "6db1a0a9ab607c2bc9edaee28df9bb43";
+                    String mapKey = "e31bae5591a87260b6cc9a0cce705d12";
                     urlStr.append("output=json");
 
                     String location = longitude + "," + latitude;
@@ -213,7 +267,8 @@ public class Tracker {
                         //读取地理位置，判断是否成功
                         jsonObj = new JSONObject(response.toString());
                         if (jsonObj.getInt("status") != 1) {
-                            Log.w(TAG, "Amap location service failed!" + jsonObj.getInt("status"));
+                            Log.w(TAG, "Amap location service failed! Info: "
+                                    + jsonObj.getString("info"));
                             jsonObj = null;
                         }
                     } catch (Exception e) {
@@ -234,7 +289,9 @@ public class Tracker {
 
             try {
                 addressJSON = futureTask.get();
-                lastUpdateAddressJSON = System.currentTimeMillis();
+                if (addressJSON != null) {
+                    lastUpdateAddressJSON = System.currentTimeMillis();
+                }
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
@@ -243,23 +300,16 @@ public class Tracker {
         }
     }
 
-    public String getLatestAddress() throws MalformedURLException, JSONException {
-        JSONObject jsonObj = getLatestAddressJSON();
-        if (jsonObj != null) {
-            //Log.v(TAG, jsonObj.getJSONObject("regeocode").getString("formatted_address"));
-            return jsonObj.getJSONObject("regeocode").getString("formatted_address");
-        } else {
-            return "";
+    public int transformStringToIndexForProvince (String provinceStr){
+        String[] provinceList = mContext.getResources().getStringArray(R.array.province);
+        int index = -1;
+        for (int i = 0; i < provinceList.length; i++) {
+            if (provinceList[i].equals(provinceStr)) {
+                index = i;
+                break;
+            }
         }
-    }
-
-    public String getLatestProvince() throws MalformedURLException, JSONException {
-        JSONObject jsonObj = getLatestAddressJSON();
-        if (jsonObj != null) {
-            return jsonObj.getJSONObject("regeocode").getJSONObject("addressComponent").getString("province");
-        } else {
-            return "";
-        }
+        return index;
     }
 
     //保留5位小数

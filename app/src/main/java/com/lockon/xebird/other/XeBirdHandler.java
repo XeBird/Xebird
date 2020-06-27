@@ -131,12 +131,15 @@ public class XeBirdHandler {
                     Bundle bundle = (Bundle) msg.obj;
                     double Latitude, Longitude;
                     String AddressHint;
+                    int ProvinceHint;
                     Latitude = bundle.getDouble("Latitude");
                     Longitude = bundle.getDouble("Longitude");
                     AddressHint = bundle.getString("AddressHint");
+                    ProvinceHint = bundle.getInt("ProvinceHint");
                     Log.v(TAG, "Get Message Latitude: " + Latitude);
                     Log.v(TAG, "Get Message Longitude: " + Longitude);
                     Log.v(TAG, "Get Message AddressHint: " + AddressHint);
+                    Log.v(TAG, "Get Message ProvinceHint(in Index): " + ProvinceHint);
                     if (Latitude != FailedResult) {
                         f.LatitudeTV.setText("LAT: " + Latitude);
                     } else {
@@ -151,6 +154,9 @@ public class XeBirdHandler {
                         f.LocationET.setHint(AddressHint);
                     } else {
                         f.LocationET.setHint(R.string.location_hint);
+                    }
+                    if (ProvinceHint != -1) {
+                        f.provinceSpinner.setSelection(ProvinceHint);
                     }
                     break;
 

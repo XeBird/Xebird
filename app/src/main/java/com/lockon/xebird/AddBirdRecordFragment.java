@@ -37,11 +37,9 @@ public class AddBirdRecordFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_BirdData = "BirdData";
     private static final String ARG_BirdRecord = "BirdRecord";
-    private static final String ARG_ChecklistId = "ChecklistId";
 
     private BirdData birdData;
     private BirdRecord birdRecord;
-    private String checklistId;
     public TextView nameTV, latitudeTV, longitudeTV;
     public EditText countET, locationET, commentsET;
     public Button submitBtn;
@@ -53,12 +51,11 @@ public class AddBirdRecordFragment extends Fragment {
     }
 
     public static AddBirdRecordFragment newInstance(
-            BirdData birdData, BirdRecord birdRecord, String checklistId) {
+            BirdData birdData, BirdRecord birdRecord) {
         AddBirdRecordFragment fragment = new AddBirdRecordFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_BirdData, birdData);
         args.putSerializable(ARG_BirdRecord, birdRecord);
-        args.putString(ARG_ChecklistId, checklistId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,7 +66,6 @@ public class AddBirdRecordFragment extends Fragment {
         if (getArguments() != null) {
             birdData = (BirdData) getArguments().getSerializable(ARG_BirdData);
             birdRecord = (BirdRecord) getArguments().getSerializable(ARG_BirdRecord);
-            checklistId = getArguments().getString(ARG_ChecklistId);
         }
         tracker = Tracker.getInstance(requireContext().getApplicationContext());
     }
@@ -91,7 +87,7 @@ public class AddBirdRecordFragment extends Fragment {
 
         latitudeTV = view.findViewById(R.id.Latitude);
         longitudeTV = view.findViewById(R.id.Longitude);
-        Tracker tracker = Tracker.getInstance(view.getContext().getApplicationContext());
+        tracker = Tracker.getInstance(view.getContext().getApplicationContext());
         final double birdLatitude = tracker.getLatestLatitude();
         final double birdLongitude = tracker.getLatestLongitude();
         latitudeTV.setText("LAT: " + birdLatitude);
@@ -111,7 +107,7 @@ public class AddBirdRecordFragment extends Fragment {
         try {
             addressHint = tracker.getLatestAddress();
             locationET.setHint(addressHint);
-        } catch (MalformedURLException | JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
 

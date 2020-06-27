@@ -53,6 +53,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     public String provinceStr = "", protocolStr = "";
     public CheckBox allObservationsReportedCheckBox;
     public boolean allObservationsReported;
+    public Button autofillButton;
 
     public String uid;
     public long startTime;
@@ -147,6 +148,8 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
 
         allObservationsReportedCheckBox = view.findViewById(R.id.all_observations_reported);
 
+        autofillButton = view.findViewById(R.id.auto_fill_button);
+
         //start_time
         @SuppressLint("SimpleDateFormat") SimpleDateFormat mdf2 = new SimpleDateFormat("HH:mm:ss");
         mdf2.setTimeZone(TimeZone.getDefault());
@@ -198,7 +201,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         });
 
         //autofill_button
-        view.findViewById(R.id.auto_fill_button).setOnClickListener(new View.OnClickListener() {
+        autofillButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String address, province;
@@ -206,17 +209,8 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                     address = tracker.getLatestAddress();
                     LocationET.setText(address);
 
-                    province = tracker.getLatestProvince();
-                    String[] provinceList = getResources().getStringArray(R.array.province);
-                    int index = -1;
-                    for (int i = 0; i < provinceList.length; i++) {
-                        if (provinceList[i].equals(province)) {
-                            index = i;
-                            break;
-                        }
-                    }
-                    provinceSpinner.setSelection(index);
-                } catch (MalformedURLException | JSONException e) {
+                    provinceSpinner.setSelection(tracker.getLatestProvince());
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -289,9 +283,6 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     }
 
     public class TrackerThread extends Thread {
-        //用1000来代表经纬度错误返回值
-        final double FailedResult = 1000;
-
         @Override
         public void run() {
             try {
@@ -305,19 +296,15 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
 
                 //获取地理位置
                 Bundle bundle = new Bundle();
-                double Latitude = FailedResult;
-                double Longitude = FailedResult;
-                Latitude = tracker.getLatestLatitude();
-                Longitude = tracker.getLatestLongitude();
-                String AddressHint = tracker.getLatestAddress();
-                bundle.putDouble("Latitude", Latitude);
-                bundle.putDouble("Longitude", Longitude);
-                bundle.putString("AddressHint", AddressHint);
+                bundle.putDouble("Latitude", tracker.getLatestLatitude());
+                bundle.putDouble("Longitude", tracker.getLatestLongitude());
+                bundle.putString("AddressHint", tracker.getCachedAddress());
+                bundle.putInt("ProvinceHint",tracker.getCachedProvince());
                 Message msg2 = new Message();
                 msg2.what = msgLocation;
                 msg2.obj = bundle;
                 trackerHandler.sendMessage(msg2);
-            } catch (JSONException | MalformedURLException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
             loopHandler.postDelayed(this, 1000);
