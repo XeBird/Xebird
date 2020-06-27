@@ -46,6 +46,8 @@ public class Tracker {
     private Context mContext;
     private LocationManager locationManager;
     private String locationProvider = null;
+    private long lastUpdateAddressJSON = 0;
+    private JSONObject addressJSON = null;
 
 
     private Tracker(Context context) {
@@ -85,7 +87,7 @@ public class Tracker {
         // TODO -Consider: 官方文档建议构造一个 LocationRequest 对象来确定 requestLocationUpdates 的参数
         // https://developer.android.com/training/location/request-updates#callback
         assert locationProvider != null;
-        locationManager.requestLocationUpdates(locationProvider, 1000, 1, locationListener);
+        locationManager.requestLocationUpdates(locationProvider, 5000, 1, locationListener);
     }
 
 
@@ -109,7 +111,7 @@ public class Tracker {
             // for ActivityCompat#requestPermissions for more details.
             return null;
         }
-        locationManager.requestLocationUpdates(locationProvider, 1000, 1, locationListener);
+        //locationManager.requestLocationUpdates(locationProvider, 1000, 1, locationListener);
         Location location = locationManager.getLastKnownLocation(locationProvider);
         if (location != null) {
             Log.v(TAG, "Successfully get location!");
@@ -157,10 +159,18 @@ public class Tracker {
         }
     }
 
+    public JSONObject getLatestAddressJSON() {
+        updateAddressJSON();
+        return addressJSON;
+    }
 
-    public JSONObject getLatestAddressJSON() throws MalformedURLException {
+    public void updateAddressJSON() {
+        if ((System.currentTimeMillis() - lastUpdateAddressJSON) > 5000) {
+            updateAddressJSONNow();
+        }
+    }
 
-        JSONObject result = null;
+    public void updateAddressJSONNow() {
 
         final double latitude = this.getLatestLatitude();
         final double longitude = this.getLatestLongitude();
@@ -223,15 +233,14 @@ public class Tracker {
             thread.start();
 
             try {
-                result = futureTask.get();
+                addressJSON = futureTask.get();
+                lastUpdateAddressJSON = System.currentTimeMillis();
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
         } else {
-            Log.w(TAG, "Failed to get latitude and longitude, so no location result!");
-            result = null;
+            Log.e(TAG, "Failed to get latitude and longitude, so no location result!");
         }
-        return result;
     }
 
     public String getLatestAddress() throws MalformedURLException, JSONException {

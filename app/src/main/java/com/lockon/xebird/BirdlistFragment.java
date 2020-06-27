@@ -66,9 +66,6 @@ public class BirdlistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(TAG, "onCreateView!");
-
-        BirdRecordDataBase bd = BirdRecordDataBase.getInstance(requireContext());
         assert getArguments() != null;
         checklistId = getArguments().getString("checklistId");
 

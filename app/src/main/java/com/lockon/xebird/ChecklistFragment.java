@@ -82,8 +82,6 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         loopHandler = new Handler();
         trackerThread = new TrackerThread();
         trackerThread.start();
-        //TODO - Remove
-        //loopHandler.postDelayed(trackerThread, 1000);
 
         //实例化一个Checklist，数据均存储于其中
         startTime = System.currentTimeMillis();
