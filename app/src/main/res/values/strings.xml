@@ -76,6 +76,7 @@
     <string name="all_observations_reported">All observations\nreported?</string>
     <string name="item_name_label">名称</string>
     <string name="item_count_label">数量</string>
+    <string name="spliter">spliter</string>
 
 
 </resources>

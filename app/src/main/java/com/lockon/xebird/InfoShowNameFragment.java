@@ -1,6 +1,7 @@
 package com.lockon.xebird;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,15 +53,17 @@ public class InfoShowNameFragment extends Fragment {
 
         mViewModel.getBirdDatas().observe(this, listObserver);
 
-        final Observer<String> editObserver = new Observer<String>() {
+        final Observer<Editable> editObserver = new Observer<Editable>() {
             @Override
-            public void onChanged(String s) {
-                if (s == null) {
+            public void onChanged(Editable editable) {
+                if (editable == null) {
                     mViewModel.getBirdDatas().postValue(new ArrayList<BirdData>());
                 } else {
+                    String s = editable.toString();
                     List<BirdData> whatget = bd.myDao().findByNameCN(s.trim());
                     mViewModel.getBirdDatas().postValue(whatget);
                 }
+                History.initInstance(requireContext()).put(editable);
             }
         };
 
@@ -92,7 +95,7 @@ public class InfoShowNameFragment extends Fragment {
         view.findViewById(R.id.button_search).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mViewModel.getEditText().postValue(String.valueOf(edittext.getText()));
+                mViewModel.getEditText().postValue(edittext.getText());
             }
         });
 

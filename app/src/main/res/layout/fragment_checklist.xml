@@ -4,18 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="32dp"
+    android:layout_marginVertical="14dp"
     tools:context=".ChecklistFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:id="@+id/timer"
-        style="@style/Widget.AppCompat.TextView.SpinnerItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/timer"
-        app:layout_constraintBottom_toBottomOf="@+id/timer_title"
-        app:layout_constraintLeft_toRightOf="@+id/timer_title" />
 
     <TextView
         android:id="@+id/timer_title"
@@ -23,12 +16,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/timer_title"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/timer"
+        app:layout_constraintEnd_toStartOf="@id/timer"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timer"
+        style="@style/Widget.AppCompat.TextView.SpinnerItem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/timer"
+        android:textSize="34sp"
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@+id/timer_title"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.039" />
+        app:layout_constraintBottom_toBottomOf="@+id/timer_title"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <TextView
         android:id="@+id/start_time_title"
@@ -36,111 +43,202 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/start_time_title"
-        app:layout_constraintBottom_toBottomOf="@id/timer"
-        app:layout_constraintLeft_toRightOf="@id/timer" />
+        app:layout_constraintBottom_toTopOf="@+id/spliter_1"
+        app:layout_constraintEnd_toStartOf="@id/start_time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_title" />
 
     <TextView
         android:id="@+id/start_time"
         style="@style/Widget.AppCompat.TextView.SpinnerItem"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/start_time_default_value"
+        android:textSize="34sp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/start_time_title"
+        app:layout_constraintTop_toTopOf="@id/start_time_title"
         app:layout_constraintBottom_toBottomOf="@id/start_time_title"
-        app:layout_constraintLeft_toRightOf="@id/start_time_title" />
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/spliter_1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:contentDescription="@string/spliter"
+        android:src="@drawable/split_line"
+        android:layout_marginVertical="10dp"
+        app:layout_constraintBottom_toTopOf="@id/observers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/start_time_title" />
 
     <EditText
         android:id="@+id/observers"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:ems="5"
         android:hint="@string/observers_hint"
         android:importantForAutofill="no"
         android:inputType="number"
-        app:layout_constraintLeft_toLeftOf="@id/timer_title"
-        app:layout_constraintTop_toBottomOf="@id/timer_title" />
+        app:layout_constraintBottom_toTopOf="@+id/spliter_2"
+        app:layout_constraintEnd_toStartOf="@+id/all_observations_reported"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spliter_1" />
+
+    <CheckBox
+        android:id="@+id/all_observations_reported"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/all_observations_reported"
+        app:layout_constraintBottom_toBottomOf="@+id/observers"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/observers"
+        app:layout_constraintTop_toTopOf="@+id/observers" />
+
+    <ImageView
+        android:id="@+id/spliter_2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:src="@drawable/split_line"
+        android:layout_marginVertical="20dp"
+        app:layout_constraintTop_toBottomOf="@id/observers"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/Location"
+        android:contentDescription="@string/spliter" />
 
     <EditText
         android:id="@+id/Location"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/location_hint"
+        android:layout_marginVertical="25dp"
         android:importantForAutofill="no"
         android:inputType="text"
         android:maxLength="17"
-        app:layout_constraintLeft_toLeftOf="@id/timer_title"
-        app:layout_constraintTop_toBottomOf="@id/observers" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spliter_2"
+        app:layout_constraintBottom_toTopOf="@id/auto_fill_button" />
+
+    <TextView
+        android:id="@+id/Latitude"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/latitude"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/Longitude"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Location" />
+
+    <TextView
+        android:id="@+id/Longitude"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/longitude"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/auto_fill_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Latitude" />
 
     <Spinner
         android:id="@+id/province"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/Location"
+        app:layout_constraintBottom_toTopOf="@id/Location"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/Location"
-        app:layout_constraintTop_toTopOf="@+id/Location" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spliter_2" />
 
-    <TextView
-        android:id="@+id/Latitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/latitude"
-        app:layout_constraintStart_toStartOf="@+id/Location"
-        app:layout_constraintTop_toBottomOf="@id/Location" />
-
-    <TextView
-        android:id="@+id/Longitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:text="@string/longitude"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toEndOf="@id/Latitude"
-        app:layout_constraintTop_toTopOf="@id/Latitude" />
 
     <Button
         android:id="@+id/auto_fill_button"
         style="@android:style/Widget.Material.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:minWidth="0dp"
         android:minHeight="0dp"
         android:text="@string/autofill_button"
         android:visibility="visible"
-        app:layout_constraintBaseline_toBaselineOf="@id/Latitude"
+        app:layout_constraintBottom_toTopOf="@id/spliter_3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Latitude"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Spinner
+        android:id="@+id/protocol"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/auto_fill_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/Longitude" />
+        app:layout_constraintTop_toTopOf="@id/auto_fill_button"
+        app:layout_constraintBottom_toBottomOf="@id/auto_fill_button" />
+
+    <ImageView
+        android:id="@+id/spliter_3"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginVertical="10dp"
+        android:src="@drawable/split_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/Checklist_Comments"
+        app:layout_constraintTop_toBottomOf="@id/auto_fill_button"
+        android:contentDescription="@string/spliter" />
 
     <TextView
         android:id="@+id/Checklist_Comments_title"
         style="@style/Widget.AppCompat.TextView.SpinnerItem"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="@string/checklist_comments_title"
-        app:layout_constraintLeft_toLeftOf="@id/timer_title"
-        app:layout_constraintTop_toBottomOf="@id/Latitude" />
+        app:layout_constraintBottom_toTopOf="@+id/Checklist_Comments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/Checklist_Comments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
         android:ems="16"
+        android:textAlignment="textStart"
         android:hint="@string/comments_hint"
         android:importantForAutofill="no"
-        android:inputType="text"
-        app:layout_constraintLeft_toLeftOf="@id/Checklist_Comments_title"
-        app:layout_constraintTop_toBottomOf="@id/Checklist_Comments_title" />
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="7dp"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:ellipsize="none"
+        android:maxLines="5"
+        app:layout_constraintBottom_toTopOf="@id/add_birdrecord_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spliter_3" />
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/added_bird_list"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--        app:layout_constraintRight_toRightOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/submit_checklist_button" />-->
 
     <Button
         android:id="@+id/add_birdrecord_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
         android:text="@string/add_button"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/submit_checklist_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Checklist_Comments" />
@@ -149,38 +247,13 @@
         android:id="@+id/submit_checklist_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
         android:text="@string/submit_checklist"
         app:layout_constraintBottom_toBottomOf="@+id/add_birdrecord_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/add_birdrecord_button"
-        app:layout_constraintTop_toTopOf="@+id/add_birdrecord_button"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/add_birdrecord_button" />
 
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/added_bird_list"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/submit_checklist_button" />-->
 
-    <Spinner
-        android:id="@+id/protocol"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/observers"
-        app:layout_constraintLeft_toRightOf="@id/observers"
-        app:layout_constraintTop_toTopOf="@+id/observers" />
-
-    <CheckBox
-        android:id="@+id/all_observations_reported"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/all_observations_reported"
-        app:layout_constraintBottom_toBottomOf="@+id/observers"
-        app:layout_constraintStart_toEndOf="@+id/protocol"
-        app:layout_constraintTop_toTopOf="@+id/observers" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
