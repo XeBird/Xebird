@@ -96,7 +96,8 @@ public class MyBirdRecyclerViewAdapter extends RecyclerView.Adapter<MyBirdRecycl
             Bundle bundle = new Bundle();
             bundle.putSerializable("click", birdData);
             Log.i(fragment.getTAG(), "onClick: click on DETAILS of " + birdData.getNameCN());
-            NavHostFragment.findNavController(fragment).navigate(R.id.action_birdlistFragment_to_InfoShowDetailFragment, bundle);
+            NavHostFragment.findNavController(fragment).navigate(
+                    R.id.action_birdlistFragment_to_InfoShowDetailFragment, bundle);
         }
     }
 

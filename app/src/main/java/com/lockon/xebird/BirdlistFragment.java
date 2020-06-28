@@ -45,7 +45,6 @@ public class BirdlistFragment extends Fragment {
     public BirdlistFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static BirdlistFragment newInstance(String checklistId) {
         BirdlistFragment fragment = new BirdlistFragment();

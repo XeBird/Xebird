@@ -90,8 +90,18 @@ public class AddBirdRecordFragment extends Fragment {
         tracker = Tracker.getInstance(view.getContext().getApplicationContext());
         final double birdLatitude = tracker.getLatestLatitude();
         final double birdLongitude = tracker.getLatestLongitude();
-        latitudeTV.setText("LAT: " + birdLatitude);
-        longitudeTV.setText("LONG: " + birdLongitude);
+        //用1000来代表经纬度的错误返回值
+        final double FailedResult = 1000;
+        if (birdLatitude != FailedResult) {
+            latitudeTV.setText("LAT: " + birdLatitude);
+        } else {
+            latitudeTV.setText(R.string.latitude);
+        }
+        if (birdLongitude != FailedResult) {
+            longitudeTV.setText("LAT: " + birdLongitude);
+        } else {
+            longitudeTV.setText(R.string.longitude);
+        }
 
         countET = view.findViewById(R.id.addBirdRcord_birdcount);
         if (birdRecord.getBirdCount() != 0) {

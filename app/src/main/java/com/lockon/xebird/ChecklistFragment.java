@@ -257,6 +257,9 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                                     //stop Tracker
                                     tracker.stopTracker();
                                     Navigation.findNavController(view).navigateUp();
+
+                                    //close database
+                                    db.close();
                                 } else {
                                     Toast.makeText(getContext(),
                                             "Please add at least one bird record!",
