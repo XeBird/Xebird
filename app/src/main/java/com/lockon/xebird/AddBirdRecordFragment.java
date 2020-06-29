@@ -67,7 +67,7 @@ public class AddBirdRecordFragment extends Fragment {
             birdData = (BirdData) getArguments().getSerializable(ARG_BirdData);
             birdRecord = (BirdRecord) getArguments().getSerializable(ARG_BirdRecord);
         }
-        tracker = Tracker.getInstance(requireContext().getApplicationContext());
+        tracker = Tracker.getInstance(requireContext());
     }
 
     @Override
@@ -87,7 +87,6 @@ public class AddBirdRecordFragment extends Fragment {
 
         latitudeTV = view.findViewById(R.id.Latitude);
         longitudeTV = view.findViewById(R.id.Longitude);
-        tracker = Tracker.getInstance(view.getContext().getApplicationContext());
         final double birdLatitude = tracker.getLatestLatitude();
         final double birdLongitude = tracker.getLatestLongitude();
         //用1000来代表经纬度的错误返回值

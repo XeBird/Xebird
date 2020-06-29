@@ -93,7 +93,6 @@ public class Tracker {
         locationManager.requestLocationUpdates(locationProvider, 10000, 1, locationListener);
     }
 
-
     public static Tracker getInstance(Context context) {
         if (instance == null) {
             instance = new Tracker(context);

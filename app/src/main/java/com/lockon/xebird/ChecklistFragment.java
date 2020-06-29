@@ -43,9 +43,6 @@ import java.util.List;
 public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequestPermissionsResultCallback {
     private static final String TAG = "ChecklistFragment";
 
-    //计时，主要功能放在参Checklist.TrackerThread
-    private static final int msgTime = 1;
-    private static final int msgLocation = 2;
     public TextView timerTV, startAtTv;
     public TextView LatitudeTV, LongitudeTV;
     public EditText observersET, LocationET, commentsET;
@@ -59,7 +56,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     public long startTime;
     public Checklist checklist;
 
-    public Thread trackerThread = null;
+    public TrackerThread trackerThread = null;
     public XeBirdHandler.TrackerHandler trackerHandler;
     public Handler loopHandler;
     public Tracker tracker;
@@ -286,6 +283,9 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
     }
 
     public class TrackerThread extends Thread {
+        private static final int msgTime = 1;
+        private static final int msgLocation = 2;
+
         @Override
         public void run() {
             try {
