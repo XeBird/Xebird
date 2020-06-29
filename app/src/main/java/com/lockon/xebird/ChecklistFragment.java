@@ -59,7 +59,6 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
 
     public TrackerThread trackerThread = null;
     public XeBirdHandler.TrackerHandler trackerHandler;
-    public Handler loopHandler;
     public Tracker tracker;
 
     public static BirdRecordDataBase db;
@@ -78,7 +77,6 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         trackerHandler = new XeBirdHandler.TrackerHandler(this);
 
         //loop trackerThread for continuous update
-        loopHandler = new Handler();
         trackerThread = new TrackerThread();
         trackerThread.start();
 
@@ -260,7 +258,6 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                                     db.myDao().updateInChecklist(checklist);
 
                                     //remove handler, which lead to stop the loop of thread
-                                    loopHandler.removeCallbacksAndMessages(null);
                                     trackerHandler.removeCallbacksAndMessages(null);
 
                                     //stop Tracker
@@ -322,7 +319,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            loopHandler.postDelayed(this, 1000);
+            trackerHandler.postDelayed(this, 1000);
         }
     }
 
