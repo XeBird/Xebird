@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -91,6 +92,17 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
         checklist = new Checklist(uid, startTime, tracker.getLatestLatitude(), tracker.getLatestLongitude());
         db = BirdRecordDataBase.getInstance(getContext());
         db.myDao().insertToChecklist(checklist);
+
+        //Rewrite back press to null and ask for submit
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Toast.makeText(getContext(),
+                        "Please submit the checklist first!",
+                        Toast.LENGTH_LONG).show();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
 
         Log.i(TAG, "onCreate!");
     }
@@ -302,7 +314,7 @@ public class ChecklistFragment extends Fragment implements ActivityCompat.OnRequ
                 bundle.putDouble("Latitude", tracker.getLatestLatitude());
                 bundle.putDouble("Longitude", tracker.getLatestLongitude());
                 bundle.putString("AddressHint", tracker.getCachedAddress());
-                bundle.putInt("ProvinceHint",tracker.getCachedProvince());
+                bundle.putInt("ProvinceHint", tracker.getCachedProvince());
                 Message msg2 = new Message();
                 msg2.what = msgLocation;
                 msg2.obj = bundle;
