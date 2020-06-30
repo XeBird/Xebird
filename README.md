@@ -1,5 +1,7 @@
 # Xebird
 
+**作为Java大作业的项目汇报在[这里](https://xebird.proto.cf/report/)**
+
 **[0.1Alpha 版](https://github.com/XeBird/Xebird/releases/tag/v0.1Alpha)已发布！功能尚不完善，仅供尝鲜！**
 
 **注意：本项目尚在开发中！**
